@@ -1,2 +1,6 @@
 Builds/
 .vercel
+
+.vercel
+.env*
+_old-site/

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171021">
+  <meta name="description" content="Ryse of Freny: jogue no navegador e entre no ranking.">
+  <title>Ryse of Freny</title>
+  <link rel="icon" href="TemplateData/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #171021;
+      --panel: #1f1630;
+      --line: #301B2A;
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.7);
+      --pink: #EF8BFF;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--text); font-family: 'Roboto Condensed', sans-serif; }
+    main { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 20px; padding: 40px 16px; }
+    .side { width: 300px; text-align: center; }
+    .side img { width: 70%; }
+    .side p { font-size: 16px; line-height: 19px; color: var(--muted); width: 80%; margin: 12px auto; }
+    .side p.pink { color: var(--pink); opacity: 1; }
+    hr { border: 0; border-top: 1px solid var(--line); width: 80%; }
+    .game { flex: 1 1 640px; max-width: 1100px; }
+    #unity-container { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 6px; overflow: hidden; }
+    #unity-canvas { width: 100%; height: 100%; display: block; background: #000; }
+    #loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--muted); }
+    #bar { width: 50%; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+    #bar-fill { height: 100%; width: 0; background: var(--pink); transition: width .2s; }
+    #warning { color: var(--pink); font-size: 14px; margin-top: 8px; }
+    .controls { display: flex; justify-content: flex-end; margin-top: 8px; }
+    button { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 6px 14px; cursor: pointer; }
+    button:hover { border-color: var(--pink); }
+    .ranking { border: 2px solid var(--line); background: var(--panel); border-radius: 6px; padding: 8px 16px 16px; }
+    .ranking h1 { font-size: 28px; margin: 8px 0 12px; }
+    .ranking ol { list-style: none; padding: 0; margin: 0; text-align: left; }
+    .ranking li { display: flex; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 16px; }
+    .ranking li .pos { width: 24px; color: var(--muted); }
+    .ranking li .name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ranking li:first-child .name { color: var(--pink); font-weight: 700; }
+    .ranking .empty { color: var(--muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <main>
+    <aside class="side">
+      <img src="TemplateData/title.png" alt="Ryse of Freny">
+      <p>Entre na arena com o <strong>FRENY</strong> e sobreviva o máximo que puder contra uma horda sem fim de inimigos para ganhar um lugar no ranking.</p>
+      <p class="pink">Crie sua conta no menu do jogo para salvar o progresso e aparecer no ranking.</p>
+      <hr>
+    </aside>
+
+    <section class="game">
+      <div id="unity-container">
+        <canvas id="unity-canvas" tabindex="-1"></canvas>
+        <div id="loading">
+          <span id="loading-text">Carregando...</span>
+          <div id="bar"><div id="bar-fill"></div></div>
+        </div>
+      </div>
+      <div id="warning"></div>
+      <div class="controls"><button id="fullscreen" type="button">Tela cheia</button></div>
+    </section>
+
+    <aside class="side ranking">
+      <h1>Ranking</h1>
+      <ol id="ranking-list"><li class="empty">Carregando...</li></ol>
+    </aside>
+  </main>
+
+  <script>
+    var buildUrl = "Build";
+    var config = {
+      dataUrl: buildUrl + "/WebGL.data.gz",
+      frameworkUrl: buildUrl + "/WebGL.framework.js.gz",
+      codeUrl: buildUrl + "/WebGL.wasm.gz",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "DefaultCompany",
+      productName: "New Unity Project",
+      productVersion: "0.1",
+      showBanner: function (msg, type) {
+        if (type === "error") document.getElementById("warning").textContent = msg;
+        else console.warn(msg);
+      },
+    };
+
+    var canvas = document.getElementById("unity-canvas");
+    var loading = document.getElementById("loading");
+    var fill = document.getElementById("bar-fill");
+
+    var script = document.createElement("script");
+    script.src = buildUrl + "/WebGL.loader.js";
+    script.onload = function () {
+      createUnityInstance(canvas, config, function (p) {
+        fill.style.width = Math.round(p * 100) + "%";
+      }).then(function (instance) {
+        loading.style.display = "none";
+        canvas.focus();
+        document.getElementById("fullscreen").onclick = function () { instance.SetFullscreen(1); };
+      }).catch(function (err) {
+        document.getElementById("loading-text").textContent = "Não foi possível carregar o jogo.";
+        document.getElementById("warning").textContent = String(err);
+      });
+    };
+    document.body.appendChild(script);
+
+    // Top 10 from the same Firestore collection the game writes to (public read in firestore.rules).
+    var FIREBASE = { apiKey: "AIzaSyDf7YvP-lQiMeVfN1bG8dWoahZQtmB0daM", projectId: "the-rise-of-freny" };
+
+    function loadRanking() {
+      var url = "https://firestore.googleapis.com/v1/projects/" + FIREBASE.projectId +
+        "/databases/(default)/documents:runQuery?key=" + FIREBASE.apiKey;
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ structuredQuery: {
+          from: [{ collectionId: "leaderboard" }],
+          orderBy: [{ field: { fieldPath: "score" }, direction: "DESCENDING" }],
+          limit: 10,
+        } }),
+      }).then(function (r) { return r.json(); }).then(function (rows) {
+        var list = document.getElementById("ranking-list");
+        list.innerHTML = "";
+        var docs = rows.filter(function (r) { return r.document; });
+        if (!docs.length) { list.innerHTML = '<li class="empty">Ninguém no ranking ainda.</li>'; return; }
+        docs.forEach(function (r, i) {
+          var f = r.document.fields;
+          var li = document.createElement("li");
+          var pos = document.createElement("span"); pos.className = "pos"; pos.textContent = (i + 1) + ".";
+          var name = document.createElement("span"); name.className = "name"; name.textContent = f.name ? f.name.stringValue : "?";
+          var score = document.createElement("span"); score.textContent = f.score ? f.score.integerValue : "0";
+          li.append(pos, name, score);
+          list.appendChild(li);
+        });
+      }).catch(function () {
+        document.getElementById("ranking-list").innerHTML = '<li class="empty">Ranking indisponível agora.</li>';
+      });
+    }
+    loadRanking();
+    setInterval(loadRanking, 60000);
+  </script>
+</body>
+</html>
