@@ -37,7 +37,11 @@
     button { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 6px 14px; cursor: pointer; }
     button:hover { border-color: var(--pink); }
     .ranking { border: 2px solid var(--line); background: var(--panel); border-radius: 6px; padding: 8px 16px 16px; }
-    .ranking h1 { font-size: 28px; margin: 8px 0 12px; }
+    .ranking h1 { font-size: 28px; margin: 8px 0 4px; }
+    .ranking .rule { font-size: 14px; line-height: 17px; color: var(--muted); margin: 0 0 12px; }
+    .ranking .tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; }
+    .ranking .tabs button { flex: 1; }
+    .ranking .tabs button.active { border-color: var(--pink); color: var(--pink); }
     .ranking ol { list-style: none; padding: 0; margin: 0; text-align: left; }
     .ranking li { display: flex; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 16px; }
     .ranking li .pos { width: 24px; color: var(--muted); }
@@ -86,6 +90,11 @@
 
     <aside class="side ranking">
       <h1>Ranking</h1>
+      <p class="rule">Só valem corridas manuais na Arena, no Difícil ou no Freny.</p>
+      <div class="tabs">
+        <button type="button" data-board="leaderboard_hard" class="active">Difícil</button>
+        <button type="button" data-board="leaderboard_freny">Freny</button>
+      </div>
       <ol id="ranking-list"><li class="empty">Carregando...</li></ol>
     </aside>
   </main>
@@ -130,25 +139,38 @@
     };
     document.body.appendChild(script);
 
-    // Top 10 from the same Firestore collection the game writes to (public read in firestore.rules).
+    // Top 10 from the board the game writes for each ranked difficulty (public read in firestore.rules).
     var FIREBASE = { apiKey: "AIzaSyDf7YvP-lQiMeVfN1bG8dWoahZQtmB0daM", projectId: "the-rise-of-freny" };
+    var board = "leaderboard_hard";
+
+    document.querySelectorAll(".ranking .tabs button").forEach(function (b) {
+      b.onclick = function () {
+        if (b.dataset.board === board) return;
+        board = b.dataset.board;
+        document.querySelectorAll(".ranking .tabs button").forEach(function (o) { o.classList.toggle("active", o === b); });
+        document.getElementById("ranking-list").innerHTML = '<li class="empty">Carregando...</li>';
+        loadRanking();
+      };
+    });
 
     function loadRanking() {
+      var requested = board;
       var url = "https://firestore.googleapis.com/v1/projects/" + FIREBASE.projectId +
         "/databases/(default)/documents:runQuery?key=" + FIREBASE.apiKey;
       fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ structuredQuery: {
-          from: [{ collectionId: "leaderboard" }],
+          from: [{ collectionId: requested }],
           orderBy: [{ field: { fieldPath: "score" }, direction: "DESCENDING" }],
           limit: 10,
         } }),
-      }).then(function (r) { return r.json(); }).then(function (rows) {
+      }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (rows) {
+        if (requested !== board) return; // switched tabs while this was loading
         var list = document.getElementById("ranking-list");
         list.innerHTML = "";
-        var docs = rows.filter(function (r) { return r.document; });
-        if (!docs.length) { list.innerHTML = '<li class="empty">Ninguém no ranking ainda.</li>'; return; }
+        var docs = Array.isArray(rows) ? rows.filter(function (r) { return r.document; }) : [];
+        if (!docs.length) { list.innerHTML = '<li class="empty">Ninguém no ranking ainda</li>'; return; }
         docs.forEach(function (r, i) {
           var f = r.document.fields;
           var li = document.createElement("li");
@@ -159,6 +181,7 @@
           list.appendChild(li);
         });
       }).catch(function () {
+        if (requested !== board) return;
         document.getElementById("ranking-list").innerHTML = '<li class="empty">Ranking indisponível agora.</li>';
       });
     }
