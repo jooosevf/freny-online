@@ -39,8 +39,8 @@
     .ranking { border: 2px solid var(--line); background: var(--panel); border-radius: 6px; padding: 8px 16px 16px; }
     .ranking h1 { font-size: 28px; margin: 8px 0 4px; }
     .ranking .rule { font-size: 14px; line-height: 17px; color: var(--muted); margin: 0 0 12px; }
-    .ranking .tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; }
-    .ranking .tabs button { flex: 1; }
+    .ranking .tabs { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; }
+    .ranking .tabs button { flex: 1; padding: 6px 4px; font-size: 14px; }
     .ranking .tabs button.active { border-color: var(--pink); color: var(--pink); }
     .ranking ol { list-style: none; padding: 0; margin: 0; text-align: left; }
     .ranking li { display: flex; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 16px; }
@@ -90,10 +90,12 @@
 
     <aside class="side ranking">
       <h1>Ranking</h1>
-      <p class="rule">Só valem corridas manuais na Arena, no Difícil ou no Freny.</p>
+      <p class="rule">Só valem corridas manuais na Arena. O ranking oficial é o do Difícil.</p>
       <div class="tabs">
         <button type="button" data-board="leaderboard_hard" class="active">Difícil</button>
         <button type="button" data-board="leaderboard_freny">Freny</button>
+        <button type="button" data-board="leaderboard_medium">Médio</button>
+        <button type="button" data-board="leaderboard_easy">Fácil</button>
       </div>
       <ol id="ranking-list"><li class="empty">Carregando...</li></ol>
     </aside>
