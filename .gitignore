@@ -4,3 +4,4 @@ Builds/
 .vercel
 .env*
 _old-site/
+test-resize.html
