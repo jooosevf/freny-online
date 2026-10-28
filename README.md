@@ -1,4 +1,4 @@
-# Ryse of Freny (web)
+# The Rise of Freny (web)
 
 Build WebGL do jogo, publicada na Vercel como site estático.
 
