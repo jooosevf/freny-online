@@ -18,17 +18,32 @@
       --text: #ffffff;
       --muted: rgba(255, 255, 255, 0.7);
       --pink: #EF8BFF;
+      --header: 56px;
     }
     * { box-sizing: border-box; }
     html { min-height: 100%; background: var(--bg); color-scheme: dark; }
     body { margin: 0; min-height: 100vh; min-height: 100dvh; background: var(--bg); color: var(--text); font-family: 'Roboto Condensed', sans-serif; }
-    main { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 20px; padding: 40px 16px; }
-    .side { width: 300px; text-align: center; }
+    a { color: var(--pink); }
+
+    /* header: the logo and the four pages (the hash picks the page) */
+    .top { position: sticky; top: 0; z-index: 5; height: var(--header); display: flex; align-items: center; gap: 24px;
+      padding: 0 24px; background: rgba(23, 16, 33, 0.96); border-bottom: 1px solid var(--line); }
+    .top .logo { height: 36px; display: block; }
+    .top nav { display: flex; gap: 4px; margin-left: auto; }
+    .top nav a { color: var(--muted); text-decoration: none; font-size: 17px; padding: 8px 12px; border-radius: 4px; }
+    .top nav a:hover { color: var(--text); }
+    .top nav a.active { color: var(--pink); }
+
+    /* Jogar: the game in the middle of the screen, sized to fit its height. Wide screens put the
+       intro on the left and the ranking on the right; narrower ones only the ranking, on the left. */
+    main { display: grid; grid-template-columns: 1fr minmax(0, 1100px) 1fr; gap: 24px; align-items: start; padding: 24px 16px 40px; }
+    .side { min-width: 0; justify-self: end; width: 100%; max-width: 300px; text-align: center; }
+    .ranking { grid-column: 3; grid-row: 1; justify-self: start; }
     .side img { width: 70%; }
     .side p { font-size: 16px; line-height: 19px; color: var(--muted); width: 80%; margin: 12px auto; }
     .side p.pink { color: var(--pink); opacity: 1; }
     hr { border: 0; border-top: 1px solid var(--line); width: 80%; }
-    .game { flex: 1 1 640px; max-width: 1100px; }
+    .game { grid-column: 2; grid-row: 1; width: 100%; max-width: calc((100dvh - var(--header) - 100px) * 16 / 9); min-width: 480px; justify-self: center; }
     #unity-container { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 6px; overflow: hidden; }
     #unity-canvas { width: 100%; height: 100%; display: block; background: #000; }
     #loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--muted); }
@@ -38,9 +53,27 @@
     .controls { display: flex; justify-content: flex-end; margin-top: 8px; }
     button { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 6px 14px; cursor: pointer; }
     button:hover { border-color: var(--pink); }
+
+    @media (max-width: 1500px) {
+      main { grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); }
+      .intro { display: none; }
+      .ranking { grid-column: 1; justify-self: stretch; }
+    }
+    @media (max-width: 860px) {
+      main { grid-template-columns: minmax(0, 1fr); }
+      .game { grid-column: 1; min-width: 0; }
+      .ranking { grid-column: 1; grid-row: 2; justify-self: center; }
+      .top { gap: 12px; padding: 0 12px; }
+      .top nav a { padding: 8px 6px; font-size: 15px; }
+    }
+
+    /* ranking: < difficulty > on top, then Diário / Geral */
     .ranking { border: 2px solid var(--line); background: var(--panel); border-radius: 6px; padding: 8px 16px 16px; }
     .ranking h1 { font-size: 28px; margin: 8px 0 4px; }
     .ranking .rule { font-size: 14px; line-height: 17px; color: var(--muted); margin: 0 0 12px; }
+    .ranking .level { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .ranking .level button { width: 36px; padding: 4px 0; font-size: 18px; line-height: 1; }
+    .ranking .level span { font-size: 20px; font-weight: 700; color: var(--pink); }
     .ranking .tabs { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; }
     .ranking .tabs button { flex: 1; padding: 6px 4px; font-size: 14px; }
     .ranking .tabs button.active { border-color: var(--pink); color: var(--pink); }
@@ -52,10 +85,21 @@
     .ranking .empty { color: var(--muted); font-size: 14px; }
     #rotate { display: none; }
 
-    /* Phones and tablets: the game takes the whole screen; title and ranking sit below it. */
+    /* the other pages; the game stays loaded off-screen while one is open */
+    .page { max-width: 760px; margin: 0 auto; padding: 32px 16px 60px; line-height: 1.55; font-size: 17px; }
+    .page h1 { font-size: 34px; margin: 0 0 12px; }
+    .page h2 { font-size: 22px; margin: 28px 0 8px; color: var(--pink); }
+    .page p { color: var(--muted); margin: 0 0 12px; }
+    .page .soon { border: 2px dashed var(--line); border-radius: 6px; padding: 20px; color: var(--muted); text-align: center; }
+    body:not(.on-jogar) main { position: absolute; left: -10000px; top: 0; width: 1100px; }
+    body.on-jogar .page { display: none; }
+
+    /* Phones and tablets: the game takes the whole screen; ranking sits below it. */
     @media (pointer: coarse) {
-      main { padding: 0 0 24px; gap: 16px; }
-      .game { flex: 1 1 100%; max-width: none; order: -1; }
+      .top { display: none; }
+      main { display: flex; flex-direction: column; align-items: center; padding: 0 0 24px; gap: 16px; }
+      .intro { display: none; }
+      .game { max-width: none; min-width: 0; }
       #unity-container { width: 100vw; height: 100vh; height: 100dvh; aspect-ratio: auto; border-radius: 0; }
       #unity-canvas { touch-action: none; }
       .controls { display: none; }
@@ -68,9 +112,19 @@
     }
   </style>
 </head>
-<body>
+<body class="on-jogar">
+  <header class="top">
+    <a href="#jogar"><img class="logo" src="TemplateData/title.png" alt="The Rise of Freny"></a>
+    <nav>
+      <a href="#sobre" data-page="sobre">Sobre</a>
+      <a href="#jogar" data-page="jogar" class="active">Jogar</a>
+      <a href="#conquistas" data-page="conquistas">Conquistas</a>
+      <a href="#roadmap" data-page="roadmap">Roadmap</a>
+    </nav>
+  </header>
+
   <main>
-    <aside class="side">
+    <aside class="side intro">
       <img src="TemplateData/title.png" alt="The Rise of Freny">
       <p>Entre na arena com o <strong>FRENY</strong> e sobreviva o máximo que puder contra uma horda sem fim de inimigos para ganhar um lugar no ranking.</p>
       <p class="pink">Crie sua conta no menu do jogo para salvar o progresso e aparecer no ranking.</p>
@@ -93,15 +147,39 @@
     <aside class="side ranking">
       <h1>Ranking</h1>
       <p class="rule">Só valem corridas manuais na Arena. O ranking oficial é o do Difícil.</p>
+      <div class="level">
+        <button type="button" id="level-prev" aria-label="Dificuldade anterior">&lt;</button>
+        <span id="level-name">Difícil</span>
+        <button type="button" id="level-next" aria-label="Próxima dificuldade">&gt;</button>
+      </div>
       <div class="tabs">
-        <button type="button" data-board="leaderboard_hard" class="active">Difícil</button>
-        <button type="button" data-board="leaderboard_freny">Freny</button>
-        <button type="button" data-board="leaderboard_medium">Médio</button>
-        <button type="button" data-board="leaderboard_easy">Fácil</button>
+        <button type="button" data-period="daily">Diário</button>
+        <button type="button" data-period="all" class="active">Geral</button>
       </div>
       <ol id="ranking-list"><li class="empty">Carregando...</li></ol>
     </aside>
   </main>
+
+  <section class="page" id="page-sobre" hidden>
+    <h1>Sobre</h1>
+    <p>Entre na arena com o <strong>FRENY</strong> e sobreviva o máximo que puder contra uma horda sem fim de inimigos para ganhar um lugar no ranking.</p>
+    <p>Na Arena você escolhe entre jogar no <strong>manual</strong> ou deixar o <strong>piloto automático</strong> jogar por você. Moedas e XP compram armas e melhorias no Armeiro. Só corridas 100% manuais valem para o ranking.</p>
+    <p>Crie sua conta no menu do jogo para salvar o progresso e aparecer no ranking.</p>
+    <p><a href="#jogar">Jogar agora</a></p>
+  </section>
+  <section class="page" id="page-conquistas" hidden>
+    <h1>Conquistas</h1>
+    <div class="soon">As conquistas chegam na próxima versão do jogo. Aqui vai aparecer quem tem mais conquistas e quantos % dos jogadores já tem cada uma.</div>
+  </section>
+  <section class="page" id="page-roadmap" hidden>
+    <h1>Roadmap</h1>
+    <p>O que vem por aí na Arena. Em breve vai dar para comentar e reagir a cada novidade.</p>
+    <h2>Fase 1</h2><p>Barra de vida nos inimigos, piloto automático que pergunta antes de recomeçar uma corrida boa, correção do save.</p>
+    <h2>Fase 2</h2><p>Conquistas e ranking diário.</p>
+    <h2>Fase 3</h2><p>O Ciclope, um chefe gigante na Arena.</p>
+    <h2>Fase 4</h2><p>Escudeiro, Mina-aranha e melhorias nível 2 e 3 no Armeiro.</p>
+    <h2>Fase 5</h2><p>Arena 2, o Poço de Ácido, liberada com 50 mil pontos.</p>
+  </section>
 
   <script>
     var buildUrl = "Build";
@@ -145,19 +223,51 @@
 
     // Top 10 from the board the game writes for each ranked difficulty (public read in firestore.rules).
     var FIREBASE = { apiKey: "AIzaSyDf7YvP-lQiMeVfN1bG8dWoahZQtmB0daM", projectId: "the-rise-of-freny" };
-    var board = "leaderboard_hard";
+    // < Difícil > picks the difficulty; Diário reads that day's board (Brasília time),
+    // daily_<level>_<yyyymmdd>, Geral the all-time leaderboard_<level>
+    var LEVELS = [
+      { id: "hard", label: "Difícil" },
+      { id: "freny", label: "Freny" },
+      { id: "medium", label: "Médio" },
+      { id: "easy", label: "Fácil" },
+    ];
+    var levelIndex = 0;
+    var period = "all";
+    var board = currentBoard();
 
+    function today() {
+      var brt = new Date(Date.now() - 3 * 3600 * 1000);
+      return brt.toISOString().slice(0, 10).replace(/-/g, "");
+    }
+    function currentBoard() {
+      var level = LEVELS[levelIndex].id;
+      return period === "daily" ? "daily_" + level + "_" + today() : "leaderboard_" + level;
+    }
+    function switchBoard() {
+      document.getElementById("level-name").textContent = LEVELS[levelIndex].label;
+      board = currentBoard();
+      document.getElementById("ranking-list").innerHTML = '<li class="empty">Carregando...</li>';
+      loadRanking();
+    }
+    document.getElementById("level-prev").onclick = function () {
+      levelIndex = (levelIndex + LEVELS.length - 1) % LEVELS.length;
+      switchBoard();
+    };
+    document.getElementById("level-next").onclick = function () {
+      levelIndex = (levelIndex + 1) % LEVELS.length;
+      switchBoard();
+    };
     document.querySelectorAll(".ranking .tabs button").forEach(function (b) {
       b.onclick = function () {
-        if (b.dataset.board === board) return;
-        board = b.dataset.board;
+        if (b.dataset.period === period) return;
+        period = b.dataset.period;
         document.querySelectorAll(".ranking .tabs button").forEach(function (o) { o.classList.toggle("active", o === b); });
-        document.getElementById("ranking-list").innerHTML = '<li class="empty">Carregando...</li>';
-        loadRanking();
+        switchBoard();
       };
     });
 
     function loadRanking() {
+      if (period === "daily" && board !== currentBoard()) board = currentBoard(); // past midnight
       var requested = board;
       var url = "https://firestore.googleapis.com/v1/projects/" + FIREBASE.projectId +
         "/databases/(default)/documents:runQuery?key=" + FIREBASE.apiKey;
@@ -174,7 +284,7 @@
         var list = document.getElementById("ranking-list");
         list.innerHTML = "";
         var docs = Array.isArray(rows) ? rows.filter(function (r) { return r.document; }) : [];
-        if (!docs.length) { list.innerHTML = '<li class="empty">Ninguém no ranking ainda</li>'; return; }
+        if (!docs.length) { list.innerHTML = '<li class="empty">' + (period === "daily" ? "Ninguém jogou hoje ainda" : "Ninguém no ranking ainda") + '</li>'; return; }
         docs.forEach(function (r, i) {
           var f = r.document.fields;
           var li = document.createElement("li");
@@ -191,6 +301,23 @@
     }
     loadRanking();
     setInterval(loadRanking, 15000);
+
+    // pages: #sobre, #jogar (the game), #conquistas, #roadmap
+    var PAGES = ["sobre", "jogar", "conquistas", "roadmap"];
+    function showPage() {
+      var page = location.hash.slice(1);
+      if (PAGES.indexOf(page) < 0) page = "jogar";
+      document.body.classList.toggle("on-jogar", page === "jogar");
+      PAGES.forEach(function (p) {
+        var el = document.getElementById("page-" + p);
+        if (el) el.hidden = p !== page;
+      });
+      document.querySelectorAll(".top nav a").forEach(function (a) { a.classList.toggle("active", a.dataset.page === page); });
+      if (page === "jogar") canvas.focus();
+      window.scrollTo(0, 0);
+    }
+    window.addEventListener("hashchange", showPage);
+    showPage();
     window.addEventListener("focus", loadRanking);
   </script>
 </body>
