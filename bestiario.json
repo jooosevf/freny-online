@@ -4,7 +4,10 @@
     {
       "nome": "Inseto",
       "sprite": "inseto",
-      "quadros": { "anda": 4, "ataque": 16 },
+      "quadros": {
+        "anda": 4,
+        "ataque": 16
+      },
       "tipo": "comum",
       "vida": 1,
       "pontos": 100,
@@ -12,14 +15,21 @@
       "aparece": "Desde o começo",
       "faz": "O inimigo mais comum da Arena. Pequeno, anda pelo chão e pelas plataformas e morde quando o Freny chega perto. Nas dificuldades mais altas fica bem mais rápido.",
       "ataques": [
-        { "icone": "inseto", "nome": "Mordida", "texto": "1 coração, de perto." }
+        {
+          "icone": "inseto",
+          "nome": "Mordida",
+          "texto": "1 coração, de perto."
+        }
       ],
       "dica": "Uma espadada resolve. Cuidado quando vêm vários juntos."
     },
     {
       "nome": "Morcego",
       "sprite": "morcego",
-      "quadros": { "anda": 5, "ataque": 5 },
+      "quadros": {
+        "anda": 5,
+        "ataque": 5
+      },
       "tipo": "comum",
       "vida": 1,
       "pontos": 150,
@@ -27,14 +37,21 @@
       "aparece": "Desde o começo",
       "faz": "Voa por cima das plataformas e vem atrás do Freny de qualquer lugar da Arena. Chega pelo lado, recua e pisca por um instante antes de dar o bote.",
       "ataques": [
-        { "icone": "morcego", "nome": "Bote", "texto": "1 coração. Antes, ele recua e pisca por quase meio segundo." }
+        {
+          "icone": "morcego",
+          "nome": "Bote",
+          "texto": "1 coração. Antes, ele recua e pisca por quase meio segundo."
+        }
       ],
       "dica": "Bata quando ele piscar, ou dê um passo para trás e deixe o bote passar."
     },
     {
       "nome": "Linguarudo",
       "sprite": "linguarudo",
-      "quadros": { "anda": 2, "ataque": 20 },
+      "quadros": {
+        "anda": 2,
+        "ataque": 20
+      },
       "tipo": "comum",
       "vida": 3,
       "pontos": 500,
@@ -42,14 +59,21 @@
       "aparece": "Depois de 1 minuto",
       "faz": "Um bicho rápido de língua comprida. Enxerga o Freny de mais longe que o Inseto, corre até ele e alcança de longe com a língua.",
       "ataques": [
-        { "icone": "inseto", "nome": "Lambida", "texto": "1 coração, com um alcance maior do que parece." }
+        {
+          "icone": "inseto",
+          "nome": "Lambida",
+          "texto": "1 coração, com um alcance maior do que parece."
+        }
       ],
       "dica": "Use o combo de espada completo: o 3º golpe empurra para longe."
     },
     {
       "nome": "Feiticeiro",
       "sprite": "feiticeiro",
-      "quadros": { "anda": 2, "ataque": 12 },
+      "quadros": {
+        "anda": 2,
+        "ataque": 12
+      },
       "tipo": "comum",
       "vida": 2,
       "pontos": 350,
@@ -57,14 +81,21 @@
       "aparece": "Depois de 1 min 45 s, nas torres",
       "faz": "Fica parado no alto das torres e lança bolas de feitiço no Freny, esteja ele onde estiver. Muda de lugar a cada 3 feitiços e some depois de 8. Há no máximo 1 feiticeiro até 50 mil pontos, 2 depois disso e 3 depois de 100 mil; quando um morre, outro só aparece no lugar dele 15 s depois.",
       "ataques": [
-        { "icone": "hexball", "nome": "Bola de feitiço", "texto": "A cada 5 s. Tira 2 corações e empurra. Depois de 50 mil pontos ela persegue o Freny por 2,5 s. De dia ganha uma borda escura." }
+        {
+          "icone": "hexball",
+          "nome": "Bola de feitiço",
+          "texto": "A cada 5 s. Tira 2 corações e empurra. De dia ganha uma borda escura para aparecer no céu claro."
+        }
       ],
       "dica": "Abaixar desvia de um tiro reto. Suba na torre ou use o revólver para tirá-lo de lá."
     },
     {
       "nome": "Escudeiro",
       "sprite": "escudeiro",
-      "quadros": { "anda": 6, "ataque": 7 },
+      "quadros": {
+        "anda": 6,
+        "ataque": 7
+      },
       "tipo": "forte",
       "vida": 6,
       "pontos": 300,
@@ -72,14 +103,21 @@
       "aparece": "Depois de 2 minutos",
       "faz": "Anda atrás de um escudo de espinhos sempre virado para o Freny. De frente quase não leva dano: são 12 espadadas ou 36 tiros. Pelas costas, 2 espadadas ou 6 tiros acabam com ele. Ele demora para virar, e quanto mais difícil a Arena, mais rápido ele vira.",
       "ataques": [
-        { "icone": "espada", "nome": "Golpe de escudo", "texto": "1 coração, de perto." }
+        {
+          "icone": "espada",
+          "nome": "Golpe de escudo",
+          "texto": "1 coração, de perto."
+        }
       ],
       "dica": "Pule por cima dele ou passe por trás na hora do ataque, e bata nas costas."
     },
     {
       "nome": "Golem",
       "sprite": "golem",
-      "quadros": { "anda": 4, "ataque": 8 },
+      "quadros": {
+        "anda": 4,
+        "ataque": 8
+      },
       "tipo": "forte",
       "vida": 2,
       "pontos": 200,
@@ -87,14 +125,21 @@
       "aparece": "Depois de 2 min 30 s",
       "faz": "Lento e teimoso: depois que vê o Freny, não larga mais.",
       "ataques": [
-        { "icone": "golem", "nome": "Soco", "texto": "2 corações e derruba o Freny." }
+        {
+          "icone": "golem",
+          "nome": "Soco",
+          "texto": "2 corações e derruba o Freny."
+        }
       ],
       "dica": "Ele é lento: bata e saia antes do soco."
     },
     {
       "nome": "Golem Vermelho",
       "sprite": "golem_vermelho",
-      "quadros": { "anda": 4, "ataque": 8 },
+      "quadros": {
+        "anda": 4,
+        "ataque": 8
+      },
       "tipo": "forte",
       "vida": 6,
       "pontos": 500,
@@ -102,41 +147,75 @@
       "aparece": "Depois de 50 mil pontos",
       "faz": "Pedra vermelha e olhos acesos. Um tanque: aguenta uma granada e quase não recua com os golpes. Carrega o soco e avança num dash junto. Se o Freny fica longe, joga minas.",
       "ataques": [
-        { "icone": "golem_vermelho", "nome": "Soco com dash", "texto": "Carrega por 0,6 s e avança até 2,2 para a frente. 2 corações e derruba." },
-        { "icone": "mina", "nome": "Mina", "texto": "Jogada em arco, gruda no chão, pisca por 0,9 s e explode como uma granada: 2 corações no Freny e 3 de dano nos outros inimigos." }
+        {
+          "icone": "golem_vermelho",
+          "nome": "Soco com dash",
+          "texto": "Carrega por 0,6 s e avança até 2,2 para a frente. 2 corações e derruba."
+        },
+        {
+          "icone": "mina",
+          "nome": "Mina",
+          "texto": "Jogada em arco, gruda no chão, pisca por 0,9 s e explode como uma granada: 2 corações no Freny e 3 de dano nos outros inimigos."
+        }
       ],
       "dica": "Acerte a mina antes de ela explodir, ou saia de perto. Não fique parado na frente dele quando ele carregar o soco."
     },
     {
       "nome": "Feiticeiro Supremo",
       "sprite": "feiticeiro_supremo",
-      "quadros": { "anda": 2, "ataque": 12 },
+      "quadros": {
+        "anda": 2,
+        "ataque": 12
+      },
       "tipo": "forte",
       "vida": 3,
       "pontos": 600,
       "moedas": 7,
-      "aparece": "Depois de 4 minutos (o último a chegar)",
-      "faz": "O feiticeiro de olho e manto vermelhos. Lança mais rápido e mira onde o Freny vai estar, não onde ele está.",
+      "aparece": "Depois de 100 mil pontos",
+      "faz": "O feiticeiro de olho e manto vermelhos. Lança mais rápido, mira onde o Freny vai estar e é o único com bolas que perseguem o Freny.",
       "ataques": [
-        { "icone": "hexball", "nome": "Bola de feitiço adiantada", "texto": "A cada 3,5 s, mirando à frente do Freny. 2 corações e empurra." }
+        {
+          "icone": "hexball",
+          "nome": "Bola de feitiço teleguiada",
+          "texto": "A cada 3,5 s, mirando à frente do Freny, e segue ele por 2,5 s. 2 corações e empurra."
+        }
       ],
-      "dica": "Mude de direção quando ele lançar."
+      "dica": "Mude de direção quando ele lançar. A bola faz curva, mas pular ou abaixar na hora certa ainda desvia."
     },
     {
       "nome": "Ciclope",
       "sprite": "ciclope",
-      "quadros": { "anda": 5, "ataque": 3 },
+      "quadros": {
+        "anda": 5,
+        "ataque": 3
+      },
       "tipo": "chefe",
       "vida": 100,
       "pontos": 5000,
       "moedas": 30,
-      "aparece": "Aos 50 mil pontos e a cada 50 mil depois; dois de uma vez a partir de 150 mil",
-      "faz": "O chefe gigante da Arena. Chega no centro do chão com dois feiticeiros para ajudar (o feitiço deles não fere o Ciclope) e tem a barra de chefe no alto da tela. Não pula: fica sempre no chão. Depois de cada golpe ele descansa 3 s. Quando cai, deixa um baú.",
+      "aparece": "Aos 50 mil pontos e depois a cada 100 mil (150 mil, 250 mil...); dois de uma vez só a partir de 1 milhão",
+      "faz": "O chefe gigante da Arena. Chega no centro do chão com a barra de chefe e não pula: fica sempre no chão. Cada luta traz mais ajuda: 2 feiticeiros na primeira e um a mais em cada uma seguinte (até 5), e a partir da segunda os outros inimigos também continuam vindo. Sempre vêm um morcego e um inseto atrás do Freny, para manter o combo vivo. O feitiço dos feiticeiros não fere o Ciclope. Depois de cada golpe ele descansa 3 s. Quando cai, deixa um baú.",
       "ataques": [
-        { "icone": "ciclope", "nome": "Soco", "texto": "1 coração e arremessa o Freny longe." },
-        { "icone": "espinho", "nome": "Pancada no chão", "texto": "Uma onda corre pelo piso: 2 corações e o mesmo arremesso. Pule!" },
-        { "icone": "mina", "nome": "Bomba", "texto": "De longe, uma mina 3 vezes maior jogada com força. 2 corações." },
-        { "icone": "acido", "nome": "Vômito", "texto": "Um jato de até 7 de distância que vira uma poça larga por 6 s. O jato e a poça queimam, e a poça deixa o Freny lento. Numa plataforma, o jato atravessa e cai no andar de baixo." }
+        {
+          "icone": "ciclope",
+          "nome": "Soco",
+          "texto": "1 coração e arremessa o Freny longe."
+        },
+        {
+          "icone": "espinho",
+          "nome": "Pancada no chão",
+          "texto": "Uma onda corre pelo piso: 2 corações e o mesmo arremesso. Pule!"
+        },
+        {
+          "icone": "mina",
+          "nome": "Bomba",
+          "texto": "De longe, uma mina 3 vezes maior jogada com força. 2 corações."
+        },
+        {
+          "icone": "acido",
+          "nome": "Vômito",
+          "texto": "Um jato de até 7 de distância que vira uma poça larga por 6 s. O jato e a poça queimam, e a poça deixa o Freny lento. Numa plataforma, o jato atravessa e cai no andar de baixo."
+        }
       ],
       "dica": "Acertar o olho tira o dobro. Bata nos 3 s de descanso depois de cada golpe."
     }
