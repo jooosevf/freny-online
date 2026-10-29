@@ -2,6 +2,16 @@
   "_como_usar": "Uma entrada por atualização, a mais nova primeiro. data = AAAA-MM-DD e hora = HH:MM no horário de Brasília (hora em que subiu no site). Enquanto a versão ainda não subiu, use \"proxima\": true e deixe data e hora vazias. Cada mudança é {\"icone\", \"texto\"}; icone é o nome de um PNG da pasta devlog/ (ex.: espada, mago, golem, pocao, bau, tecla, freny). Prints opcionais: \"prints\": [{\"img\": \"devlog/prints/arquivo.jpg\", \"legenda\": \"...\"}] (JPG de até 1280 px).",
   "versoes": [
     {
+      "versao": "Site",
+      "data": "2026-10-29",
+      "hora": "15:41",
+      "titulo": "Roadmap com tudo o que vem por aí",
+      "mudancas": [
+        { "icone": "ciclope", "texto": "Aba Roadmap com as fases da Arena: conquistas e ranking diário, o Ciclope, Escudeiro e Mina, a Arena 2 do Poço de Ácido e mais." },
+        { "icone": "tecla", "texto": "Dark Reader não deixa mais os inimigos do devlog brancos." }
+      ]
+    },
+    {
       "versao": "Alpha 0.0.1",
       "data": "2026-10-29",
       "hora": "14:47",
