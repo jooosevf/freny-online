@@ -1,0 +1,13 @@
+{
+  "name": "The Rise of Freny",
+  "short_name": "Freny",
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#171021",
+  "theme_color": "#171021",
+  "icons": [
+    { "src": "TemplateData/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "TemplateData/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

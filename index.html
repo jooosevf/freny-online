@@ -8,6 +8,14 @@
   <meta name="description" content="The Rise of Freny: jogue no navegador e entre no ranking.">
   <title>The Rise of Freny</title>
   <link rel="icon" href="TemplateData/favicon.ico">
+  <!-- phones: installed from the browser menu ("Adicionar à tela inicial") it opens in full screen, landscape;
+       the only way to get a full screen on the iPhone, whose Safari has no fullscreen for pages -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="TemplateData/icon-192.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Freny">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -84,6 +92,7 @@
     .ranking li:first-child .name { color: var(--pink); font-weight: 700; }
     .ranking .empty { color: var(--muted); font-size: 14px; }
     #rotate { display: none; }
+    #fs-mobile, #fs-hint { display: none; }
 
     /* the other pages; the game stays loaded off-screen while one is open */
     .page { max-width: 760px; margin: 0 auto; padding: 32px 16px 60px; line-height: 1.55; font-size: 17px; }
@@ -105,7 +114,16 @@
       .controls { display: none; }
       #warning { padding: 0 16px; }
       .ranking { width: calc(100% - 32px); max-width: 420px; }
+      /* the game's own full screen button for phones, bottom centre between the d-pad and the buttons */
+      #fs-mobile { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 1; padding: 6px 14px; font-size: 14px; background: rgba(31, 22, 48, 0.75); }
+      #fs-mobile.show { display: block; }
+      #fs-hint { position: absolute; left: 50%; bottom: 52px; transform: translateX(-50%); z-index: 1; width: min(90%, 420px); padding: 10px 14px; border-radius: 6px; background: rgba(23, 16, 33, 0.92); border: 1px solid var(--line); font-size: 14px; line-height: 18px; text-align: center; color: var(--muted); }
+      #fs-hint.show { display: block; }
+      #fs-hint strong { color: var(--pink); }
     }
+    /* in full screen the game container is the whole screen */
+    #unity-container:fullscreen { width: 100vw; height: 100vh; aspect-ratio: auto; border-radius: 0; }
+    #unity-container:-webkit-full-screen { width: 100vw; height: 100vh; aspect-ratio: auto; border-radius: 0; }
     @media (pointer: coarse) and (orientation: portrait) {
       #rotate { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 24px; text-align: center; background: var(--bg); color: var(--muted); font-size: 18px; }
       #rotate strong { color: var(--pink); font-size: 22px; }
@@ -138,6 +156,8 @@
           <span id="loading-text">Carregando...</span>
           <div id="bar"><div id="bar-fill"></div></div>
         </div>
+        <button id="fs-mobile" type="button">Tela cheia</button>
+        <div id="fs-hint"></div>
         <div id="rotate"><strong>Gire o celular</strong>O Freny joga deitado: use o celular na horizontal.</div>
       </div>
       <div id="warning"></div>
@@ -220,6 +240,54 @@
       });
     };
     document.body.appendChild(script);
+
+    // Phones: full screen of the game container (not the page, so the ranking below stays out of it).
+    // The first tap on the game enters it, and the button brings it back after the player leaves it.
+    // The iPhone's Safari has no fullscreen for pages: there the button explains how to install the
+    // site on the home screen, which opens it without the browser bars (manifest.webmanifest).
+    (function () {
+      if (!matchMedia("(pointer: coarse)").matches) return;
+      var container = document.getElementById("unity-container");
+      var button = document.getElementById("fs-mobile");
+      var hint = document.getElementById("fs-hint");
+      var installed = matchMedia("(display-mode: fullscreen), (display-mode: standalone)").matches || navigator.standalone === true;
+      var canFullscreen = !!(container.requestFullscreen || container.webkitRequestFullscreen);
+      var ios = /iPhone|iPod/.test(navigator.userAgent);
+      var autoTried = false;
+
+      function current() { return document.fullscreenElement || document.webkitFullscreenElement; }
+      function refresh() {
+        button.classList.toggle("show", !installed && !current());
+        if (current()) hint.classList.remove("show");
+      }
+      function enter() {
+        var request = container.requestFullscreen || container.webkitRequestFullscreen;
+        if (!request) {
+          hint.innerHTML = ios
+            ? "No iPhone o Safari não deixa sites em tela cheia. Toque em <strong>Compartilhar</strong> e depois em <strong>Adicionar à Tela de Início</strong>: aberto por lá, o jogo ocupa a tela toda."
+            : "Este navegador não deixa o site em tela cheia. No menu dele, use <strong>Adicionar à tela inicial</strong> e abra o jogo por lá.";
+          hint.classList.toggle("show");
+          return;
+        }
+        var result = request.call(container, { navigationUI: "hide" });
+        var lock = function () {
+          window.scrollTo(0, 0);
+          if (screen.orientation && screen.orientation.lock) screen.orientation.lock("landscape").catch(function () {});
+        };
+        if (result && result.then) result.then(lock).catch(function () {}); else lock();
+      }
+
+      button.addEventListener("click", function (e) { e.stopPropagation(); enter(); });
+      // the first tap on the game goes full screen by itself (browsers allow it only inside a tap)
+      container.addEventListener("touchend", function () {
+        if (autoTried || installed || current() || !canFullscreen) return;
+        autoTried = true;
+        enter();
+      });
+      document.addEventListener("fullscreenchange", refresh);
+      document.addEventListener("webkitfullscreenchange", refresh);
+      refresh();
+    })();
 
     // Top 10 from the board the game writes for each ranked difficulty (public read in firestore.rules).
     var FIREBASE = { apiKey: "AIzaSyDf7YvP-lQiMeVfN1bG8dWoahZQtmB0daM", projectId: "the-rise-of-freny" };
