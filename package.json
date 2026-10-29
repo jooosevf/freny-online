@@ -1,0 +1,9 @@
+{
+  "name": "freny-online",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "api": "node tools/api-server.js"
+  }
+}

@@ -1,0 +1,36 @@
+// What the game allows in an Arena run, copied from the Unity project (theRiseOfFreny).
+// When a number changes in the game, change it here too, or honest runs start being refused:
+//   ENEMIES.score  = scoreToAdd on each prefab in Assets/Prefabs/Enemies
+//   ENEMIES.unlockAt / unlockScore = the ArenaDirector entries in "ZE Arena.unity"
+//   LEVELS = ArenaDifficulty.cs (RampFactor, StartAt, UnlockShift)
+//   COMBO_SECONDS = ComboManager.totalTime in "ZE Arena.unity"
+
+export const BOARDS = ['leaderboard_hard', 'leaderboard_freny', 'leaderboard_medium', 'leaderboard_easy'];
+
+export const ENEMIES = {
+  Bug_Enemy: { score: 100, unlockAt: 0 },
+  Bat_Enemy: { score: 150, unlockAt: 0 },
+  Golem_Enemy: { score: 200, unlockAt: 0.5 },
+  Sorcerer_Enemy: { score: 350, unlockAt: 0.35 },
+  Licker_Enemy: { score: 500, unlockAt: 0.2 },
+  Golem_Red: { score: 500, unlockAt: 0.65, unlockScore: 50000 },
+  Sorcerer_Supreme: { score: 600, unlockAt: 0.8 },
+};
+
+export const LEVELS = {
+  leaderboard_easy: { rampFactor: 1.6, startAt: 0, unlockShift: 0.15 },
+  leaderboard_medium: { rampFactor: 1, startAt: 0, unlockShift: 0 },
+  leaderboard_hard: { rampFactor: 0.7, startAt: 0.15, unlockShift: -0.1 },
+  leaderboard_freny: { rampFactor: 0.5, startAt: 0.3, unlockShift: -0.2 },
+};
+
+// the shortest ramp the Tuning slider allows (Tuning.RampSeconds, 60..600 s, 300 by default)
+export const MIN_RAMP_SECONDS = 60;
+export const COMBO_SECONDS = 10;
+// GameSpeed.Max: game time runs at most this much faster than real time
+export const MAX_GAME_SPEED = 1.5;
+// most kills in any 10 game seconds (measured with the autopilot, with room to spare)
+export const KILL_WINDOW_SECONDS = 10;
+export const MAX_KILLS_PER_WINDOW = 30;
+export const MAX_RUN_SECONDS = 6 * 3600;
+export const MAX_SCORE = 1000000000;
