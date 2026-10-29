@@ -9,7 +9,25 @@
   <meta name="darkreader-lock">
   <meta name="description" content="The Rise of Freny: jogue no navegador e entre no ranking.">
   <title>The Rise of Freny</title>
-  <link rel="icon" href="TemplateData/favicon.ico">
+  <link rel="icon" href="TemplateData/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="192x192" href="TemplateData/icon-192.png">
+  <!-- link previews (WhatsApp, Discord, Telegram...): without these the bare root URL showed Vercel's icon -->
+  <link rel="canonical" href="https://freny-online.vercel.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="The Rise of Freny">
+  <meta property="og:title" content="The Rise of Freny">
+  <meta property="og:description" content="Jogue no navegador: entre na arena com o Freny, sobreviva à horda e entre no ranking.">
+  <meta property="og:url" content="https://freny-online.vercel.app/">
+  <meta property="og:image" content="https://freny-online.vercel.app/TemplateData/icon-512.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:image:alt" content="Elmo do Freny">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Rise of Freny">
+  <meta name="twitter:description" content="Jogue no navegador: entre na arena com o Freny, sobreviva à horda e entre no ranking.">
+  <meta name="twitter:image" content="https://freny-online.vercel.app/TemplateData/icon-512.png">
   <!-- phones: installed from the browser menu ("Adicionar à tela inicial") it opens in full screen, landscape;
        the only way to get a full screen on the iPhone, whose Safari has no fullscreen for pages -->
   <link rel="manifest" href="manifest.webmanifest">
@@ -28,32 +46,34 @@
       --text: #ffffff;
       --muted: rgba(255, 255, 255, 0.7);
       --pink: #EF8BFF;
-      --header: 56px;
+      --header: 76px;
+      --footer: 64px;
     }
     * { box-sizing: border-box; }
     html { min-height: 100%; background: var(--bg); color-scheme: dark; }
-    body { margin: 0; min-height: 100vh; min-height: 100dvh; background: var(--bg); color: var(--text); font-family: 'Roboto Condensed', sans-serif; }
+    body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; background: var(--bg); color: var(--text); font-family: 'Roboto Condensed', sans-serif; }
     a { color: var(--pink); }
 
     /* header: the logo and the four pages (the hash picks the page) */
     .top { position: sticky; top: 0; z-index: 5; height: var(--header); display: flex; align-items: center; gap: 24px;
-      padding: 0 24px; background: rgba(23, 16, 33, 0.96); border-bottom: 1px solid var(--line); }
-    .top .logo { height: 36px; display: block; }
-    .top nav { display: flex; gap: 4px; margin-left: auto; }
-    .top nav a { color: var(--muted); text-decoration: none; font-size: 17px; padding: 8px 12px; border-radius: 4px; }
+      padding: 0 max(24px, calc((100% - 1760px) / 2)); background: rgba(23, 16, 33, 0.96); border-bottom: 1px solid var(--line); }
+    .top .logo { height: 56px; display: block; }
+    .top nav { display: flex; gap: 6px; margin-left: auto; }
+    .top nav a { color: var(--muted); text-decoration: none; font-size: 20px; padding: 10px 14px; border-radius: 4px; }
     .top nav a:hover { color: var(--text); }
     .top nav a.active { color: var(--pink); }
 
     /* Jogar: the game in the middle of the screen, sized to fit its height. Wide screens put the
-       intro on the left and the ranking on the right; narrower ones only the ranking, on the left. */
-    main { display: grid; grid-template-columns: 1fr minmax(0, 1100px) 1fr; gap: 24px; align-items: start; padding: 24px 16px 40px; }
-    .side { min-width: 0; justify-self: end; width: 100%; max-width: 300px; text-align: center; }
-    .ranking { grid-column: 3; grid-row: 1; justify-self: start; }
+       intro on the left and the ranking on the right, the three centred together as one block;
+       narrower ones only the ranking, on the left. */
+    main { flex: 1 0 auto; display: grid; grid-template-columns: 280px auto 280px; justify-content: center; gap: 28px; align-items: start; padding: 28px 16px 40px; }
+    .side { min-width: 0; width: 100%; text-align: center; }
+    .ranking { grid-column: 3; grid-row: 1; }
     .side img { width: 70%; }
     .side p { font-size: 16px; line-height: 19px; color: var(--muted); width: 80%; margin: 12px auto; }
     .side p.pink { color: var(--pink); opacity: 1; }
     hr { border: 0; border-top: 1px solid var(--line); width: 80%; }
-    .game { grid-column: 2; grid-row: 1; width: 100%; max-width: calc((100dvh - var(--header) - 100px) * 16 / 9); min-width: 480px; justify-self: center; }
+    .game { grid-column: 2; grid-row: 1; width: min(1100px, calc(100vw - 2 * 280px - 2 * 28px - 48px), calc((100dvh - var(--header) - 110px) * 16 / 9)); min-width: 480px; }
     #unity-container { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 6px; overflow: hidden; }
     #unity-canvas { width: 100%; height: 100%; display: block; background: #000; }
     #loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--muted); }
@@ -65,16 +85,18 @@
     button:hover { border-color: var(--pink); }
 
     @media (max-width: 1500px) {
-      main { grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); }
+      main { grid-template-columns: 280px auto; }
       .intro { display: none; }
-      .ranking { grid-column: 1; justify-self: stretch; }
+      .ranking { grid-column: 1; }
+      .game { width: min(1100px, calc(100vw - 280px - 28px - 48px), calc((100dvh - var(--header) - 110px) * 16 / 9)); }
     }
     @media (max-width: 860px) {
       main { grid-template-columns: minmax(0, 1fr); }
-      .game { grid-column: 1; min-width: 0; }
-      .ranking { grid-column: 1; grid-row: 2; justify-self: center; }
-      .top { gap: 12px; padding: 0 12px; }
-      .top nav a { padding: 8px 6px; font-size: 15px; }
+      .game { grid-column: 1; min-width: 0; width: 100%; }
+      .ranking { grid-column: 1; grid-row: 2; justify-self: center; max-width: 360px; }
+      .top { gap: 12px; padding: 0 12px; height: 60px; }
+      .top .logo { height: 40px; }
+      .top nav a { padding: 8px 6px; font-size: 16px; }
     }
 
     /* ranking: < difficulty > on top, then Diário / Geral */
@@ -96,7 +118,19 @@
     #rotate { display: none; }
     #fs-mobile, #fs-hint { display: none; }
 
+    /* footer: the same pages again, the version and the year */
+    .foot { margin-top: auto; border-top: 1px solid var(--line); background: rgba(23, 16, 33, 0.96); color: var(--muted); font-size: 15px; }
+    .foot .in { min-height: var(--footer); max-width: 1808px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 24px; }
+    .foot .logo { height: 34px; display: block; }
+    .foot nav { display: flex; flex-wrap: wrap; gap: 2px 16px; }
+    .foot nav a { color: var(--muted); text-decoration: none; }
+    .foot nav a:hover { color: var(--text); }
+    .foot .ver { margin-left: auto; }
+    .foot .ver b { color: var(--pink); font-weight: 400; }
+    @media (max-width: 640px) { .foot .in { justify-content: center; text-align: center; } .foot .ver { margin: 0; width: 100%; } }
+
     /* the other pages; the game stays loaded off-screen while one is open */
+    .page { flex: 1 0 auto; width: 100%; }
     .page { max-width: 760px; margin: 0 auto; padding: 32px 16px 60px; line-height: 1.55; font-size: 17px; }
     .page h1 { font-size: 34px; margin: 0 0 12px; }
     .page h2 { font-size: 22px; margin: 28px 0 8px; color: var(--pink); }
@@ -207,7 +241,7 @@
 
     /* Phones and tablets: the game takes the whole screen; ranking sits below it. */
     @media (pointer: coarse) {
-      .top { display: none; }
+      .top, .foot { display: none; }
       main { display: flex; flex-direction: column; align-items: center; padding: 0 0 24px; gap: 16px; }
       .intro { display: none; }
       .game { max-width: none; min-width: 0; }
@@ -331,6 +365,28 @@
     <div id="devlog-list"><p>Carregando...</p></div>
   </section>
 
+  <footer class="foot">
+    <div class="in">
+      <a href="#jogar"><img class="logo" src="TemplateData/title.png" alt="The Rise of Freny"></a>
+      <nav>
+        <a href="#sobre">Sobre</a>
+        <a href="#jogar">Jogar</a>
+        <a href="#conquistas">Conquistas</a>
+        <a href="#bestiario">Bestiário</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#devlog">Devlog</a>
+      </nav>
+      <span class="ver">The Rise of Freny · <b id="foot-ver">Alpha</b> · © 2026</span>
+    </div>
+  </footer>
+
+  <script>
+    // footer version: the newest released entry of the devlog (skips "Site" entries and the next version)
+    fetch("devlog.json").then(function (r) { return r.json(); }).then(function (d) {
+      var v = (d.versoes || []).filter(function (x) { return !x.proxima && /\d/.test(x.versao); })[0];
+      if (v) document.getElementById("foot-ver").textContent = v.versao;
+    }).catch(function () {});
+  </script>
   <script>
     var buildUrl = "Build";
     var config = {
