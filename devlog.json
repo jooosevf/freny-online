@@ -3,11 +3,22 @@
   "versoes": [
     {
       "versao": "Alpha 0.0.1",
-      "proxima": true,
-      "data": "",
-      "hora": "",
+      "data": "2026-10-29",
+      "hora": "14:47",
       "titulo": "Combo de espada e Arena mais viva",
       "mudancas": [
+        {
+          "icone": "tecla",
+          "texto": "Começa a Alpha: recordes e progresso de todas as contas foram zerados."
+        },
+        {
+          "icone": "moeda",
+          "texto": "Loja 4x mais cara: melhorias, pulo duplo, granada, espadão, escopeta e capacete."
+        },
+        {
+          "icone": "diamante",
+          "texto": "Ranking conferido pelo nosso próprio servidor antes de valer."
+        },
         {
           "icone": "coracao",
           "texto": "Barra de vida em cima dos inimigos."
