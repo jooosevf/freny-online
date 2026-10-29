@@ -14,10 +14,11 @@ export const ENEMIES = {
   Sorcerer_Enemy: { score: 350, unlockAt: 0.35 },
   Licker_Enemy: { score: 500, unlockAt: 0.2 },
   Golem_Red: { score: 500, unlockAt: 0.65, unlockScore: 50000 },
-  Sorcerer_Supreme: { score: 600, unlockAt: 0.8 },
+  // and never below 100 000 points (PR #154)
+  Sorcerer_Supreme: { score: 600, unlockAt: 0.8, unlockScore: 100000 },
   // PR #149 (Escudeiro and Ciclope)
   Shielded_Enemy: { score: 300, unlockAt: 0.4 },
-  // called at 50 000 points and every 50 000 after (PR #152); one at a time, 40 hits to kill
+  // first at 50 000 points, then every 100 000 (PR #154); two at once only from 1 000 000
   Cyclops_Boss: { score: 5000, unlockAt: 0, unlockScore: 50000 },
 };
 

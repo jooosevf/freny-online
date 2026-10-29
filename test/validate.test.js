@@ -90,3 +90,11 @@ test("today's board follows Brasília time", async () => {
   assert.equal(dailyBoardOf('leaderboard_hard', Date.UTC(2026, 9, 30, 2, 0)), 'daily_hard_20261029');
   assert.equal(dailyBoardOf('leaderboard_easy', Date.UTC(2026, 9, 30, 3, 0)), 'daily_easy_20261030');
 });
+
+test('the Feiticeiro Supremo only counts after 100 000 points', () => {
+  const run = steadyRun('leaderboard_hard', 1, 2, ['Sorcerer_Supreme']);
+  run.kills[0][0] = 400;
+  run.gameTime = 401;
+  run.score = killPoints(600, 0);
+  assert.match(validateRun(run, run.gameTime), /antes de 100000/);
+});
