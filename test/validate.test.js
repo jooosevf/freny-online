@@ -48,8 +48,10 @@ test('the combo has to drop after 10 s without a kill', () => {
   assert.match(validateRun(run, run.gameTime), /combo/);
 });
 
-test('too many kills in 10 s are refused', () => {
-  const run = steadyRun('leaderboard_medium', 200, 0.1);
+test('a screen-clearing burst is fine, more kills than the arena can spawn are not', () => {
+  const burst = steadyRun('leaderboard_easy', 60, 10 / 60);
+  assert.equal(validateRun(burst, burst.gameTime), null);
+  const run = steadyRun('leaderboard_medium', 400, 0.05);
   assert.match(validateRun(run, run.gameTime), /abates demais/);
 });
 
@@ -68,4 +70,23 @@ test('the run ticket only opens with the right key', async () => {
   assert.equal(await readRunToken('x'.repeat(64), token), null);
   const [body, sig] = token.split('.');
   assert.equal(await readRunToken(key, body.slice(0, -2) + 'AA.' + sig), null);
+});
+
+test('the Cyclops only counts after 50 000 points', () => {
+  const early = steadyRun('leaderboard_hard', 1, 2, ['Cyclops_Boss']);
+  early.score = killPoints(5000, 0);
+  assert.match(validateRun(early, early.gameTime), /antes de 50000/);
+});
+
+test('a preflight from another address gets the CORS headers', async () => {
+  const { default: start } = await import('../api/run/start.js');
+  const res = await start(new Request('http://x/api/run/start', { method: 'OPTIONS' }));
+  assert.equal(res.status, 204);
+  assert.equal(res.headers.get('access-control-allow-origin'), '*');
+});
+
+test("today's board follows Brasília time", async () => {
+  const { dailyBoardOf } = await import('../api/_lib/validate.js');
+  assert.equal(dailyBoardOf('leaderboard_hard', Date.UTC(2026, 9, 30, 2, 0)), 'daily_hard_20261029');
+  assert.equal(dailyBoardOf('leaderboard_easy', Date.UTC(2026, 9, 30, 3, 0)), 'daily_easy_20261030');
 });

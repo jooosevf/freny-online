@@ -1,6 +1,6 @@
 import {
   BOARDS, ENEMIES, LEVELS, MIN_RAMP_SECONDS, COMBO_SECONDS, MAX_GAME_SPEED,
-  KILL_WINDOW_SECONDS, MAX_KILLS_PER_WINDOW, MAX_RUN_SECONDS, MAX_SCORE,
+  KILL_WINDOW_SECONDS, KILL_POOL, PEAK_SPAWN_SECONDS, SPARSE_SPAWN_FACTOR, MAX_RUN_SECONDS, MAX_SCORE,
 } from './rules.js';
 
 // A kill a frame or two either side of the combo timeout can go either way.
@@ -27,6 +27,22 @@ function roundHalfEven(x) {
 // UIManager.HandleComboManager: scoreToAdd * combo, as a float, rounded.
 export function killPoints(base, k) {
   return roundHalfEven(f32(base * combo(k)));
+}
+
+// Most kills the arena allows in the KILL_WINDOW_SECONDS ending at game time t (see rules.js).
+export function maxKillsInWindow(board, t) {
+  const level = LEVELS[board];
+  const ramp = MIN_RAMP_SECONDS * level.rampFactor;
+  const overtime = Math.max(0, t - ramp * (1 - level.startAt)) / 60;
+  const gap = PEAK_SPAWN_SECONDS * level.spawnIntervalFactor * SPARSE_SPAWN_FACTOR / (1 + 0.15 * overtime);
+  return KILL_POOL + Math.ceil(KILL_WINDOW_SECONDS / gap);
+}
+
+// Today's board for an all-time one: leaderboard_hard -> daily_hard_20261029, by Brasília time
+// (UTC-3, no daylight saving), the same day the site's Diário tab reads.
+export function dailyBoardOf(board, now) {
+  const day = new Date(now - 3 * 3600 * 1000).toISOString().slice(0, 10).replace(/-/g, '');
+  return 'daily_' + board.replace('leaderboard_', '') + '_' + day;
 }
 
 // Checks that the run's kill log adds up to its score and could have happened in the game.
@@ -69,10 +85,10 @@ export function validateRun(run, realSeconds) {
     if (t < unlockAt) return `${name} cedo demais (${t.toFixed(1)} s)`;
     if (enemy.unlockScore && total < enemy.unlockScore) return `${name} antes de ${enemy.unlockScore} pontos`;
 
-    // no more kills in any window than the arena can spawn and Freny can kill
+    // no more kills in any window than the arena can put in front of Freny
     let first = i;
     while (first > 0 && t - kills[first - 1][0] < KILL_WINDOW_SECONDS) first--;
-    if (i - first + 1 > MAX_KILLS_PER_WINDOW) return `abates demais em ${KILL_WINDOW_SECONDS} s (${t.toFixed(1)} s)`;
+    if (i - first + 1 > maxKillsInWindow(board, t)) return `abates demais em ${KILL_WINDOW_SECONDS} s (${t.toFixed(1)} s)`;
 
     total += killPoints(enemy.score, k);
     prevT = t;
