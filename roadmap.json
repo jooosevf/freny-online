@@ -1,0 +1,89 @@
+{
+  "_como_usar": "Uma entrada por fase, na ordem em que vão sair. status = \"feito\" (já está no jogo; ponha a versão em \"versao\"), \"proxima\" (a próxima a ser feita), \"planejada\" ou \"ideia\" (ainda sem fase certa). Cada item é {\"icone\", \"titulo\", \"texto\"}; icone é o nome de um PNG da pasta devlog/ (ex.: ciclope, escudeiro, mina, rede, acido, lua_sangue, bau_dourado). Quando uma fase sair, mude para \"feito\" e crie a entrada dela no devlog.json.",
+  "fases": [
+    {
+      "fase": "Fase 1",
+      "titulo": "Arena mais justa",
+      "status": "feito",
+      "versao": "Alpha 0.0.1",
+      "itens": [
+        { "icone": "coracao", "titulo": "Barra de vida nos inimigos", "texto": "Dá para ver quanto falta para cada inimigo cair." },
+        { "icone": "espada", "titulo": "Combo de espada", "texto": "Três golpes seguidos, cada um empurrando mais longe." },
+        { "icone": "freny", "titulo": "Piloto automático educado", "texto": "Recomeça sozinho em 8 s e pergunta antes de jogar fora uma corrida de mais de 10 mil pontos." },
+        { "icone": "bau", "titulo": "Save à prova de pressa", "texto": "O progresso não se perde mais ao clicar rápido em Jogar de novo." },
+        { "icone": "diamante", "titulo": "Ranking conferido", "texto": "Cada corrida é checada pelo nosso servidor antes de entrar no ranking." }
+      ]
+    },
+    {
+      "fase": "Fase 2",
+      "titulo": "Conquistas e desafios do dia",
+      "status": "proxima",
+      "itens": [
+        { "icone": "diamante", "titulo": "Conquistas", "texto": "Uma tela de conquistas no jogo e, aqui no site, quantos % dos jogadores já têm cada uma e quem tem mais." },
+        { "icone": "moeda", "titulo": "Missões diárias", "texto": "Três missões novas por dia, como derrotar 50 insetos ou passar de 5 mil pontos sem poção, que pagam moedas." },
+        { "icone": "sol", "titulo": "Ranking diário", "texto": "Além do ranking geral, um ranking que zera à meia-noite (horário de Brasília). Todo dia alguém pode ser o primeiro." },
+        { "icone": "golem", "titulo": "Bestiário no Guia", "texto": "Cada inimigo com vida, dano e uma dica de como vencer. A página dele abre quando você derrota o primeiro." },
+        { "icone": "elmo", "titulo": "Títulos", "texto": "Títulos ao lado do nome no ranking, como Rei da Arena, Caçador de Magos e Madrugador." },
+        { "icone": "furia", "titulo": "Estatísticas da conta", "texto": "Inimigos derrotados, maior combo, tempo de jogo e melhor corrida de cada dificuldade." }
+      ]
+    },
+    {
+      "fase": "Fase 3",
+      "titulo": "O Ciclope",
+      "status": "planejada",
+      "itens": [
+        { "icone": "ciclope", "titulo": "Ciclope, o chefe da Arena 1", "texto": "Um gigante que aparece de tempos em tempos, com barra de vida de chefe, pancada que treme o chão e vômito ácido." },
+        { "icone": "chave", "titulo": "Chave do chefe", "texto": "Derrotar o Ciclope deixa cair uma chave." },
+        { "icone": "bau_dourado", "titulo": "Baú dourado", "texto": "Só abre com a chave e guarda as recompensas mais raras da Arena." },
+        { "icone": "lua_sangue", "titulo": "Lua de Sangue", "texto": "Algumas noites a lua fica vermelha: os inimigos ficam mais fortes e os pontos valem em dobro." },
+        { "icone": "tocha", "titulo": "Música de chefe", "texto": "Trilha própria e tochas piscando enquanto o Ciclope está na Arena." }
+      ]
+    },
+    {
+      "fase": "Fase 4",
+      "titulo": "Novos inimigos e o Armeiro turbinado",
+      "status": "planejada",
+      "itens": [
+        { "icone": "escudeiro", "titulo": "Escudeiro", "texto": "Bloqueia tudo que vem de frente. Pule por cima ou ataque pelas costas." },
+        { "icone": "mina", "titulo": "Mina-aranha", "texto": "Anda até o Freny e explode. Melhor acertar de longe." },
+        { "icone": "arma", "titulo": "Armeiro nível 2 e 3", "texto": "Novos níveis de melhoria para pistola, escopeta, espadão e granada." },
+        { "icone": "rede", "titulo": "Rede", "texto": "Arma nova que prende os inimigos por alguns segundos." },
+        { "icone": "hexball", "titulo": "Cajado do Mago", "texto": "Às vezes cai quando um mago morre e deixa o Freny lançar bolas de feitiço por um tempo." },
+        { "icone": "freny", "titulo": "Piloto automático mais esperto", "texto": "Desvia de bolas de feitiço, bebe poção na hora certa e sabe lidar com escudeiros e minas." }
+      ]
+    },
+    {
+      "fase": "Fase 5",
+      "titulo": "Arena 2: o Poço de Ácido",
+      "status": "planejada",
+      "itens": [
+        { "icone": "acido", "titulo": "Poço de Ácido", "texto": "Uma Arena nova, liberada com 50 mil pontos, cheia de piscinas de ácido. As corridas nela valem no mesmo ranking." },
+        { "icone": "tentaculo", "titulo": "Tentáculo", "texto": "Sai do ácido e cospe nos jogadores que ficam parados." },
+        { "icone": "rastejante", "titulo": "Rastejante", "texto": "Um olho com patas que anda pelas paredes e pelo teto." },
+        { "icone": "espinho", "titulo": "Armadilhas", "texto": "Espinhos que caem do teto e blocos que desmoronam ou se movem." }
+      ]
+    },
+    {
+      "fase": "Fase 6",
+      "titulo": "Cada corrida diferente",
+      "status": "planejada",
+      "itens": [
+        { "icone": "pocao", "titulo": "Bênçãos", "texto": "No começo da corrida, escolha uma de três bênçãos: mais vida, mais dano, ímã de moedas..." },
+        { "icone": "lua", "titulo": "Mutadores da semana", "texto": "Toda semana uma regra nova para todo mundo, como só espada, inimigos rápidos ou noite eterna." },
+        { "icone": "tocha", "titulo": "Renascer", "texto": "Troque suas melhorias por um bônus permanente e uma estrela ao lado do nome." },
+        { "icone": "elmo", "titulo": "Visual do Freny", "texto": "Capacetes, capas e cores para deixar o Freny do seu jeito." }
+      ]
+    },
+    {
+      "fase": "Depois",
+      "titulo": "Ideias para mais adiante",
+      "status": "ideia",
+      "itens": [
+        { "icone": "espada", "titulo": "Duelo de pontos 1x1", "texto": "Desafie um amigo: os dois jogam a mesma Arena e ganha quem fizer mais pontos." },
+        { "icone": "freny", "titulo": "PvP em tempo real", "texto": "Dois Frenys na mesma Arena, ao mesmo tempo." },
+        { "icone": "chave", "titulo": "Volta da campanha", "texto": "As masmorras da campanha voltam, com fases novas." },
+        { "icone": "tecla", "titulo": "Comentários no roadmap", "texto": "Comente e reaja a cada novidade desta página." }
+      ]
+    }
+  ]
+}

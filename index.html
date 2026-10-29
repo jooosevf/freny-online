@@ -137,8 +137,31 @@
       .devlog-hero { height: 240px; }
       .devlog-hero p { max-width: none; right: 20px; }
       .devlog-hero .stage { left: 0; right: 0; justify-content: center; }
-      .devlog-hero .spr.inseto, .devlog-hero .spr.morcego { display: none; }
+      .devlog-hero .spr.inseto, .devlog-hero .spr.morcego, #page-roadmap .spr.mago { display: none; }
+      .road { padding-left: 20px; }
+      .road .log::before { left: -20px; }
+      .road::before { left: 4px; }
     }
+    /* Roadmap: one card per phase, read from roadmap.json; icons come from devlog/ */
+    .spr.ciclope { width: 104px; height: 104px; background-image: url(devlog/anim_ciclope.png); animation: spr5 1s steps(5) infinite; }
+    .road { position: relative; padding-left: 26px; }
+    .road::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--line); }
+    .road .log { position: relative; }
+    .road .log::before { content: ""; position: absolute; left: -26px; top: 22px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line); }
+    .road .log.feito::before { background: #7bd88f; border-color: #7bd88f; }
+    .road .log.next::before { background: var(--pink); border-color: var(--pink); box-shadow: 0 0 10px var(--pink); }
+    .road .log.ideia { border-style: dashed; background: transparent; }
+    .road .fase { color: var(--muted); font-size: 15px; text-transform: uppercase; letter-spacing: .06em; }
+    .road .tag { border: 1px solid var(--line); color: var(--muted); border-radius: 10px; padding: 0 8px; font-size: 13px; }
+    .road .feito .tag { border-color: #7bd88f; color: #7bd88f; }
+    .road .next .tag { border-color: var(--pink); color: var(--pink); }
+    .road .log h3 { font-size: 22px; margin: 2px 0 12px; }
+    .road .items { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px 18px; list-style: none; margin: 0; padding: 0; }
+    .road .items li { display: flex; align-items: flex-start; gap: 10px; margin: 0; }
+    .road .items .ic { flex: none; width: 40px; height: 40px; padding: 4px; border-radius: 6px; background: #3a2c55; border: 1px solid #4b3a6b; object-fit: contain; }
+    .road .items b { display: block; color: var(--text); font-size: 16px; }
+    .road .items span { padding-top: 0; color: var(--muted); font-size: 15px; line-height: 1.4; }
+    .road .feito .items .ic { opacity: .75; }
     body:not(.on-jogar) main { position: absolute; left: -10000px; top: 0; width: 1100px; }
     body.on-jogar .page { display: none; }
 
@@ -232,13 +255,14 @@
     <div class="soon">As conquistas chegam na próxima versão do jogo. Aqui vai aparecer quem tem mais conquistas e quantos % dos jogadores já tem cada uma.</div>
   </section>
   <section class="page" id="page-roadmap" hidden>
-    <h1>Roadmap</h1>
-    <p>O que vem por aí na Arena. Em breve vai dar para comentar e reagir a cada novidade.</p>
-    <h2>Fase 1</h2><p>Barra de vida nos inimigos, piloto automático que pergunta antes de recomeçar uma corrida boa, correção do save.</p>
-    <h2>Fase 2</h2><p>Conquistas e ranking diário.</p>
-    <h2>Fase 3</h2><p>O Ciclope, um chefe gigante na Arena.</p>
-    <h2>Fase 4</h2><p>Escudeiro, Mina-aranha e melhorias nível 2 e 3 no Armeiro.</p>
-    <h2>Fase 5</h2><p>Arena 2, o Poço de Ácido, liberada com 50 mil pontos.</p>
+    <div class="devlog-hero">
+      <h1>Roadmap</h1>
+      <p>O que vem por aí na Arena, fase por fase. A ordem pode mudar conforme a gente testa.</p>
+      <div class="stage" aria-hidden="true">
+        <i class="spr tocha"></i><i class="spr freny"></i><i class="spr ciclope"></i><i class="spr mago"></i>
+      </div>
+    </div>
+    <div id="roadmap-list" class="road"><p>Carregando...</p></div>
   </section>
 
   <section class="page" id="page-devlog" hidden>
@@ -485,6 +509,43 @@
       });
     }
 
+    // Roadmap: phases live in roadmap.json, loaded the first time the page opens
+    var roadmapLoaded = false;
+    var ROAD_TAG = { feito: "já no jogo", proxima: "próxima", planejada: "planejada", ideia: "ideia" };
+    function loadRoadmap() {
+      if (roadmapLoaded) return;
+      roadmapLoaded = true;
+      var box = document.getElementById("roadmap-list");
+      fetch("roadmap.json", { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (data) {
+        box.innerHTML = "";
+        data.fases.forEach(function (f) {
+          var card = document.createElement("article");
+          card.className = "log " + (f.status === "proxima" ? "next" : f.status || "");
+          var head = document.createElement("header");
+          var fase = document.createElement("span"); fase.className = "fase"; fase.textContent = f.fase;
+          var tag = document.createElement("span"); tag.className = "tag";
+          tag.textContent = f.status === "feito" && f.versao ? "na " + f.versao : ROAD_TAG[f.status] || f.status;
+          head.append(fase, tag);
+          card.appendChild(head);
+          var h = document.createElement("h3"); h.textContent = f.titulo; card.appendChild(h);
+          var ul = document.createElement("ul"); ul.className = "items";
+          (f.itens || []).forEach(function (it) {
+            var li = document.createElement("li");
+            var t = document.createElement("span");
+            var b = document.createElement("b"); b.textContent = it.titulo;
+            t.append(b, document.createTextNode(it.texto || ""));
+            li.append(sprite(it.icone || "moeda", "ic"), t);
+            ul.appendChild(li);
+          });
+          card.appendChild(ul);
+          box.appendChild(card);
+        });
+      }).catch(function () {
+        roadmapLoaded = false;
+        box.innerHTML = "<p>Não foi possível carregar o roadmap agora.</p>";
+      });
+    }
+
     // pages: #sobre, #jogar (the game), #conquistas, #roadmap, #devlog
     var PAGES = ["sobre", "jogar", "conquistas", "roadmap", "devlog"];
     function showPage() {
@@ -498,6 +559,7 @@
       document.querySelectorAll(".top nav a").forEach(function (a) { a.classList.toggle("active", a.dataset.page === page); });
       if (page === "jogar") canvas.focus();
       if (page === "devlog") loadDevlog();
+      if (page === "roadmap") loadRoadmap();
       window.scrollTo(0, 0);
     }
     window.addEventListener("hashchange", showPage);
