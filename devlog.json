@@ -2,12 +2,14 @@
   "_como_usar": "Uma entrada por atualização, a mais nova primeiro. data = AAAA-MM-DD e hora = HH:MM no horário de Brasília (hora em que subiu no site). Enquanto a versão ainda não subiu, use \"proxima\": true e deixe data e hora vazias.",
   "versoes": [
     {
-      "versao": "Próxima versão",
-      "proxima": true,
-      "data": "",
-      "hora": "",
-      "titulo": "Combo de espada e Arena mais viva",
+      "versao": "Alpha 0.0.1",
+      "data": "2026-10-29",
+      "hora": "14:43",
+      "titulo": "Alpha: todo mundo começa do zero",
       "mudancas": [
+        "Começa a Alpha: recordes e progresso de todas as contas foram zerados.",
+        "Loja 4x mais cara: melhorias, pulo duplo, granada, espadão, escopeta e capacete.",
+        "Ranking conferido por um servidor próprio: cada corrida é validada antes de valer.",
         "Barra de vida em cima dos inimigos.",
         "Combo de 3 golpes de espada, cada um empurrando mais, com sons próprios.",
         "Piloto automático recomeça a corrida em 8 s e pergunta antes de recomeçar quando a corrida passou de 10 mil pontos.",
@@ -17,7 +19,8 @@
         "Magos lançam uma bola de feitiço a cada 10 s; de dia a bola tem borda escura e só persegue o Freny a partir de 50 mil pontos.",
         "Quando um mago morre, o lugar dele fica vazio por 15 s.",
         "Mouse escondido durante o jogo.",
-        "Tiro da pistola não empurra mais os inimigos."
+        "Tiro da pistola não empurra mais os inimigos.",
+        "Site novo: menu no topo, jogo no centro, ranking com dificuldade e Diário/Geral, tela cheia no celular e aba Devlog."
       ]
     },
     {
