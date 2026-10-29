@@ -1,0 +1,55 @@
+{
+  "_como_usar": "Uma entrada por conquista, na ordem do jogo (Achievements.cs no theRiseOfFreny). id = o campo em achievements/{uid} no Firestore e o nome do ícone em conquistas/<id>.png. Mude junto com o jogo e com api/_lib/achievements.js.",
+  "conquistas": [
+    {
+      "id": "million",
+      "nome": "Freny Milionário",
+      "como": "Faça 1 milhão de pontos numa corrida."
+    },
+    {
+      "id": "cyclops",
+      "nome": "Quanto Maior o Gigante",
+      "como": "Derrote o Ciclope."
+    },
+    {
+      "id": "supreme",
+      "nome": "Feitiço Contra o Feiticeiro",
+      "como": "Derrote o Feiticeiro Supremo."
+    },
+    {
+      "id": "grenade5",
+      "nome": "Cinco Coelhos, Uma Granada",
+      "como": "Derrote 5 inimigos com uma granada só."
+    },
+    {
+      "id": "oops",
+      "nome": "Ops!",
+      "como": "Caia com a sua própria granada."
+    },
+    {
+      "id": "shotgun3",
+      "nome": "Doze é Demais",
+      "como": "Derrote 3 inimigos com um tiro só da escopeta."
+    },
+    {
+      "id": "backstab",
+      "nome": "Escudo pra Quê?",
+      "como": "Derrote um Escudeiro acertando onde o escudo não cobre."
+    },
+    {
+      "id": "eye",
+      "nome": "Na Menina dos Olhos",
+      "como": "Dê o golpe final no Ciclope acertando o olho dele."
+    },
+    {
+      "id": "combo5",
+      "nome": "Quinta Marcha",
+      "como": "Chegue ao combo 5.0x."
+    },
+    {
+      "id": "survivor",
+      "nome": "Duro de Matar",
+      "como": "Fique vivo 10 minutos numa corrida."
+    }
+  ]
+}

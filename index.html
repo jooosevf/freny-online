@@ -101,6 +101,17 @@
     .page h1 { font-size: 34px; margin: 0 0 12px; }
     .page h2 { font-size: 22px; margin: 28px 0 8px; color: var(--pink); }
     .page p { color: var(--muted); margin: 0 0 12px; }
+    .ach-total { font-size: 15px; }
+    .ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; margin-top: 16px; }
+    .ach { display: flex; gap: 14px; align-items: center; background: var(--panel); border: 2px solid var(--line); border-radius: 6px; padding: 12px; }
+    .ach img { width: 80px; height: 80px; flex: none; image-rendering: pixelated; }
+    .ach .info { flex: 1; min-width: 0; }
+    .ach .nome { font-weight: 700; color: #FFD84A; font-size: 17px; line-height: 1.25; }
+    .ach .como { color: var(--muted); font-size: 14px; line-height: 1.35; margin: 2px 0 8px; }
+    .ach .bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+    .ach .bar span { display: block; height: 100%; width: 0; background: var(--pink); transition: width 0.6s; }
+    .ach .pct { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    @media (max-width: 400px) { .ach-grid { grid-template-columns: 1fr; } .ach img { width: 64px; height: 64px; } }
     .page .soon { border: 2px dashed var(--line); border-radius: 6px; padding: 20px; color: var(--muted); text-align: center; }
     /* Devlog: one card per update, newest first, read from devlog.json */
     .pix { image-rendering: pixelated; image-rendering: crisp-edges; }
@@ -282,7 +293,9 @@
   </section>
   <section class="page" id="page-conquistas" hidden>
     <h1>Conquistas</h1>
-    <div class="soon">As conquistas chegam na próxima versão do jogo. Aqui vai aparecer quem tem mais conquistas e quantos % dos jogadores já tem cada uma.</div>
+    <p>Dez desafios da Arena. Só valem corridas <strong>manuais</strong> (sem o piloto automático), e cada conquista é conferida pelo servidor antes de contar aqui. Veja quantos jogadores já têm cada uma.</p>
+    <p class="ach-total" id="ach-total"></p>
+    <div class="ach-grid" id="ach-grid"><p>Carregando...</p></div>
   </section>
   <section class="page" id="page-bestiario" hidden>
     <div class="devlog-hero">
@@ -669,6 +682,67 @@
       });
     }
 
+    // Conquistas: the list is conquistas.json; how many players have each one is counted in
+    // Firestore's achievements collection (one doc per player, a signed field per achievement and
+    // "played" for everyone who finished a manual run the ranking API accepted)
+    var achLoaded = false;
+    function countWith(field) {
+      var url = "https://firestore.googleapis.com/v1/projects/" + FIREBASE.projectId +
+        "/databases/(default)/documents:runAggregationQuery?key=" + FIREBASE.apiKey;
+      return fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ structuredAggregationQuery: {
+          structuredQuery: {
+            from: [{ collectionId: "achievements" }],
+            where: { fieldFilter: { field: { fieldPath: field }, op: "GREATER_THAN", value: { stringValue: "" } } },
+          },
+          aggregations: [{ alias: "n", count: {} }],
+        } }),
+      }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (rows) {
+        var row = Array.isArray(rows) ? rows.find(function (x) { return x.result; }) : null;
+        return row ? Number(row.result.aggregateFields.n.integerValue) : 0;
+      });
+    }
+    function loadAchievements() {
+      if (achLoaded) return;
+      achLoaded = true;
+      var grid = document.getElementById("ach-grid");
+      fetch("conquistas.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (data) {
+        grid.innerHTML = "";
+        var cards = data.conquistas.map(function (c) {
+          var card = document.createElement("div"); card.className = "ach";
+          var img = document.createElement("img"); img.src = "conquistas/" + c.id + ".png"; img.alt = "";
+          var info = document.createElement("div"); info.className = "info";
+          var nome = document.createElement("div"); nome.className = "nome"; nome.textContent = c.nome;
+          var como = document.createElement("div"); como.className = "como"; como.textContent = c.como;
+          var bar = document.createElement("div"); bar.className = "bar"; bar.appendChild(document.createElement("span"));
+          var pct = document.createElement("div"); pct.className = "pct"; pct.textContent = "...";
+          info.append(nome, como, bar, pct);
+          card.append(img, info);
+          grid.appendChild(card);
+          return { id: c.id, bar: bar.firstChild, pct: pct };
+        });
+        return Promise.all([countWith("played")].concat(cards.map(function (c) { return countWith(c.id); }))).then(function (counts) {
+          var players = counts[0];
+          document.getElementById("ach-total").textContent = players === 1 ? "1 jogador já completou uma corrida manual."
+            : players + " jogadores já completaram uma corrida manual.";
+          cards.forEach(function (c, i) {
+            var n = counts[i + 1];
+            var p = players > 0 ? Math.round(n * 100 / players) : 0;
+            c.bar.style.width = p + "%";
+            c.pct.textContent = players > 0 ? p + "% dos jogadores (" + n + ")" : "Ninguém ainda";
+          });
+        }).catch(function () {
+          achLoaded = false;
+          cards.forEach(function (c) { c.pct.textContent = "Contagem indisponível agora."; });
+        });
+      }).catch(function () {
+        achLoaded = false;
+        grid.innerHTML = "<p>Não foi possível carregar as conquistas agora.</p>";
+      });
+    }
+
     // pages: #sobre, #jogar (the game), #conquistas, #bestiario, #roadmap, #devlog
     var PAGES = ["sobre", "jogar", "conquistas", "bestiario", "roadmap", "devlog"];
     function showPage() {
@@ -684,6 +758,7 @@
       if (page === "devlog") loadDevlog();
       if (page === "roadmap") loadRoadmap();
       if (page === "bestiario") loadBestiario();
+      if (page === "conquistas") loadAchievements();
       window.scrollTo(0, 0);
     }
     window.addEventListener("hashchange", showPage);
