@@ -2,6 +2,68 @@
   "_como_usar": "Uma entrada por atualização, a mais nova primeiro. data = AAAA-MM-DD e hora = HH:MM no horário de Brasília (hora em que subiu no site). Enquanto a versão ainda não subiu, use \"proxima\": true e deixe data e hora vazias. Cada mudança é {\"icone\", \"texto\"}; icone é o nome de um PNG da pasta devlog/ (ex.: espada, mago, golem, pocao, bau, tecla, freny). Prints opcionais: \"prints\": [{\"img\": \"devlog/prints/arquivo.jpg\", \"legenda\": \"...\"}] (JPG de até 1280 px).",
   "versoes": [
     {
+      "versao": "Alpha 0.0.2",
+      "data": "2026-10-29",
+      "hora": "18:40",
+      "titulo": "Chega o Ciclope",
+      "mudancas": [
+        {
+          "icone": "ciclope",
+          "texto": "Ciclope, o primeiro chefe da Arena: chega aos 50 mil pontos e depois a cada 100 mil, com a barra de chefe. Soco, pancada no chão, bomba gigante e um jato de vômito que vira uma poça verde. Acertar o olho tira o dobro."
+        },
+        {
+          "icone": "escudeiro",
+          "texto": "Escudeiro: o escudo aguenta quase tudo pela frente, mas pelas costas ele cai com 2 espadadas."
+        },
+        {
+          "icone": "mina",
+          "texto": "O Golem Vermelho carrega o soco e avança num dash, e joga minas."
+        },
+        {
+          "icone": "acido",
+          "texto": "O vômito do Ciclope escorre como líquido: atravessa a plataforma, cai no andar de baixo e se espalha numa poça que queima e deixa o Freny lento."
+        },
+        {
+          "icone": "hexball",
+          "texto": "Só o Feiticeiro Supremo tem a bola que persegue o Freny, e ele só aparece depois de 100 mil pontos."
+        },
+        {
+          "icone": "pocao",
+          "texto": "Os itens caem conforme o Freny precisa: nada de poção com a vida cheia, e menos itens quando a tela está cheia."
+        },
+        {
+          "icone": "coracao",
+          "texto": "Corações comprados aparecem no HUD e ficam vazios quando perdidos. Números de dano: vermelho no inimigo, verde +1 na cura."
+        },
+        {
+          "icone": "lua",
+          "texto": "Dia de 1 minuto e noite de 5. O modo automático recomeça sozinho em 10 s, com o botão Jogar agora."
+        },
+        {
+          "icone": "freny",
+          "texto": "Dano de queda corrigido."
+        },
+        {
+          "icone": "golem",
+          "texto": "Nova aba Bestiário no site, com todos os inimigos e o que cada um faz."
+        }
+      ],
+      "prints": [
+        {
+          "img": "devlog/prints/alpha002-ciclope-chega.jpg",
+          "legenda": "O Ciclope chega no centro da Arena com a barra de chefe"
+        },
+        {
+          "img": "devlog/prints/alpha002-vomito-do-ciclope.jpg",
+          "legenda": "A poça de vômito do Ciclope queima e deixa o Freny lento"
+        },
+        {
+          "img": "devlog/prints/alpha002-dois-ciclopes.jpg",
+          "legenda": "A partir de 1 milhão vêm dois Ciclopes, com as barras embaixo"
+        }
+      ]
+    },
+    {
       "versao": "Site",
       "data": "2026-10-29",
       "hora": "15:41",
