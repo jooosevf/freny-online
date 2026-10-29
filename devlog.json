@@ -5,8 +5,12 @@
       "versao": "Alpha 0.0.2",
       "data": "2026-10-29",
       "hora": "18:40",
-      "titulo": "Chega o Ciclope",
+      "titulo": "Chega o Ciclope (atualizada às 19:14 com as Conquistas)",
       "mudancas": [
+        {
+          "icone": "conquista",
+          "texto": "Conquistas: as 10 primeiras da Arena, na pausa e no menu, conferidas pela API; a aba Conquistas do site mostra quantos % dos jogadores têm cada uma."
+        },
         {
           "icone": "ciclope",
           "texto": "Ciclope, o primeiro chefe da Arena: chega aos 50 mil pontos e depois a cada 100 mil, com a barra de chefe. Soco, pancada no chão, bomba gigante e um jato de vômito que vira uma poça verde. Acertar o olho tira o dobro."
