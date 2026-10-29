@@ -164,6 +164,33 @@
     .road .items b { display: block; color: var(--text); font-size: 16px; }
     .road .items span { padding-top: 0; color: var(--muted); font-size: 15px; line-height: 1.4; }
     .road .feito .items .ic { opacity: .75; }
+    /* Bestiário: one card per enemy, read from bestiario.json; the sprite walks, and attacks on hover or tap */
+    .beasts { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 16px; }
+    .beast { border: 2px solid var(--line); background: var(--panel); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
+    .beast.chefe { grid-column: 1 / -1; border-color: var(--pink); box-shadow: 0 0 0 1px rgba(239, 139, 255, .15), 0 0 24px rgba(239, 139, 255, .12); }
+    .beast .arena { position: relative; height: 150px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 34px; cursor: pointer;
+      background: linear-gradient(#0d0a14, #1a1226 75%, #2a1d3a 75%, #2a1d3a 77%, #120c1b 77%); }
+    .beast.chefe .arena { height: 280px; padding-bottom: 64px; }
+    .beast .arena .hint { position: absolute; right: 8px; top: 6px; font-size: 12px; color: rgba(255, 255, 255, .35); }
+    .beast .mob { image-rendering: pixelated; background-repeat: no-repeat; }
+    .beast .body { padding: 12px 16px 16px; }
+    .beast h3 { margin: 0 0 6px; font-size: 22px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .beast h3 .kind { font-size: 12px; font-weight: 400; color: var(--muted); border: 1px solid var(--line); border-radius: 10px; padding: 0 8px; }
+    .beast.chefe h3 .kind { color: var(--pink); border-color: var(--pink); }
+    .beast .stats { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0 0 10px; font-size: 15px; color: var(--text); }
+    .beast .stats span { display: inline-flex; align-items: center; gap: 5px; }
+    .beast .stats img { width: 18px; height: 18px; }
+    .beast .when { font-size: 14px; color: var(--pink); margin: 0 0 8px; }
+    .beast p { font-size: 15px; line-height: 1.45; margin: 0 0 10px; }
+    .beast ul { list-style: none; margin: 0 0 10px; padding: 0; }
+    .beast li { display: flex; gap: 10px; align-items: flex-start; margin: 6px 0; font-size: 15px; line-height: 1.4; color: var(--muted); }
+    .beast li .ic { flex: none; width: 30px; height: 30px; padding: 3px; border-radius: 6px; background: #3a2c55; border: 1px solid #4b3a6b; object-fit: contain; }
+    .beast li b { color: var(--text); }
+    .beast .tip { border-left: 3px solid var(--pink); padding: 4px 0 4px 10px; color: var(--text); font-size: 15px; margin: 0; }
+    .beast.chefe .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+    @media (max-width: 760px) { .beast.chefe .cols { grid-template-columns: 1fr; } .beast.chefe .arena { height: 220px; padding-bottom: 50px; } }
+    @media (max-width: 560px) { .top .logo { display: none; } .top nav { margin: 0 auto; gap: 0; } .top nav a { padding: 8px 5px; font-size: 14px; } }
+    #page-bestiario { max-width: 1100px; }
     body:not(.on-jogar) main { position: absolute; left: -10000px; top: 0; width: 1100px; }
     body.on-jogar .page { display: none; }
 
@@ -201,6 +228,7 @@
       <a href="#sobre" data-page="sobre">Sobre</a>
       <a href="#jogar" data-page="jogar" class="active">Jogar</a>
       <a href="#conquistas" data-page="conquistas">Conquistas</a>
+      <a href="#bestiario" data-page="bestiario">Bestiário</a>
       <a href="#roadmap" data-page="roadmap">Roadmap</a>
       <a href="#devlog" data-page="devlog">Devlog</a>
     </nav>
@@ -256,6 +284,17 @@
     <h1>Conquistas</h1>
     <div class="soon">As conquistas chegam na próxima versão do jogo. Aqui vai aparecer quem tem mais conquistas e quantos % dos jogadores já tem cada uma.</div>
   </section>
+  <section class="page" id="page-bestiario" hidden>
+    <div class="devlog-hero">
+      <h1>Bestiário</h1>
+      <p>Todos os inimigos da Arena, o que cada um faz e como vencer. Passe o mouse ou toque num inimigo para ver o ataque.</p>
+      <div class="stage" aria-hidden="true">
+        <i class="spr inseto"></i><i class="spr golem"></i><i class="spr ciclope"></i><i class="spr mago"></i>
+      </div>
+    </div>
+    <div id="bestiario-list" class="beasts"><p>Carregando...</p></div>
+  </section>
+
   <section class="page" id="page-roadmap" hidden>
     <div class="devlog-hero">
       <h1>Roadmap</h1>
@@ -548,8 +587,90 @@
       });
     }
 
-    // pages: #sobre, #jogar (the game), #conquistas, #roadmap, #devlog
-    var PAGES = ["sobre", "jogar", "conquistas", "roadmap", "devlog"];
+    // Bestiário: enemies live in bestiario.json, loaded the first time the page opens. Each sprite
+    // strip (bestiario/<sprite>_anda.png and _ataque.png) is drawn 3x and stepped frame by frame.
+    var bestiarioLoaded = false;
+    var BEAST_KIND = { comum: "comum", forte: "forte", chefe: "chefe" };
+    function playStrip(el, src, frames) {
+      var img = new Image();
+      img.onload = function () {
+        var w = img.width / frames * 3, h = img.height * 3;
+        if (el._anim) el._anim.cancel();
+        el.style.width = w + "px"; el.style.height = h + "px";
+        el.style.backgroundImage = "url(" + src + ")";
+        el.style.backgroundSize = (img.width * 3) + "px " + h + "px";
+        el._anim = el.animate([{ backgroundPosition: "0 0" }, { backgroundPosition: (-img.width * 3) + "px 0" }],
+          { duration: frames * 130, iterations: Infinity, easing: "steps(" + frames + ")" });
+      };
+      img.src = src;
+    }
+    function stat(icon, text) {
+      var s = document.createElement("span");
+      if (icon) s.appendChild(sprite(icon, ""));
+      s.appendChild(document.createTextNode(text));
+      return s;
+    }
+    function loadBestiario() {
+      if (bestiarioLoaded) return;
+      bestiarioLoaded = true;
+      var box = document.getElementById("bestiario-list");
+      fetch("bestiario.json", { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (data) {
+        box.innerHTML = "";
+        data.inimigos.forEach(function (b) {
+          var card = document.createElement("article");
+          card.className = "beast " + (b.tipo || "");
+          var arena = document.createElement("div"); arena.className = "arena"; arena.title = "Ver o ataque";
+          var mob = document.createElement("div"); mob.className = "mob"; mob.setAttribute("role", "img"); mob.setAttribute("aria-label", b.nome);
+          var hint = document.createElement("span"); hint.className = "hint"; hint.textContent = "ataque";
+          arena.append(mob, hint);
+          var base = "bestiario/" + b.sprite;
+          var walk = function () { playStrip(mob, base + "_anda.png", b.quadros.anda); };
+          var attack = function () { playStrip(mob, base + "_ataque.png", b.quadros.ataque); };
+          var attacking = false;
+          arena.addEventListener("mouseenter", function () { attacking = true; attack(); });
+          arena.addEventListener("mouseleave", function () { attacking = false; walk(); });
+          arena.addEventListener("click", function () { attacking = !attacking; if (attacking) attack(); else walk(); });
+          walk();
+          card.appendChild(arena);
+
+          var body = document.createElement("div"); body.className = "body";
+          var h = document.createElement("h3"); h.textContent = b.nome;
+          var kind = document.createElement("span"); kind.className = "kind"; kind.textContent = BEAST_KIND[b.tipo] || b.tipo;
+          h.appendChild(kind);
+          var stats = document.createElement("div"); stats.className = "stats";
+          stats.append(stat("coracao", b.vida + " de vida"), stat("diamante", b.pontos.toLocaleString("pt-BR") + " pontos"), stat("moeda", b.moedas + (b.moedas === 1 ? " moeda" : " moedas")));
+          var when = document.createElement("div"); when.className = "when"; when.textContent = "Aparece: " + b.aparece;
+          var faz = document.createElement("p"); faz.textContent = b.faz;
+          var ul = document.createElement("ul");
+          (b.ataques || []).forEach(function (a) {
+            var li = document.createElement("li");
+            var t = document.createElement("span");
+            var n = document.createElement("b"); n.textContent = a.nome + ": ";
+            t.append(n, document.createTextNode(a.texto));
+            li.append(sprite(a.icone || "espada", "ic"), t);
+            ul.appendChild(li);
+          });
+          var tip = document.createElement("p"); tip.className = "tip"; tip.textContent = b.dica;
+          body.append(h, stats, when);
+          if (b.tipo === "chefe") {
+            var cols = document.createElement("div"); cols.className = "cols";
+            var left = document.createElement("div"); left.append(faz, tip);
+            var right = document.createElement("div"); right.append(ul);
+            cols.append(left, right); body.appendChild(cols);
+          } else {
+            body.append(faz, ul, tip);
+          }
+          card.appendChild(body);
+          box.appendChild(card);
+        });
+      }).catch(function () {
+        bestiarioLoaded = false;
+        box.innerHTML = "<p>Não foi possível carregar o bestiário agora.</p>";
+      });
+    }
+
+    // pages: #sobre, #jogar (the game), #conquistas, #bestiario, #roadmap, #devlog
+    var PAGES = ["sobre", "jogar", "conquistas", "bestiario", "roadmap", "devlog"];
     function showPage() {
       var page = location.hash.slice(1);
       if (PAGES.indexOf(page) < 0) page = "jogar";
@@ -562,6 +683,7 @@
       if (page === "jogar") canvas.focus();
       if (page === "devlog") loadDevlog();
       if (page === "roadmap") loadRoadmap();
+      if (page === "bestiario") loadBestiario();
       window.scrollTo(0, 0);
     }
     window.addEventListener("hashchange", showPage);
