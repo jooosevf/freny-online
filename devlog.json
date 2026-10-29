@@ -1,0 +1,98 @@
+{
+  "_como_usar": "Uma entrada por atualização, a mais nova primeiro. data = AAAA-MM-DD e hora = HH:MM no horário de Brasília (hora em que subiu no site). Enquanto a versão ainda não subiu, use \"proxima\": true e deixe data e hora vazias.",
+  "versoes": [
+    {
+      "versao": "Próxima versão",
+      "proxima": true,
+      "data": "",
+      "hora": "",
+      "titulo": "Combo de espada e Arena mais viva",
+      "mudancas": [
+        "Barra de vida em cima dos inimigos.",
+        "Combo de 3 golpes de espada, cada um empurrando mais, com sons próprios.",
+        "Piloto automático recomeça a corrida em 8 s e pergunta antes de recomeçar quando a corrida passou de 10 mil pontos.",
+        "Aviso de que corrida no automático não vale para o ranking e selo AUTO ao lado da cabeça do Freny.",
+        "Correção do save que podia ser perdido ao clicar rápido em Jogar de novo.",
+        "Novos controles de toque no celular: direcional fixo e botões no estilo do Super Nintendo; dois toques numa direção para correr.",
+        "Magos lançam uma bola de feitiço a cada 10 s; de dia a bola tem borda escura e só persegue o Freny a partir de 50 mil pontos.",
+        "Quando um mago morre, o lugar dele fica vazio por 15 s.",
+        "Mouse escondido durante o jogo.",
+        "Tiro da pistola não empurra mais os inimigos."
+      ]
+    },
+    {
+      "versao": "v0.4",
+      "data": "2026-10-29",
+      "hora": "10:56",
+      "titulo": "Ajustes depois do teste da v0.3",
+      "mudancas": [
+        "Vasos da Arena aparecem inteiros (antes já nasciam rachados).",
+        "Dia menos claro e tochas mais fracas de dia, para os inimigos não parecerem azuis.",
+        "Magos das torres se teleportam a cada 3 feitiços, não a cada um.",
+        "Limite de magos ao mesmo tempo: 1 até 50 mil pontos, 2 a partir de 50 mil e 3 a partir de 100 mil.",
+        "Golem vermelho só aparece a partir de 50 mil pontos.",
+        "Poção solta no chão menor.",
+        "Música nova na Arena."
+      ]
+    },
+    {
+      "versao": "v0.3",
+      "data": "2026-10-28",
+      "hora": "19:31",
+      "titulo": "Dia e noite na Arena",
+      "mudancas": [
+        "Ciclo de dia e noite na Arena.",
+        "Mago Supremo em vermelho e um Golem vermelho novo, mais resistente.",
+        "Vasos, caixas e barris quebram e voltam depois de um tempo.",
+        "Inimigos nascem mais longe do Freny, espalhados por todas as plataformas, com um mago por torre.",
+        "Itens soltos maiores e brilhantes, e agora caem até o chão.",
+        "Fúria com a armadura Berserker deixa o elmo vermelho.",
+        "Teste de controles no PC: espada no botão esquerdo do mouse, tiro no direito e granada no E."
+      ]
+    },
+    {
+      "versao": "v0.2",
+      "data": "2026-10-28",
+      "hora": "16:20",
+      "titulo": "HUD mais legível",
+      "mudancas": [
+        "Barra de energia sempre visível.",
+        "Ícones das armas maiores.",
+        "Placar e Combo à direita do centro, sem cobrir as armas (ajuste das 16:51).",
+        "Fundo do site cobre a tela toda."
+      ]
+    },
+    {
+      "versao": "v0.1",
+      "data": "2026-10-28",
+      "hora": "15:58",
+      "titulo": "HUD novo e granada mais forte",
+      "mudancas": [
+        "HUD novo em volta dos corações, com barras de energia e de Fúria.",
+        "Granada mais forte, com explosão maior e sem recarga (cuidado: ela também machuca o Freny).",
+        "Guia dentro do jogo com todas as armas, itens, bônus, drops e regras da loja.",
+        "Opção de Brilho nas configurações.",
+        "Morcego e Inseto morrem com um golpe; golpes empurram os inimigos e o Freny.",
+        "1,2 s de invencibilidade depois de levar dano.",
+        "Piloto automático liga e desliga pelo pause da Arena.",
+        "Ranking com proteção contra trapaça."
+      ]
+    },
+    {
+      "versao": "v0.0",
+      "data": "2026-10-28",
+      "hora": "11:55",
+      "titulo": "Primeira versão numerada",
+      "mudancas": [
+        "Número da versão no canto do jogo.",
+        "Ranking da Arena separado por dificuldade: Difícil (o oficial), Freny, Médio e Fácil.",
+        "Controles de toque para celular e tablet.",
+        "Tela de Ajuda com os controles de teclado, controle e toque.",
+        "Inimigos descem pelas bordas até o Freny em vez de segui-lo por cima.",
+        "Morcego prepara a mordida antes de atacar e recua depois.",
+        "Nome do jogo corrigido para The Rise of Freny.",
+        "Cadastro por email corrigido."
+      ]
+    }
+  ]
+}
