@@ -100,6 +100,45 @@
     .page h2 { font-size: 22px; margin: 28px 0 8px; color: var(--pink); }
     .page p { color: var(--muted); margin: 0 0 12px; }
     .page .soon { border: 2px dashed var(--line); border-radius: 6px; padding: 20px; color: var(--muted); text-align: center; }
+    /* Devlog: one card per update, newest first, read from devlog.json */
+    .pix { image-rendering: pixelated; image-rendering: crisp-edges; }
+    .devlog-hero { position: relative; height: 210px; margin: 0 0 20px; border: 2px solid var(--line); border-radius: 6px; overflow: hidden;
+      background: #0d0a14 url(devlog/banner.png) center bottom / cover no-repeat; image-rendering: pixelated; }
+    .devlog-hero h1 { position: absolute; left: 20px; top: 14px; margin: 0; font-size: 40px; text-shadow: 0 2px 0 #000; }
+    .devlog-hero p { position: absolute; left: 20px; top: 62px; margin: 0; max-width: 230px; color: var(--muted); font-size: 15px; text-shadow: 0 1px 0 #000; }
+    .devlog-hero .stage { position: absolute; right: 20px; bottom: 8px; display: flex; align-items: flex-end; gap: 10px; }
+    .spr { background-repeat: no-repeat; background-size: auto 100%; image-rendering: pixelated; animation-iteration-count: infinite; }
+    .spr.freny { width: 42px; height: 96px; background-image: url(devlog/anim_freny.png); animation: spr3 .9s steps(3) infinite; }
+    .spr.golem { width: 66px; height: 93px; background-image: url(devlog/anim_golem.png); animation: spr2 1s steps(2) infinite; }
+    .spr.mago { width: 69px; height: 99px; background-image: url(devlog/anim_mago.png); animation: spr2 1.1s steps(2) infinite; }
+    .spr.morcego { width: 63px; height: 60px; background-image: url(devlog/anim_morcego.png); animation: spr5 .6s steps(5) infinite; margin-bottom: 60px; }
+    .spr.inseto { width: 51px; height: 48px; background-image: url(devlog/anim_inseto.png); animation: spr2 .8s steps(2) infinite; }
+    .spr.tocha { width: 22px; height: 52px; background-image: url(devlog/anim_tocha.png); animation: spr5 .7s steps(5) infinite; }
+    @keyframes spr2 { to { background-position: 200% 0; } }
+    @keyframes spr3 { to { background-position: 150% 0; } }
+    @keyframes spr5 { to { background-position: 125% 0; } }
+    .log { border: 2px solid var(--line); background: var(--panel); border-radius: 6px; padding: 16px 20px; margin: 0 0 16px; }
+    .log.next { border-color: var(--pink); box-shadow: 0 0 0 1px rgba(239, 139, 255, .15), 0 0 24px rgba(239, 139, 255, .12); }
+    .log header { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+    .log header .badge { width: 36px; height: 36px; }
+    .log .ver { font-size: 24px; font-weight: 700; color: var(--pink); }
+    .log time, .log .when { color: var(--muted); font-size: 15px; }
+    .log .when { border: 1px solid var(--pink); color: var(--pink); border-radius: 10px; padding: 0 8px; font-size: 13px; }
+    .log h3 { font-size: 18px; margin: 6px 0 10px; }
+    .log ul { list-style: none; margin: 0; padding: 0; color: var(--muted); }
+    .log li { display: flex; align-items: flex-start; gap: 10px; margin: 6px 0; }
+    .log li .ic { flex: none; width: 30px; height: 30px; padding: 3px; border-radius: 6px; background: #3a2c55; border: 1px solid #4b3a6b; }
+    .log li span { padding-top: 4px; }
+    .log .shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 14px; }
+    .log .shots a { display: block; color: var(--muted); text-decoration: none; font-size: 13px; line-height: 1.3; }
+    .log .shots img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; border-radius: 4px; border: 1px solid var(--line); margin-bottom: 4px; background: #0d0a14; }
+    .log .shots a:hover img { border-color: var(--pink); }
+    @media (max-width: 640px) {
+      .devlog-hero { height: 240px; }
+      .devlog-hero p { max-width: none; right: 20px; }
+      .devlog-hero .stage { left: 0; right: 0; justify-content: center; }
+      .devlog-hero .spr.inseto, .devlog-hero .spr.morcego { display: none; }
+    }
     body:not(.on-jogar) main { position: absolute; left: -10000px; top: 0; width: 1100px; }
     body.on-jogar .page { display: none; }
 
@@ -138,6 +177,7 @@
       <a href="#jogar" data-page="jogar" class="active">Jogar</a>
       <a href="#conquistas" data-page="conquistas">Conquistas</a>
       <a href="#roadmap" data-page="roadmap">Roadmap</a>
+      <a href="#devlog" data-page="devlog">Devlog</a>
     </nav>
   </header>
 
@@ -199,6 +239,18 @@
     <h2>Fase 3</h2><p>O Ciclope, um chefe gigante na Arena.</p>
     <h2>Fase 4</h2><p>Escudeiro, Mina-aranha e melhorias nível 2 e 3 no Armeiro.</p>
     <h2>Fase 5</h2><p>Arena 2, o Poço de Ácido, liberada com 50 mil pontos.</p>
+  </section>
+
+  <section class="page" id="page-devlog" hidden>
+    <div class="devlog-hero">
+      <h1>Devlog</h1>
+      <p>Tudo o que mudou em cada atualização do jogo, da mais nova para a mais antiga. Horários de Brasília.</p>
+      <div class="stage" aria-hidden="true">
+        <i class="spr tocha"></i><i class="spr freny"></i><i class="spr morcego"></i><i class="spr inseto"></i>
+        <i class="spr golem"></i><i class="spr mago"></i>
+      </div>
+    </div>
+    <div id="devlog-list"><p>Carregando...</p></div>
   </section>
 
   <script>
@@ -370,8 +422,71 @@
     loadRanking();
     setInterval(loadRanking, 15000);
 
-    // pages: #sobre, #jogar (the game), #conquistas, #roadmap
-    var PAGES = ["sobre", "jogar", "conquistas", "roadmap"];
+    // Devlog: entries live in devlog.json (one per update), loaded the first time the page opens
+    var devlogLoaded = false;
+    function sprite(name, cls) {
+      var img = document.createElement("img");
+      img.className = "pix " + cls; img.alt = ""; img.src = "devlog/" + name + ".png";
+      img.onerror = function () { img.onerror = null; img.src = "devlog/moeda.png"; };
+      return img;
+    }
+    function loadDevlog() {
+      if (devlogLoaded) return;
+      devlogLoaded = true;
+      var box = document.getElementById("devlog-list");
+      fetch("devlog.json", { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (data) {
+        box.innerHTML = "";
+        data.versoes.forEach(function (v) {
+          var card = document.createElement("article");
+          card.className = "log" + (v.proxima ? " next" : "");
+          var head = document.createElement("header");
+          head.appendChild(sprite(v.proxima ? "tocha" : "bau", "badge"));
+          var ver = document.createElement("span"); ver.className = "ver"; ver.textContent = v.versao;
+          head.appendChild(ver);
+          if (v.data) {
+            var d = v.data.split("-");
+            var when = document.createElement("time");
+            when.dateTime = v.data + (v.hora ? "T" + v.hora + "-03:00" : "");
+            when.textContent = d[2] + "/" + d[1] + "/" + d[0] + (v.hora ? " às " + v.hora : "");
+            head.appendChild(when);
+          } else if (v.proxima) {
+            var soon = document.createElement("span"); soon.className = "when"; soon.textContent = "em desenvolvimento";
+            head.appendChild(soon);
+          }
+          card.appendChild(head);
+          if (v.titulo) { var h = document.createElement("h3"); h.textContent = v.titulo; card.appendChild(h); }
+          var ul = document.createElement("ul");
+          // a change is "text" or { icone, texto }; icone names a PNG in devlog/
+          (v.mudancas || []).forEach(function (m) {
+            if (typeof m === "string") m = { texto: m };
+            var li = document.createElement("li");
+            var t = document.createElement("span"); t.textContent = m.texto;
+            li.append(sprite(m.icone || "moeda", "ic"), t);
+            ul.appendChild(li);
+          });
+          card.appendChild(ul);
+          // prints: [{ img, legenda }], each opens full size
+          if (v.prints && v.prints.length) {
+            var shots = document.createElement("div"); shots.className = "shots";
+            v.prints.forEach(function (p) {
+              var a = document.createElement("a"); a.href = p.img; a.target = "_blank"; a.rel = "noopener";
+              var img = document.createElement("img"); img.src = p.img; img.alt = p.legenda || ""; img.loading = "lazy";
+              a.appendChild(img);
+              if (p.legenda) a.appendChild(document.createTextNode(p.legenda));
+              shots.appendChild(a);
+            });
+            card.appendChild(shots);
+          }
+          box.appendChild(card);
+        });
+      }).catch(function () {
+        devlogLoaded = false;
+        box.innerHTML = "<p>Não foi possível carregar o devlog agora.</p>";
+      });
+    }
+
+    // pages: #sobre, #jogar (the game), #conquistas, #roadmap, #devlog
+    var PAGES = ["sobre", "jogar", "conquistas", "roadmap", "devlog"];
     function showPage() {
       var page = location.hash.slice(1);
       if (PAGES.indexOf(page) < 0) page = "jogar";
@@ -382,6 +497,7 @@
       });
       document.querySelectorAll(".top nav a").forEach(function (a) { a.classList.toggle("active", a.dataset.page === page); });
       if (page === "jogar") canvas.focus();
+      if (page === "devlog") loadDevlog();
       window.scrollTo(0, 0);
     }
     window.addEventListener("hashchange", showPage);

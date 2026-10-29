@@ -1,0 +1,256 @@
+{
+  "_como_usar": "Uma entrada por atualização, a mais nova primeiro. data = AAAA-MM-DD e hora = HH:MM no horário de Brasília (hora em que subiu no site). Enquanto a versão ainda não subiu, use \"proxima\": true e deixe data e hora vazias. Cada mudança é {\"icone\", \"texto\"}; icone é o nome de um PNG da pasta devlog/ (ex.: espada, mago, golem, pocao, bau, tecla, freny). Prints opcionais: \"prints\": [{\"img\": \"devlog/prints/arquivo.jpg\", \"legenda\": \"...\"}] (JPG de até 1280 px).",
+  "versoes": [
+    {
+      "versao": "Alpha 0.0.1",
+      "proxima": true,
+      "data": "",
+      "hora": "",
+      "titulo": "Combo de espada e Arena mais viva",
+      "mudancas": [
+        {
+          "icone": "coracao",
+          "texto": "Barra de vida em cima dos inimigos."
+        },
+        {
+          "icone": "espada",
+          "texto": "Combo de 3 golpes de espada, cada um empurrando mais, com sons próprios."
+        },
+        {
+          "icone": "freny",
+          "texto": "Piloto automático recomeça a corrida em 8 s e pergunta antes de recomeçar quando a corrida passou de 10 mil pontos."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Aviso de que corrida no automático não vale para o ranking e selo AUTO ao lado da cabeça do Freny."
+        },
+        {
+          "icone": "bau",
+          "texto": "Correção do save que podia ser perdido ao clicar rápido em Jogar de novo."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Novos controles de toque no celular: direcional fixo e botões no estilo do Super Nintendo; dois toques numa direção para correr."
+        },
+        {
+          "icone": "hexball",
+          "texto": "Magos lançam uma bola de feitiço a cada 10 s; de dia a bola tem borda escura e só persegue o Freny a partir de 50 mil pontos."
+        },
+        {
+          "icone": "mago",
+          "texto": "Quando um mago morre, o lugar dele fica vazio por 15 s."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Mouse escondido durante o jogo."
+        },
+        {
+          "icone": "arma",
+          "texto": "Tiro da pistola não empurra mais os inimigos."
+        }
+      ],
+      "prints": [
+        {
+          "img": "devlog/prints/alpha-bola-do-mago-de-dia.jpg",
+          "legenda": "Bola de feitiço do mago com borda escura de dia"
+        },
+        {
+          "img": "devlog/prints/alpha-controles-celular.png",
+          "legenda": "Novos controles de toque no celular"
+        }
+      ]
+    },
+    {
+      "versao": "v0.4",
+      "data": "2026-10-29",
+      "hora": "10:56",
+      "titulo": "Ajustes depois do teste da v0.3",
+      "mudancas": [
+        {
+          "icone": "bau",
+          "texto": "Vasos da Arena aparecem inteiros (antes já nasciam rachados)."
+        },
+        {
+          "icone": "sol",
+          "texto": "Dia menos claro e tochas mais fracas de dia, para os inimigos não parecerem azuis."
+        },
+        {
+          "icone": "mago",
+          "texto": "Magos das torres se teleportam a cada 3 feitiços, não a cada um."
+        },
+        {
+          "icone": "mago_supremo",
+          "texto": "Limite de magos ao mesmo tempo: 1 até 50 mil pontos, 2 a partir de 50 mil e 3 a partir de 100 mil."
+        },
+        {
+          "icone": "golem_vermelho",
+          "texto": "Golem vermelho só aparece a partir de 50 mil pontos."
+        },
+        {
+          "icone": "pocao",
+          "texto": "Poção solta no chão menor."
+        },
+        {
+          "icone": "tocha",
+          "texto": "Música nova na Arena."
+        }
+      ],
+      "prints": [
+        {
+          "img": "devlog/prints/v0.4-meio-dia.jpg",
+          "legenda": "Arena ao meio-dia depois dos ajustes: vasos inteiros e luz mais quente"
+        }
+      ]
+    },
+    {
+      "versao": "v0.3",
+      "data": "2026-10-28",
+      "hora": "19:31",
+      "titulo": "Dia e noite na Arena",
+      "mudancas": [
+        {
+          "icone": "lua",
+          "texto": "Ciclo de dia e noite na Arena."
+        },
+        {
+          "icone": "golem_vermelho",
+          "texto": "Mago Supremo em vermelho e um Golem vermelho novo, mais resistente."
+        },
+        {
+          "icone": "bau",
+          "texto": "Vasos, caixas e barris quebram e voltam depois de um tempo."
+        },
+        {
+          "icone": "morcego",
+          "texto": "Inimigos nascem mais longe do Freny, espalhados por todas as plataformas, com um mago por torre."
+        },
+        {
+          "icone": "diamante",
+          "texto": "Itens soltos maiores e brilhantes, e agora caem até o chão."
+        },
+        {
+          "icone": "furia",
+          "texto": "Fúria com a armadura Berserker deixa o elmo vermelho."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Teste de controles no PC: espada no botão esquerdo do mouse, tiro no direito e granada no E."
+        }
+      ],
+      "prints": [
+        {
+          "img": "devlog/prints/v0.3-dia-e-noite.jpg",
+          "legenda": "O ciclo de dia e noite da Arena"
+        },
+        {
+          "img": "devlog/prints/v0.3-mago-supremo-golem-vermelho.jpg",
+          "legenda": "Mago, Mago Supremo, Golem e o novo Golem vermelho"
+        }
+      ]
+    },
+    {
+      "versao": "v0.2",
+      "data": "2026-10-28",
+      "hora": "16:20",
+      "titulo": "HUD mais legível",
+      "mudancas": [
+        {
+          "icone": "coracao",
+          "texto": "Barra de energia sempre visível."
+        },
+        {
+          "icone": "arma",
+          "texto": "Ícones das armas maiores."
+        },
+        {
+          "icone": "moeda",
+          "texto": "Placar e Combo à direita do centro, sem cobrir as armas (ajuste das 16:51)."
+        },
+        {
+          "icone": "tocha",
+          "texto": "Fundo do site cobre a tela toda."
+        }
+      ]
+    },
+    {
+      "versao": "v0.1",
+      "data": "2026-10-28",
+      "hora": "15:58",
+      "titulo": "HUD novo e granada mais forte",
+      "mudancas": [
+        {
+          "icone": "coracao",
+          "texto": "HUD novo em volta dos corações, com barras de energia e de Fúria."
+        },
+        {
+          "icone": "municao",
+          "texto": "Granada mais forte, com explosão maior e sem recarga (cuidado: ela também machuca o Freny)."
+        },
+        {
+          "icone": "chave",
+          "texto": "Guia dentro do jogo com todas as armas, itens, bônus, drops e regras da loja."
+        },
+        {
+          "icone": "sol",
+          "texto": "Opção de Brilho nas configurações."
+        },
+        {
+          "icone": "inseto",
+          "texto": "Morcego e Inseto morrem com um golpe; golpes empurram os inimigos e o Freny."
+        },
+        {
+          "icone": "elmo",
+          "texto": "1,2 s de invencibilidade depois de levar dano."
+        },
+        {
+          "icone": "freny",
+          "texto": "Piloto automático liga e desliga pelo pause da Arena."
+        },
+        {
+          "icone": "diamante",
+          "texto": "Ranking com proteção contra trapaça."
+        }
+      ]
+    },
+    {
+      "versao": "v0.0",
+      "data": "2026-10-28",
+      "hora": "11:55",
+      "titulo": "Primeira versão numerada",
+      "mudancas": [
+        {
+          "icone": "chave",
+          "texto": "Número da versão no canto do jogo."
+        },
+        {
+          "icone": "diamante",
+          "texto": "Ranking da Arena separado por dificuldade: Difícil (o oficial), Freny, Médio e Fácil."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Controles de toque para celular e tablet."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Tela de Ajuda com os controles de teclado, controle e toque."
+        },
+        {
+          "icone": "golem",
+          "texto": "Inimigos descem pelas bordas até o Freny em vez de segui-lo por cima."
+        },
+        {
+          "icone": "morcego",
+          "texto": "Morcego prepara a mordida antes de atacar e recua depois."
+        },
+        {
+          "icone": "freny",
+          "texto": "Nome do jogo corrigido para The Rise of Freny."
+        },
+        {
+          "icone": "chave",
+          "texto": "Cadastro por email corrigido."
+        }
+      ]
+    }
+  ]
+}
