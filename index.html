@@ -100,15 +100,6 @@
     .page h2 { font-size: 22px; margin: 28px 0 8px; color: var(--pink); }
     .page p { color: var(--muted); margin: 0 0 12px; }
     .page .soon { border: 2px dashed var(--line); border-radius: 6px; padding: 20px; color: var(--muted); text-align: center; }
-    /* Devlog: one card per update, newest first, read from devlog.json */
-    .log { border: 2px solid var(--line); background: var(--panel); border-radius: 6px; padding: 16px 20px; margin: 0 0 16px; }
-    .log.next { border-style: dashed; }
-    .log header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
-    .log .ver { font-size: 24px; font-weight: 700; color: var(--pink); }
-    .log time, .log .when { color: var(--muted); font-size: 15px; }
-    .log h3 { font-size: 18px; margin: 4px 0 8px; }
-    .log ul { margin: 0; padding-left: 20px; color: var(--muted); }
-    .log li { margin: 4px 0; }
     body:not(.on-jogar) main { position: absolute; left: -10000px; top: 0; width: 1100px; }
     body.on-jogar .page { display: none; }
 
@@ -147,7 +138,6 @@
       <a href="#jogar" data-page="jogar" class="active">Jogar</a>
       <a href="#conquistas" data-page="conquistas">Conquistas</a>
       <a href="#roadmap" data-page="roadmap">Roadmap</a>
-      <a href="#devlog" data-page="devlog">Devlog</a>
     </nav>
   </header>
 
@@ -209,12 +199,6 @@
     <h2>Fase 3</h2><p>O Ciclope, um chefe gigante na Arena.</p>
     <h2>Fase 4</h2><p>Escudeiro, Mina-aranha e melhorias nível 2 e 3 no Armeiro.</p>
     <h2>Fase 5</h2><p>Arena 2, o Poço de Ácido, liberada com 50 mil pontos.</p>
-  </section>
-
-  <section class="page" id="page-devlog" hidden>
-    <h1>Devlog</h1>
-    <p>Tudo o que mudou em cada atualização do jogo, da mais nova para a mais antiga. Horários de Brasília.</p>
-    <div id="devlog-list"><p>Carregando...</p></div>
   </section>
 
   <script>
@@ -386,45 +370,8 @@
     loadRanking();
     setInterval(loadRanking, 15000);
 
-    // Devlog: entries live in devlog.json (one per update), loaded the first time the page opens
-    var devlogLoaded = false;
-    function loadDevlog() {
-      if (devlogLoaded) return;
-      devlogLoaded = true;
-      var box = document.getElementById("devlog-list");
-      fetch("devlog.json", { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (data) {
-        box.innerHTML = "";
-        data.versoes.forEach(function (v) {
-          var card = document.createElement("article");
-          card.className = "log" + (v.proxima ? " next" : "");
-          var head = document.createElement("header");
-          var ver = document.createElement("span"); ver.className = "ver"; ver.textContent = v.versao;
-          head.appendChild(ver);
-          if (v.data) {
-            var d = v.data.split("-");
-            var when = document.createElement("time");
-            when.dateTime = v.data + (v.hora ? "T" + v.hora + "-03:00" : "");
-            when.textContent = d[2] + "/" + d[1] + "/" + d[0] + (v.hora ? " às " + v.hora : "");
-            head.appendChild(when);
-          } else if (v.proxima) {
-            var soon = document.createElement("span"); soon.className = "when"; soon.textContent = "em desenvolvimento";
-            head.appendChild(soon);
-          }
-          card.appendChild(head);
-          if (v.titulo) { var h = document.createElement("h3"); h.textContent = v.titulo; card.appendChild(h); }
-          var ul = document.createElement("ul");
-          (v.mudancas || []).forEach(function (m) { var li = document.createElement("li"); li.textContent = m; ul.appendChild(li); });
-          card.appendChild(ul);
-          box.appendChild(card);
-        });
-      }).catch(function () {
-        devlogLoaded = false;
-        box.innerHTML = "<p>Não foi possível carregar o devlog agora.</p>";
-      });
-    }
-
-    // pages: #sobre, #jogar (the game), #conquistas, #roadmap, #devlog
-    var PAGES = ["sobre", "jogar", "conquistas", "roadmap", "devlog"];
+    // pages: #sobre, #jogar (the game), #conquistas, #roadmap
+    var PAGES = ["sobre", "jogar", "conquistas", "roadmap"];
     function showPage() {
       var page = location.hash.slice(1);
       if (PAGES.indexOf(page) < 0) page = "jogar";
@@ -435,7 +382,6 @@
       });
       document.querySelectorAll(".top nav a").forEach(function (a) { a.classList.toggle("active", a.dataset.page === page); });
       if (page === "jogar") canvas.focus();
-      if (page === "devlog") loadDevlog();
       window.scrollTo(0, 0);
     }
     window.addEventListener("hashchange", showPage);
