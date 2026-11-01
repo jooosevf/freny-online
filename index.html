@@ -114,6 +114,7 @@
     .ranking li .pos { width: 24px; color: var(--muted); }
     .ranking li .name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .ranking li:first-child .name { color: var(--pink); font-weight: 700; }
+    .ranking li .name .titulo { color: #FFD84A; font-size: 12px; font-weight: 400; margin-left: 6px; }
     .ranking .empty { color: var(--muted); font-size: 14px; }
     #rotate { display: none; }
     #fs-mobile, #fs-hint { display: none; }
@@ -544,10 +545,12 @@
           var li = document.createElement("li");
           var pos = document.createElement("span"); pos.className = "pos"; pos.textContent = (i + 1) + ".";
           var name = document.createElement("span"); name.className = "name"; name.textContent = f.name ? f.name.stringValue : "?";
+          name.dataset.uid = r.document.name.split("/").pop();
           var score = document.createElement("span"); score.textContent = f.score ? f.score.integerValue : "0";
           li.append(pos, name, score);
           list.appendChild(li);
         });
+        loadTitles(list, requested);
       }).catch(function () {
         if (requested !== board) return;
         document.getElementById("ranking-list").innerHTML = '<li class="empty">Ranking indisponível agora.</li>';
@@ -555,6 +558,64 @@
     }
     loadRanking();
     setInterval(loadRanking, 15000);
+
+    // Títulos (the game's PlayerTitles.cs): the "title" field of achievements/{uid}, shown only when
+    // it is backed up: a Conquista's title needs that Conquista's signed field in the same document
+    // (firestore.rules checks it too), and "rei" only shows next to whoever is 1st on the Difícil
+    // board, all-time or today's. Same keys and names as the game: change them together.
+    var TITLES = {
+      played: "Gladiador", rei: "Rei da Arena", cyclops: "Matador de Gigantes", supreme: "Caçador de Magos",
+      million: "Milionário", eye: "Olho de Águia", combo5: "Embalado", survivor: "Sobrevivente",
+      backstab: "Sorrateiro", grenade5: "Granadeiro", shotgun3: "Escopeteiro", oops: "Desastrado",
+    };
+    function firestoreQuery(query) {
+      var url = "https://firestore.googleapis.com/v1/projects/" + FIREBASE.projectId +
+        "/databases/(default)/documents:runQuery?key=" + FIREBASE.apiKey;
+      return fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ structuredQuery: query }) })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (rows) { return Array.isArray(rows) ? rows.filter(function (x) { return x.document; }).map(function (x) { return x.document; }) : []; });
+    }
+    function firstOf(collection) {
+      return firestoreQuery({ from: [{ collectionId: collection }], orderBy: [{ field: { fieldPath: "score" }, direction: "DESCENDING" }], limit: 1 })
+        .then(function (docs) { return docs.length ? docs[0].name.split("/").pop() : null; })
+        .catch(function () { return null; });
+    }
+    // the title a player shows, or null
+    function titleOf(doc, uid, kings) {
+      var f = doc && doc.fields;
+      var id = f && f.title ? f.title.stringValue : "";
+      if (!id || !TITLES[id]) return null;
+      if (id === "rei") return kings.indexOf(uid) >= 0 ? TITLES.rei : null;
+      return f[id] ? TITLES[id] : null;
+    }
+    // THE one place a ranking name gets its decorations (the game's PlayerTitles.Decorate)
+    function decorateName(span, title) {
+      var old = span.querySelector(".titulo");
+      if (old) old.remove();
+      if (!title) return;
+      var t = document.createElement("small"); t.className = "titulo"; t.textContent = "· " + title;
+      span.appendChild(t);
+    }
+    function loadTitles(list, requested) {
+      var spans = Array.prototype.slice.call(list.querySelectorAll(".name[data-uid]"));
+      if (!spans.length) return;
+      var root = "projects/" + FIREBASE.projectId + "/databases/(default)/documents/achievements/";
+      Promise.all([
+        firstOf("leaderboard_hard"),
+        firstOf("daily_hard_" + today()),
+        firestoreQuery({
+          from: [{ collectionId: "achievements" }],
+          where: { fieldFilter: { field: { fieldPath: "__name__" }, op: "IN", value: { arrayValue: {
+            values: spans.map(function (s) { return { referenceValue: root + s.dataset.uid }; }) } } } },
+        }),
+      ]).then(function (res) {
+        if (requested !== board) return;
+        var kings = [res[0], res[1]].filter(Boolean);
+        var docs = {};
+        res[2].forEach(function (d) { docs[d.name.split("/").pop()] = d; });
+        spans.forEach(function (s) { decorateName(s, titleOf(docs[s.dataset.uid], s.dataset.uid, kings)); });
+      }).catch(function () {});
+    }
 
     // Devlog: entries live in devlog.json (one per update), loaded the first time the page opens
     var devlogLoaded = false;
