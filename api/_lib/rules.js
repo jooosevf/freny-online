@@ -22,6 +22,11 @@ export const ENEMIES = {
   Cyclops_Boss: { score: 5000, unlockAt: 0, unlockScore: 50000 },
   // the Mina-aranha: made at runtime from the Golem prefab (ArenaDirector, EnemyTemplates)
   SpiderMine_Enemy: { score: 250, unlockAt: 0.45 },
+  // the Poço de Ácido (game phase 5): same boards, same pace, its own two enemies
+  // (AcidPitArena.EnemyTable; scoreToAdd in Tentacle.cs / Crawler.cs). The arena only opens after
+  // a 50 000-point run, but that is the player's record, not this run's score: no unlockScore here
+  Tentacle_Enemy: { score: 250, unlockAt: 0 },
+  Crawler_Enemy: { score: 200, unlockAt: 0.15 },
 };
 
 export const LEVELS = {

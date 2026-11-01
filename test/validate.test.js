@@ -10,7 +10,7 @@ function steadyRun(board, count, every, names = ['Bug_Enemy', 'Bat_Enemy']) {
   for (let i = 0; i < count; i++) {
     const name = names[i % names.length];
     kills.push([3 + i * every, name, i]);
-    score += killPoints({ Bug_Enemy: 100, Bat_Enemy: 150, Golem_Red: 500 }[name], i);
+    score += killPoints({ Bug_Enemy: 100, Bat_Enemy: 150, Golem_Red: 500, Tentacle_Enemy: 250, Crawler_Enemy: 200 }[name], i);
   }
   return { board, score, gameTime: 3 + count * every, kills };
 }
@@ -110,4 +110,18 @@ test('the Mina-aranha counts once the arena is past 0.45', () => {
   late.gameTime = 41;
   late.score = killPoints(250, 0);
   assert.equal(validateRun(late, late.gameTime), null);
+});
+
+test("the Poço de Ácido's Tentáculo and Rastejante count, the Rastejante a little into the run", () => {
+  // same boards as the classic arena: a Médio run with both of them in it
+  const run = steadyRun('leaderboard_medium', 60, 2, ['Tentacle_Enemy', 'Bug_Enemy', 'Crawler_Enemy']);
+  // the Rastejante unlocks at 0.15 of the curve: 9 s into a Médio run at the shortest ramp
+  run.kills.forEach((k, i) => { k[0] = 10 + i * 2; });
+  run.gameTime = 10 + 60 * 2;
+  assert.equal(validateRun(run, run.gameTime), null);
+  const early = steadyRun('leaderboard_medium', 1, 2, ['Crawler_Enemy']);
+  assert.match(validateRun(early, early.gameTime), /cedo/);
+  // the Tentáculo comes from the start, on every level
+  const tentacle = steadyRun('leaderboard_easy', 1, 2, ['Tentacle_Enemy']);
+  assert.equal(validateRun(tentacle, tentacle.gameTime), null);
 });
