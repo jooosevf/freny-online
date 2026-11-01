@@ -20,6 +20,11 @@ export const ENEMIES = {
   Shielded_Enemy: { score: 300, unlockAt: 0.4 },
   // first at 50 000 points, then every 100 000 (PR #154); two at once only from 1 000 000
   Cyclops_Boss: { score: 5000, unlockAt: 0, unlockScore: 50000 },
+  // the Poço de Ácido (game phase 5): same boards, same pace, its own two enemies
+  // (AcidPitArena.EnemyTable; scoreToAdd in Tentacle.cs / Crawler.cs). The arena only opens after
+  // a 50 000-point run, but that is the player's record, not this run's score: no unlockScore here
+  Tentacle_Enemy: { score: 250, unlockAt: 0 },
+  Crawler_Enemy: { score: 200, unlockAt: 0.15 },
 };
 
 export const LEVELS = {
