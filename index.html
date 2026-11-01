@@ -520,7 +520,19 @@
       };
     });
 
+    // Each refresh is a Firestore read, so the board only refreshes every minute and only while it
+    // is on screen: the tab is visible and the page is #jogar (the other pages move main off screen)
+    var RANKING_EVERY = 60000;
+    var rankingAt = 0;
+    function rankingShown() {
+      return document.visibilityState === "visible" && document.body.classList.contains("on-jogar");
+    }
+    function refreshRanking() {
+      if (rankingShown() && Date.now() - rankingAt >= RANKING_EVERY) loadRanking();
+    }
+
     function loadRanking() {
+      rankingAt = Date.now();
       if (period === "daily" && board !== currentBoard()) board = currentBoard(); // past midnight
       var requested = board;
       var url = "https://firestore.googleapis.com/v1/projects/" + FIREBASE.projectId +
@@ -553,8 +565,10 @@
         document.getElementById("ranking-list").innerHTML = '<li class="empty">Ranking indisponível agora.</li>';
       });
     }
-    loadRanking();
-    setInterval(loadRanking, 15000);
+    // the tick itself is free; it only reads when the board is shown and the last load is a minute old
+    setInterval(refreshRanking, 5000);
+    // back on the tab (or on #jogar, see showPage): refresh right away if the board went stale meanwhile
+    document.addEventListener("visibilitychange", refreshRanking);
 
     // Devlog: entries live in devlog.json (one per update), loaded the first time the page opens
     var devlogLoaded = false;
@@ -815,11 +829,12 @@
       if (page === "roadmap") loadRoadmap();
       if (page === "bestiario") loadBestiario();
       if (page === "conquistas") loadAchievements();
+      refreshRanking(); // also the first load, when the site opens on #jogar
       window.scrollTo(0, 0);
     }
     window.addEventListener("hashchange", showPage);
     showPage();
-    window.addEventListener("focus", loadRanking);
+    window.addEventListener("focus", refreshRanking);
   </script>
 </body>
 </html>
