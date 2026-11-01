@@ -98,3 +98,16 @@ test('the Feiticeiro Supremo only counts after 100 000 points', () => {
   run.score = killPoints(600, 0);
   assert.match(validateRun(run, run.gameTime), /antes de 100000/);
 });
+
+test('the Mina-aranha counts once the arena is past 0.45', () => {
+  const early = steadyRun('leaderboard_medium', 1, 2, ['SpiderMine_Enemy']);
+  early.kills[0][0] = 10;
+  early.gameTime = 11;
+  early.score = killPoints(250, 0);
+  assert.match(validateRun(early, early.gameTime), /cedo/);
+  const late = steadyRun('leaderboard_medium', 1, 2, ['SpiderMine_Enemy']);
+  late.kills[0][0] = 40;
+  late.gameTime = 41;
+  late.score = killPoints(250, 0);
+  assert.equal(validateRun(late, late.gameTime), null);
+});

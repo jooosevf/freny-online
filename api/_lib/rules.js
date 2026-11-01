@@ -20,6 +20,8 @@ export const ENEMIES = {
   Shielded_Enemy: { score: 300, unlockAt: 0.4 },
   // first at 50 000 points, then every 100 000 (PR #154); two at once only from 1 000 000
   Cyclops_Boss: { score: 5000, unlockAt: 0, unlockScore: 50000 },
+  // the Mina-aranha: made at runtime from the Golem prefab (ArenaDirector, EnemyTemplates)
+  SpiderMine_Enemy: { score: 250, unlockAt: 0.45 },
 };
 
 export const LEVELS = {
