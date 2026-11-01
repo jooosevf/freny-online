@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Ranking · admin</title>
+<style>
+  :root { --bg: #14101c; --panel: #211a2e; --text: #eee6f7; --dim: #a597b8; --accent: #c77dff; --ok: #6fdc8c; --bad: #ff7a7a; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.4 system-ui, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 20px; } h2 { font-size: 16px; margin-top: 28px; color: var(--accent); }
+  input { background: var(--panel); color: var(--text); border: 1px solid #443a55; padding: 8px; border-radius: 6px; width: 260px; max-width: 100%; }
+  button { background: #3a2d52; color: var(--text); border: 0; padding: 6px 10px; border-radius: 6px; cursor: pointer; margin: 2px; }
+  button.ok { background: #2c5a3a; } button.bad { background: #6a2a2a; }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: 8px; overflow: hidden; }
+  td, th { padding: 6px 8px; text-align: left; border-bottom: 1px solid #2f2640; font-size: 14px; }
+  th { color: var(--dim); font-weight: 600; }
+  .uid { color: var(--dim); font-family: monospace; font-size: 12px; }
+  .msg { margin: 10px 0; color: var(--dim); }
+  .wrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Ranking · admin</h1>
+  <p class="msg">Recordes em revisão, rankings e contas bloqueadas. A senha é a variável ADMIN_TOKEN da Vercel; fica salva só neste navegador.</p>
+  <input id="token" type="password" placeholder="senha de admin"> <button id="load">Entrar / atualizar</button>
+  <div id="msg" class="msg"></div>
+  <div id="out"></div>
+</main>
+<script>
+  var tokenInput = document.getElementById("token");
+  try { tokenInput.value = localStorage.getItem("adminToken") || ""; } catch (e) {}
+
+  function api(path, body) {
+    return fetch("/api/admin/" + path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Admin-Token": tokenInput.value },
+      body: JSON.stringify(body || {}),
+    }).then(function (r) { return r.json().then(function (b) { if (!r.ok) throw new Error(b.error || r.status); return b; }); });
+  }
+  function say(text) { document.getElementById("msg").textContent = text; }
+  function el(tag, text, cls) { var e = document.createElement(tag); if (text != null) e.textContent = text; if (cls) e.className = cls; return e; }
+  function btn(label, cls, onClick) { var b = el("button", label, cls); b.onclick = onClick; return b; }
+  function minutes(s) { return s ? (s / 60).toFixed(1) + " min" : "-"; }
+  function act(body, confirmText) {
+    if (confirmText && !confirm(confirmText)) return;
+    api("decide", body).then(function () { say("Feito."); load(); }).catch(function (e) { say("Erro: " + e.message); });
+  }
+
+  function table(headers, rows) {
+    var wrap = el("div", null, "wrap"), t = el("table"), tr = el("tr");
+    headers.forEach(function (h) { tr.appendChild(el("th", h)); });
+    t.appendChild(tr);
+    rows.forEach(function (cells) {
+      var r = el("tr");
+      cells.forEach(function (c) { var td = el("td"); if (c instanceof Node) td.appendChild(c); else td.textContent = c; r.appendChild(td); });
+      t.appendChild(r);
+    });
+    wrap.appendChild(t);
+    return wrap;
+  }
+  function who(name, uid) { var d = el("div"); d.appendChild(el("div", name)); d.appendChild(el("div", uid, "uid")); return d; }
+
+  function render(data) {
+    var out = document.getElementById("out");
+    out.innerHTML = "";
+    out.appendChild(el("h2", "Em revisão (" + data.pending.length + ")"));
+    if (!data.pending.length) out.appendChild(el("p", "Nenhum recorde esperando.", "msg"));
+    else out.appendChild(table(["Jogador", "Ranking", "Pontos", "Motivo", "Abates", "Tempo de jogo", "Tempo real", ""], data.pending.map(function (p) {
+      var actions = el("div");
+      actions.appendChild(btn("Aprovar", "ok", function () { act({ action: "approve", id: p.id }); }));
+      actions.appendChild(btn("Recusar", "", function () { act({ action: "reject", id: p.id }); }));
+      actions.appendChild(btn("Recusar e bloquear", "bad", function () { act({ action: "reject", id: p.id, ban: true }, "Bloquear esta conta no ranking?"); }));
+      return [who(p.name, p.uid), p.board, p.score.toLocaleString("pt-BR"), p.note || "muito acima do ranking", p.killCount, minutes(p.gameTime), minutes(p.realSeconds), actions];
+    })));
+
+    Object.keys(data.boards).forEach(function (board) {
+      var rows = data.boards[board];
+      out.appendChild(el("h2", board));
+      if (!rows.length) { out.appendChild(el("p", "Vazio.", "msg")); return; }
+      out.appendChild(table(["#", "Jogador", "Pontos", ""], rows.map(function (e, i) {
+        var actions = el("div");
+        actions.appendChild(btn("Remover", "", function () { act({ action: "remove", board: board, uid: e.id }, "Remover " + e.name + " de " + board + "?"); }));
+        actions.appendChild(btn("Remover e bloquear", "bad", function () { act({ action: "remove", board: board, uid: e.id, ban: true }, "Remover " + e.name + " e bloquear a conta?"); }));
+        return [i + 1, who(e.name, e.id), (e.score || 0).toLocaleString("pt-BR"), actions];
+      })));
+    });
+
+    out.appendChild(el("h2", "Contas bloqueadas (" + data.bans.length + ")"));
+    if (!data.bans.length) out.appendChild(el("p", "Nenhuma.", "msg"));
+    else out.appendChild(table(["Conta", "Motivo", ""], data.bans.map(function (b) {
+      return [el("span", b.id, "uid"), b.reason || "", btn("Desbloquear", "", function () { act({ action: "unban", uid: b.id }); })];
+    })));
+  }
+
+  function load() {
+    try { localStorage.setItem("adminToken", tokenInput.value); } catch (e) {}
+    say("Carregando...");
+    api("list").then(function (d) { say(""); render(d); }).catch(function (e) { say("Erro: " + e.message); });
+  }
+  document.getElementById("load").onclick = load;
+  if (tokenInput.value) load();
+</script>
+</body>
+</html>
