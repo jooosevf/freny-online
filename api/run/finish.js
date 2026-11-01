@@ -2,6 +2,7 @@ import { json, readRequest, scoreKey } from '../_lib/http.js';
 import { readRunToken } from '../_lib/run-token.js';
 import { sha256Hex } from '../_lib/crypto.js';
 import { validateRun, dailyBoardOf } from '../_lib/validate.js';
+import { weeklyMutator } from '../_lib/rules.js';
 
 export const config = { runtime: 'edge' };
 
@@ -28,6 +29,12 @@ export default async function handler(request) {
   }
   const sign = (board) => sha256Hex(key + '|' + req.uid + '|' + board + '|' + run.score);
   const dailyBoard = dailyBoardOf(run.board, Date.now());
-  console.log(`accepted ${req.uid} ${run.board} ${run.score} (${run.kills.length} kills, ${realSeconds.toFixed(0)} s)`);
+  // the blessing and the week's mutator change no points (rules.js): only noted, with a warning when
+  // the game's week is not the server's (a wrong clock, or a run across Monday 00:00)
+  const week = weeklyMutator(ticket.startedAt);
+  const mutator = typeof run.mutator === 'string' ? run.mutator.slice(0, 40) : '';
+  const blessing = typeof run.blessing === 'string' ? run.blessing.slice(0, 40) : '';
+  console.log(`accepted ${req.uid} ${run.board} ${run.score} (${run.kills.length} kills, ${realSeconds.toFixed(0)} s` +
+    `, blessing ${blessing || '-'}, mutator ${mutator || '-'}${mutator && mutator !== week ? ' (week: ' + week + ')' : ''})`);
   return json(200, { sig: await sign(run.board), dailyBoard, dailySig: await sign(dailyBoard) });
 }

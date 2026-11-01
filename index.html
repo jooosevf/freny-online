@@ -113,6 +113,7 @@
     .ranking li { display: flex; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 16px; }
     .ranking li .pos { width: 24px; color: var(--muted); }
     .ranking li .name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ranking li .name .star { color: #ffd84a; }
     .ranking li:first-child .name { color: var(--pink); font-weight: 700; }
     .ranking li .name .titulo { color: #FFD84A; font-size: 12px; font-weight: 400; margin-left: 6px; }
     .ranking .empty { color: var(--muted); font-size: 14px; }
@@ -521,6 +522,19 @@
       };
     });
 
+    // Renascer (the game's Rebirth): a gold star after the name, with the count past one, from the
+    // entry's "rebirths". The title (decorateName, below) is added after it by loadTitles.
+    function rebirthStar(n) {
+      return n > 1 ? "★" + n : n === 1 ? "★" : "";
+    }
+    function addRebirthStar(el, f) {
+      var star = rebirthStar(f.rebirths ? parseInt(f.rebirths.integerValue, 10) || 0 : 0);
+      if (!star) return;
+      var s = document.createElement("span"); s.className = "star"; s.textContent = " " + star;
+      s.title = "Renasceu " + star.replace("★", "") + (star === "★" ? "1 vez" : " vezes");
+      el.appendChild(s);
+    }
+
     function loadRanking() {
       if (period === "daily" && board !== currentBoard()) board = currentBoard(); // past midnight
       var requested = board;
@@ -546,6 +560,7 @@
           var pos = document.createElement("span"); pos.className = "pos"; pos.textContent = (i + 1) + ".";
           var name = document.createElement("span"); name.className = "name"; name.textContent = f.name ? f.name.stringValue : "?";
           name.dataset.uid = r.document.name.split("/").pop();
+          addRebirthStar(name, f);   // the title (decorateName) comes after it, from loadTitles
           var score = document.createElement("span"); score.textContent = f.score ? f.score.integerValue : "0";
           li.append(pos, name, score);
           list.appendChild(li);

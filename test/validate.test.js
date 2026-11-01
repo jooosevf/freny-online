@@ -125,3 +125,26 @@ test("the Poço de Ácido's Tentáculo and Rastejante count, the Rastejante a li
   const tentacle = steadyRun('leaderboard_easy', 1, 2, ['Tentacle_Enemy']);
   assert.equal(validateRun(tentacle, tentacle.gameTime), null);
 });
+
+test('the week\'s mutator matches the game (WeeklyMutators.cs) and turns on Monday, Brasília time', async () => {
+  const { weeklyMutator, weekIndex, MUTATORS } = await import('../api/_lib/rules.js');
+  // Sunday 2026-11-01 is week 42: (42 * 5 + 3) % 8 = 5
+  assert.equal(weekIndex(Date.UTC(2026, 10, 1, 12)), 42);
+  assert.equal(weeklyMutator(Date.UTC(2026, 10, 1, 12)), 'red_moon');
+  // still Sunday in Brasília at 02:59 UTC on Monday; the new week at 03:00
+  assert.equal(weeklyMutator(Date.UTC(2026, 10, 2, 2, 59)), 'red_moon');
+  assert.equal(weeklyMutator(Date.UTC(2026, 10, 2, 3, 0)), 'eternal_night');
+  // eight weeks in a row: all eight, no week like the one before
+  const weeks = [];
+  for (let w = 0; w < 8; w++) weeks.push(weeklyMutator(Date.UTC(2026, 10, 2, 12) + w * 7 * 24 * 3600 * 1000));
+  assert.equal(new Set(weeks).size, MUTATORS.length);
+  // and before the first Monday it still lands in the pool
+  assert.ok(MUTATORS.includes(weeklyMutator(Date.UTC(2025, 5, 1))));
+});
+
+test('a run with a blessing and a mutator in its log is checked like any other', () => {
+  const run = steadyRun('leaderboard_hard', 100, 2);
+  run.blessing = 'strength';
+  run.mutator = 'giants';
+  assert.equal(validateRun(run, run.gameTime), null);
+});
