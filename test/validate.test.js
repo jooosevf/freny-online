@@ -27,6 +27,22 @@ test('a real-looking run is accepted', () => {
   assert.equal(validateRun(run, run.gameTime), null);
 });
 
+test('a kill while a Ciclope is alive is worth 1 point (4th field), and the combo goes on', () => {
+  const run = steadyRun('leaderboard_medium', 100, 2);
+  // the last 10 kills were made with a Ciclope on the floor
+  for (let i = 90; i < 100; i++) {
+    run.score -= killPoints({ Bug_Enemy: 100, Bat_Enemy: 150 }[run.kills[i][1]], i) - 1;
+    run.kills[i].push(1);
+  }
+  assert.equal(validateRun(run, run.gameTime), null);
+  // the full points for a flat kill do not add up
+  run.score += 500;
+  assert.match(validateRun(run, run.gameTime), /somam/);
+  // and the 4th field is 1 or nothing
+  run.kills[95][3] = 2;
+  assert.match(validateRun(run, run.gameTime), /inválido/);
+});
+
 test('a score the kills do not add up to is refused', () => {
   const run = steadyRun('leaderboard_medium', 100, 2);
   run.score += 5000;
