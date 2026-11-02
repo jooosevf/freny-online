@@ -245,50 +245,6 @@
         }
       ],
       "dica": "Acertar o olho tira o dobro. Bata nos 3 s de descanso depois de cada golpe."
-    },
-    {
-      "nome": "Tentáculo",
-      "sprite": "tentaculo",
-      "quadros": {
-        "anda": 4,
-        "ataque": 10
-      },
-      "tipo": "comum",
-      "vida": 2,
-      "pontos": 250,
-      "moedas": 2,
-      "aparece": "Só no Poço de Ácido, desde o começo",
-      "faz": "Sai de uma poça de ácido e fica de olho: se o Freny para por 1 s, ele cospe. Um golpe que não mata faz ele mergulhar e voltar em outra poça.",
-      "ataques": [
-        {
-          "icone": "acido",
-          "nome": "Cuspe de ácido",
-          "texto": "Pisca, e um jato sobe e cai onde o Freny estava: 1 coração, e deixa uma poça no chão."
-        }
-      ],
-      "dica": "Não fique parado. Um combo mata antes de ele fugir, e depois de uns 12 s ele afunda sozinho."
-    },
-    {
-      "nome": "Rastejante",
-      "sprite": "rastejante",
-      "quadros": {
-        "anda": 4,
-        "ataque": 2
-      },
-      "tipo": "comum",
-      "vida": 2,
-      "pontos": 200,
-      "moedas": 2,
-      "aparece": "Só no Poço de Ácido, depois de 45 s",
-      "faz": "Um olho com patas que anda pelo chão, pelas paredes e pelo teto.",
-      "ataques": [
-        {
-          "icone": "acido",
-          "nome": "Queda",
-          "texto": "No teto, bem em cima do Freny, treme e se solta: 1 coração. No chão, morde."
-        }
-      ],
-      "dica": "Atire para cima quando ele estiver no teto, ou saia de baixo quando ele tremer."
     }
   ]
 }

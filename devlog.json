@@ -6,12 +6,8 @@
       "proxima": true,
       "data": "",
       "hora": "",
-      "titulo": "Lua de Sangue, o Poço de Ácido e cada corrida diferente",
+      "titulo": "Lua de Sangue, contas e amigos, e a Arena que nunca para de endurecer",
       "mudancas": [
-        {
-          "icone": "acido",
-          "texto": "Arena 2: o Poço de Ácido, liberado com 50 mil pontos, com Tentáculo, Rastejante, espinhos e blocos que desmoronam ou se movem."
-        },
         {
           "icone": "pocao",
           "texto": "Bênçãos: cada baú dourado oferece 3, e a escolhida soma com as outras até o fim da corrida."
@@ -34,7 +30,7 @@
         },
         {
           "icone": "golem",
-          "texto": "Cada Ciclope derrotado deixa os outros inimigos com mais vida até o fim da corrida, até o máximo de 3x."
+          "texto": "Cada Ciclope derrotado deixa os outros inimigos com mais vida, mais rápidos, atacando mais e em maior número, sem limite."
         },
         {
           "icone": "furia",
@@ -54,7 +50,7 @@
         },
         {
           "icone": "freny",
-          "texto": "Piloto automático mais esperto: pega o item certo, caça o chefe e sabe andar no Poço de Ácido."
+          "texto": "Piloto automático mais esperto: pega o item certo e caça o chefe."
         },
         {
           "icone": "lua_sangue",
@@ -82,7 +78,7 @@
         },
         {
           "icone": "lua",
-          "texto": "Dia de 1 minuto e noite de 4. A Arena para de apertar no primeiro Ciclope e só volta em 1 milhão."
+          "texto": "Dia de 1 minuto e noite de 2. A Lua de Sangue ganha música própria (A Lua Rubra) e a primeira chega em uns 6 minutos."
         },
         {
           "icone": "freny",
@@ -110,7 +106,7 @@
         },
         {
           "icone": "arma",
-          "texto": "Granada com pavio de 5 s: quica, rola e explode onde estiver. Segurar o E queima o pavio na mão."
+          "texto": "Granada com pavio de 3 s: quica, rola e explode onde estiver. Segurar o E queima o pavio na mão."
         },
         {
           "icone": "ciclope",
@@ -139,6 +135,26 @@
         {
           "icone": "espada",
           "texto": "A espada ficou mais seca e pesada: o corte é instantâneo, com uma meia-lua fina, o jogo para por um instante no impacto (mais no golpe final do combo) e o inimigo pisca em branco."
+        },
+        {
+          "icone": "furia",
+          "texto": "Banners de Double, Triple, Quadra, Penta e Multi Kill quando um golpe, uma granada ou um tiro de escopeta derruba vários de uma vez."
+        },
+        {
+          "icone": "furia",
+          "texto": "O combo cresce, muda de cor, pulsa e treme conforme sobe. Insetos e morcegos sobem o combo pela metade."
+        },
+        {
+          "icone": "inseto",
+          "texto": "Insetos e morcegos ficam mais rápidos ao longo da corrida, até o primeiro Ciclope."
+        },
+        {
+          "icone": "ciclope",
+          "texto": "O Ciclope ri toda vez que joga a bomba."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Ctrl também dá dash no chão, e o narrador dá as boas-vindas: \"Bem-vindo à arena\"."
         },
         {
           "icone": "freny",
