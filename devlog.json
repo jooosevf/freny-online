@@ -21,6 +21,10 @@
           "texto": "Renascer: troque suas melhorias por um bônus permanente e uma ★ ao lado do nome."
         },
         {
+          "icone": "diamante",
+          "texto": "Power-ups raros: às vezes um inimigo deixa um item girando no chão. Insta-kill deixa todos com 1 coração por 10 s, Nuke limpa a tela (menos o Ciclope) e Ímã puxa moedas e itens por 10 s."
+        },
+        {
           "icone": "moeda",
           "texto": "Missões diárias, títulos no ranking e estatísticas da conta."
         },
