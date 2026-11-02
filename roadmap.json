@@ -110,7 +110,7 @@
         {
           "icone": "moeda",
           "titulo": "Pausa e Cosméticos",
-          "texto": "Armeiro e Inventário direto da pausa, e a aba Cosméticos com o Capacete Berserker."
+          "texto": "Armeiro e Inventário direto da pausa, e o Capacete Berserker como visual por 1.000 moedas."
         },
         {
           "icone": "freny",
@@ -245,7 +245,7 @@
         {
           "icone": "pocao",
           "titulo": "Bênçãos",
-          "texto": "No começo da corrida, escolha uma de três bênçãos: mais vida, mais dano, ímã de moedas..."
+          "texto": "No começo da corrida, escolha qualquer uma das 10 bênçãos: mais vida, mais dano, ímã de moedas..."
         },
         {
           "icone": "lua",
