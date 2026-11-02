@@ -78,84 +78,14 @@
       ]
     },
     {
-      "fase": "Alpha 0.1.0 · Terça, 03/11",
-      "titulo": "A maior atualização da Arena até agora",
+      "fase": "Alpha 0.1.0 · Terça, 03/11 · Combate",
+      "titulo": "Combate: cada golpe pesa mais",
       "status": "proxima",
       "itens": [
         {
-          "icone": "freny",
-          "titulo": "Contas, perfil e amigos",
-          "texto": "Crie sua conta com um apelido só seu ou jogue como convidado: o progresso e o recorde de convidado vão junto quando você cria a conta."
-        },
-        {
-          "icone": "conquista",
-          "titulo": "Perfil completo",
-          "texto": "Abates por inimigo e por arma, tempo de jogo, maiores combos, quedas, noites e Luas de Sangue sobrevividas, moedas e baús. No menu e na pausa."
-        },
-        {
-          "icone": "elmo",
-          "titulo": "Perfil público no site",
-          "texto": "O visual do seu Freny e os seus recordes numa página só sua. Clique em qualquer nome do ranking para ver o perfil."
-        },
-        {
-          "icone": "coracao",
-          "titulo": "Amigos e ranking dos amigos",
-          "texto": "Adicione pelo código FRENY-XXXX ou pelo apelido, no jogo ou no site, veja o ranking só de vocês e compare as estatísticas lado a lado."
-        },
-        {
-          "icone": "lua_sangue",
-          "titulo": "Lua de Sangue",
-          "texto": "A lua fica vermelha por 30 s, com música própria (A Lua Rubra), uivos de lobo e uma risada grave. Os inimigos ficam mais rápidos, batem mais forte e se curam. A primeira chega em uns 6 minutos."
-        },
-        {
-          "icone": "lua",
-          "titulo": "Noites mais longas",
-          "texto": "Dia de 1 minuto e noite de 2: a Arena passa mais tempo no escuro."
-        },
-        {
-          "icone": "ciclope",
-          "titulo": "Ciclope mais bravo",
-          "texto": "O vômito alaga o chão inteiro, a pancada faz a tela tremer, ele ri a cada bomba, solta raios do olho na Lua de Sangue e se desfaz em pedaços quando morre."
-        },
-        {
-          "icone": "tocha",
-          "titulo": "Clima de chefe",
-          "texto": "Tochas vermelhas e música própria (O Olho do Abismo) enquanto o Ciclope está na Arena."
-        },
-        {
-          "icone": "golem",
-          "titulo": "A Arena não para de endurecer",
-          "texto": "Cada Ciclope derrotado deixa os inimigos com mais vida, mais rápidos, atacando mais e em maior número, sem limite. Até onde você aguenta?"
-        },
-        {
-          "icone": "chave",
-          "titulo": "Chave do chefe",
-          "texto": "O primeiro Ciclope da corrida sempre deixa a chave, e os seguintes 25% das vezes."
-        },
-        {
-          "icone": "bau_dourado",
-          "titulo": "Baú dourado",
-          "texto": "Só abre com a chave e guarda as recompensas mais raras, como o Elmo do Ciclope e a Capa dourada."
-        },
-        {
-          "icone": "pocao",
-          "titulo": "Bênçãos",
-          "texto": "Cada baú dourado oferece 3 bênçãos sorteadas. A escolhida vale até o fim da corrida e soma com as outras."
-        },
-        {
-          "icone": "bau",
-          "titulo": "Baú prata",
-          "texto": "O baú comum da Arena agora é prata, para não confundir com o dourado."
-        },
-        {
-          "icone": "diamante",
-          "titulo": "Power-ups raros",
-          "texto": "Às vezes um inimigo deixa um item girando no chão: Insta-kill, Nuke que limpa a tela e Ímã de moedas."
-        },
-        {
-          "icone": "furia",
-          "titulo": "Banners de multi-kill",
-          "texto": "Double, Triple, Quadra, Penta e Multi Kill quando um golpe, uma granada ou um tiro de escopeta derruba vários de uma vez."
+          "icone": "espada",
+          "titulo": "Espada mais pesada",
+          "texto": "O corte é instantâneo, com uma meia-lua fina, o jogo para por um instante no impacto e o inimigo pisca em branco."
         },
         {
           "icone": "furia",
@@ -163,9 +93,9 @@
           "texto": "O número do combo cresce, muda de cor, pulsa e treme conforme sobe."
         },
         {
-          "icone": "espada",
-          "titulo": "Espada mais pesada",
-          "texto": "O corte é instantâneo, com uma meia-lua fina, o jogo para por um instante no impacto e o inimigo pisca em branco."
+          "icone": "furia",
+          "titulo": "Banners de multi-kill",
+          "texto": "Double, Triple, Quadra, Penta e Multi Kill quando um golpe, uma granada ou um tiro de escopeta derruba vários de uma vez."
         },
         {
           "icone": "furia",
@@ -193,6 +123,28 @@
           "texto": "Às vezes cai quando um mago morre e deixa o Freny lançar bolas de feitiço por um tempo."
         },
         {
+          "icone": "diamante",
+          "titulo": "Power-ups raros",
+          "texto": "Às vezes um inimigo deixa um item girando no chão: Insta-kill, Nuke que limpa a tela e Ímã de moedas."
+        }
+      ]
+    },
+    {
+      "fase": "Alpha 0.1.0 · Terça, 03/11 · Inimigos",
+      "titulo": "O Ciclope e seus monstros",
+      "status": "proxima",
+      "itens": [
+        {
+          "icone": "ciclope",
+          "titulo": "Ciclope mais bravo",
+          "texto": "O vômito alaga o chão inteiro, a pancada faz a tela tremer, ele ri a cada bomba, solta raios do olho na Lua de Sangue e se desfaz em pedaços quando morre."
+        },
+        {
+          "icone": "golem",
+          "titulo": "A Arena não para de endurecer",
+          "texto": "Cada Ciclope derrotado deixa os inimigos com mais vida, mais rápidos, atacando mais e em maior número, sem limite. Até onde você aguenta?"
+        },
+        {
           "icone": "mina",
           "titulo": "Mina-aranha",
           "texto": "Um inimigo novo que anda até o Freny e explode. Melhor acertar de longe."
@@ -208,10 +160,86 @@
           "texto": "Insetos e morcegos aceleram ao longo da corrida, até o primeiro Ciclope."
         },
         {
+          "icone": "furia",
+          "titulo": "Três dificuldades",
+          "texto": "Fácil, Médio e Freny. O antigo Difícil agora se chama Freny e continua sendo o ranking oficial."
+        }
+      ]
+    },
+    {
+      "fase": "Alpha 0.1.0 · Terça, 03/11 · Arena",
+      "titulo": "A noite, a lua e a música",
+      "status": "proxima",
+      "itens": [
+        {
+          "icone": "lua_sangue",
+          "titulo": "Lua de Sangue",
+          "texto": "A lua fica vermelha por 30 s, com música própria (A Lua Rubra), uivos de lobo e uma risada grave. Os inimigos ficam mais rápidos, batem mais forte e se curam. A primeira chega em uns 6 minutos."
+        },
+        {
+          "icone": "lua",
+          "titulo": "Noites mais longas",
+          "texto": "Dia de 1 minuto e noite de 2: a Arena passa mais tempo no escuro."
+        },
+        {
+          "icone": "tocha",
+          "titulo": "Clima de chefe",
+          "texto": "Tochas vermelhas e música própria (O Olho do Abismo) enquanto o Ciclope está na Arena."
+        },
+        {
+          "icone": "tocha",
+          "titulo": "Trilha sonora Dark Fantasy",
+          "texto": "Música no menu, trilha de batalha com coral e tambores na Arena, e o narrador dá as boas-vindas: \"Bem-vindo à arena\"."
+        }
+      ]
+    },
+    {
+      "fase": "Alpha 0.1.0 · Terça, 03/11 · Tesouros",
+      "titulo": "Tesouros e progresso",
+      "status": "proxima",
+      "itens": [
+        {
+          "icone": "chave",
+          "titulo": "Chave do chefe",
+          "texto": "O primeiro Ciclope da corrida sempre deixa a chave, e os seguintes 25% das vezes."
+        },
+        {
+          "icone": "bau_dourado",
+          "titulo": "Baú dourado",
+          "texto": "Só abre com a chave e guarda as recompensas mais raras, como o Elmo do Ciclope e a Capa dourada."
+        },
+        {
+          "icone": "pocao",
+          "titulo": "Bênçãos",
+          "texto": "Cada baú dourado oferece 3 bênçãos sorteadas. A escolhida vale até o fim da corrida e soma com as outras."
+        },
+        {
+          "icone": "bau",
+          "titulo": "Baú prata",
+          "texto": "O baú comum da Arena agora é prata, para não confundir com o dourado."
+        },
+        {
+          "icone": "moeda",
+          "titulo": "Missões diárias",
+          "texto": "Três missões novas por dia, iguais para todo mundo. Pagam 50, 100 e 200 moedas."
+        },
+        {
+          "icone": "tocha",
+          "titulo": "Renascer",
+          "texto": "Troque suas melhorias por um bônus permanente e uma estrela ★ ao lado do nome no ranking."
+        },
+        {
           "icone": "moeda",
           "titulo": "A Armeira",
           "texto": "A loja foi refeita: as armas vêm do chão e dos baús, e a Armeira vende melhorias de dano, munição e recarga, níveis 2 e 3, crítico e mais tempo de Fúria. Quem já tinha comprado recebe as moedas de volta."
-        },
+        }
+      ]
+    },
+    {
+      "fase": "Alpha 0.1.0 · Terça, 03/11 · Visual e menus",
+      "titulo": "Visual do Freny e menus",
+      "status": "proxima",
+      "itens": [
         {
           "icone": "elmo",
           "titulo": "Tela Visual nova",
@@ -223,24 +251,41 @@
           "texto": "Um visual inteiro novo por 10.000 moedas, liberado só depois de derrotar um Ciclope."
         },
         {
-          "icone": "tocha",
-          "titulo": "Renascer",
-          "texto": "Troque suas melhorias por um bônus permanente e uma estrela ★ ao lado do nome no ranking."
+          "icone": "tecla",
+          "titulo": "Controles e menus",
+          "texto": "Teclas de andar, mirar e agachar trocáveis, analógico sem tremer, mouse preso durante o jogo, pausa reorganizada e Guia com rolagem."
+        }
+      ]
+    },
+    {
+      "fase": "Alpha 0.1.0 · Terça, 03/11 · Contas e ranking",
+      "titulo": "Contas, amigos e ranking",
+      "status": "proxima",
+      "itens": [
+        {
+          "icone": "freny",
+          "titulo": "Contas, perfil e amigos",
+          "texto": "Crie sua conta com um apelido só seu ou jogue como convidado: o progresso e o recorde de convidado vão junto quando você cria a conta."
         },
         {
-          "icone": "moeda",
-          "titulo": "Missões diárias",
-          "texto": "Três missões novas por dia, iguais para todo mundo. Pagam 50, 100 e 200 moedas."
+          "icone": "conquista",
+          "titulo": "Perfil completo",
+          "texto": "Abates por inimigo e por arma, tempo de jogo, maiores combos, quedas, noites e Luas de Sangue sobrevividas, moedas e baús. No menu e na pausa."
+        },
+        {
+          "icone": "elmo",
+          "titulo": "Perfil público no site",
+          "texto": "O visual do seu Freny e os seus recordes numa página só sua. Clique em qualquer nome do ranking para ver o perfil."
+        },
+        {
+          "icone": "coracao",
+          "titulo": "Amigos e ranking dos amigos",
+          "texto": "Adicione pelo código FRENY-XXXX ou pelo apelido, no jogo ou no site, veja o ranking só de vocês e compare as estatísticas lado a lado."
         },
         {
           "icone": "elmo",
           "titulo": "Títulos",
           "texto": "Títulos ao lado do nome no ranking, liberados pelas conquistas, como Matador de Gigantes e Caçador de Magos. Rei da Arena fica com o 1º do Freny."
-        },
-        {
-          "icone": "furia",
-          "titulo": "Três dificuldades",
-          "texto": "Fácil, Médio e Freny. O antigo Difícil agora se chama Freny e continua sendo o ranking oficial."
         },
         {
           "icone": "freny",
@@ -251,16 +296,6 @@
           "icone": "diamante",
           "titulo": "Ranking protegido",
           "texto": "Vida, munição e pontos protegidos contra trapaça, e recordes suspeitos vão para revisão."
-        },
-        {
-          "icone": "tocha",
-          "titulo": "Trilha sonora Dark Fantasy",
-          "texto": "Música no menu, trilha de batalha com coral e tambores na Arena, e o narrador dá as boas-vindas: \"Bem-vindo à arena\"."
-        },
-        {
-          "icone": "tecla",
-          "titulo": "Controles e menus",
-          "texto": "Teclas de andar, mirar e agachar trocáveis, analógico sem tremer, mouse preso durante o jogo, pausa reorganizada e Guia com rolagem."
         }
       ]
     },
