@@ -1054,7 +1054,7 @@
     }
 
     // what a profile shows: label, value as text, and the number that decides who is ahead
-    var LEVEL_FIELD = { hard: "bestHard", freny: "bestFreny", medium: "bestMedium", easy: "bestEasy" };
+    var LEVEL_FIELD = { hard: "bestHard", medium: "bestMedium", easy: "bestEasy" };
     function statRows(p) {
       var combo = Math.max(10, p.bestCombo || 0) / 10;
       return [
@@ -1085,6 +1085,7 @@
       box.appendChild(head);
       var best = el("div", "pf-best");
       LEVELS.forEach(function (l) {
+        if (!(LEVEL_FIELD[l.id] in p)) return;   // a difficulty the game doesn't have any more
         var cell = el("div");
         cell.append(el("b", "", nf(p[LEVEL_FIELD[l.id]])), el("span", "", "Recorde no " + l.label));
         best.appendChild(cell);
@@ -1170,7 +1171,10 @@
         msg.textContent = "Aguarde...";
         authPost("sendOobCode", { requestType: "PASSWORD_RESET", email: email.value.trim() }).then(function () {
           msg.textContent = "Se esse email tem conta, mandamos o link para trocar a senha.";
-        }).catch(function (err) { msg.textContent = err.message; });
+        }).catch(function (err) {
+          // an email with no account gets the same answer: nobody finds out who has one here
+          msg.textContent = err.message === "Email ou senha errados" ? "Se esse email tem conta, mandamos o link para trocar a senha." : err.message;
+        });
       };
       box.appendChild(form);
     }
@@ -1355,7 +1359,7 @@
       var list = document.getElementById("ranking-list");
       Promise.all([readFriends(false), fsGet("perfis/" + session.uid)]).then(function (res) {
         if (requested !== board) return;
-        var field = LEVEL_FIELD[LEVELS[levelIndex].id];
+        var field = LEVEL_FIELD[LEVELS[levelIndex].id] || "bestHard";
         var all = res[0].perfis.concat(res[1] ? [res[1]] : []);
         all.sort(function (a, b) { return (b[field] || 0) - (a[field] || 0); });
         list.innerHTML = "";
