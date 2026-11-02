@@ -6,8 +6,40 @@
       "proxima": true,
       "data": "",
       "hora": "",
-      "titulo": "Lua de Sangue e um Ciclope mais bravo",
+      "titulo": "Lua de Sangue, o Poço de Ácido e cada corrida diferente",
       "mudancas": [
+        {
+          "icone": "acido",
+          "texto": "Arena 2: o Poço de Ácido, liberado com 50 mil pontos, com Tentáculo, Rastejante, espinhos e blocos que desmoronam ou se movem."
+        },
+        {
+          "icone": "pocao",
+          "texto": "Bênçãos: no começo da corrida, escolha uma das 10. Mutadores da semana mudam as regras para todo mundo."
+        },
+        {
+          "icone": "tocha",
+          "texto": "Renascer: troque suas melhorias por um bônus permanente e uma ★ ao lado do nome."
+        },
+        {
+          "icone": "moeda",
+          "texto": "Missões diárias, títulos no ranking e estatísticas da conta."
+        },
+        {
+          "icone": "bau_dourado",
+          "texto": "O Ciclope pode deixar cair uma chave que abre o baú dourado, com o Elmo do Ciclope ou a Capa dourada. Tochas vermelhas e música própria na luta."
+        },
+        {
+          "icone": "arma",
+          "texto": "Armeiro reformulado: as armas vêm do chão e dos baús, e a loja vende melhorias de dano, munição, recarga, crítico e Fúria. Quem comprou arma recebe as moedas de volta."
+        },
+        {
+          "icone": "mina",
+          "texto": "Mina-aranha, Rede (tecla G) e Cajado do Mago."
+        },
+        {
+          "icone": "freny",
+          "texto": "Piloto automático mais esperto: pega o item certo, caça o chefe e sabe andar no Poço de Ácido."
+        },
         {
           "icone": "lua_sangue",
           "texto": "Lua de Sangue: a cada 3 noites a lua fica vermelha por 30 s. Os inimigos ficam 25% mais rápidos, tiram 1 a mais, recuperam vida (o Ciclope também) e ganham olhos vermelhos com rastro."
@@ -49,10 +81,6 @@
           "texto": "Ranking mais protegido contra trapaça: vida, munição e pontos protegidos, cada dano e cura conferidos pelo servidor e detecção de speedhack. Recordes suspeitos vão para revisão."
         },
         {
-          "icone": "moeda",
-          "texto": "Armeiro mais caro: a loja inteira passa de 15.600 para 67.600 moedas, e o piloto automático pede mais XP a cada nível. Quem já comprou continua com o que tem."
-        },
-        {
           "icone": "freny",
           "texto": "Piloto automático: enquanto ele joga cai só 1/3 das moedas e as mortes dão metade do XP. Corridas no Automático ganham um ranking próprio por dificuldade, e ele sempre recomeça sozinho em 10 s."
         },
@@ -78,7 +106,7 @@
         },
         {
           "icone": "elmo",
-          "texto": "Nova aba Cosméticos com a Armeira: Capacete Berserker por 1.000 moedas. Armeiro e Inventário abrem direto da pausa."
+          "texto": "Armeiro e Inventário abrem direto da pausa, e o Capacete Berserker vira um visual por 1.000 moedas."
         },
         {
           "icone": "tecla",
