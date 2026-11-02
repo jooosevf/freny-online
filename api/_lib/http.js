@@ -1,4 +1,4 @@
-import { verifyIdToken } from './firebase-auth.js';
+import { readIdToken } from './firebase-auth.js';
 
 export const PROJECT_ID = process.env.FIREBASE_PROJECT_ID || 'the-rise-of-freny';
 
@@ -25,18 +25,18 @@ export function scoreKey() {
   return key && key.length >= 32 ? key : null;
 }
 
-// POST with the player's Firebase ID token: returns { uid, body } or an error Response.
+// POST with the player's Firebase ID token: returns { uid, anonymous, body } or an error Response.
 export async function readRequest(request) {
   if (request.method === 'OPTIONS') return { error: new Response(null, { status: 204, headers: CORS }) };
   if (request.method !== 'POST') return { error: json(405, { error: 'use POST' }) };
   const auth = request.headers.get('authorization') || '';
-  const uid = auth.startsWith('Bearer ') ? await verifyIdToken(auth.slice(7), PROJECT_ID) : null;
-  if (!uid) return { error: json(401, { error: 'login inválido' }) };
+  const who = auth.startsWith('Bearer ') ? await readIdToken(auth.slice(7), PROJECT_ID) : null;
+  if (!who) return { error: json(401, { error: 'login inválido' }) };
   let body;
   try {
     body = await request.json();
   } catch {
     return { error: json(400, { error: 'JSON inválido' }) };
   }
-  return { uid, body: body || {} };
+  return { uid: who.uid, anonymous: who.anonymous, body: body || {} };
 }

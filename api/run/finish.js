@@ -16,9 +16,12 @@ export const config = { runtime: 'edge' };
 // With the service account set (FIREBASE_SERVICE_ACCOUNT), every accepted run's log is kept,
 // banned accounts get 403, and a score far above the board's best gets 202 and no signature: it
 // waits for José's review in admin.html, which writes it to the boards if he approves it.
+// A guest (anonymous login) gets 403: the ranking is for accounts. The game offers "Criar conta
+// para salvar", which keeps the user id, so the same run's ticket is good right after it.
 export default async function handler(request) {
   const req = await readRequest(request);
   if (req.error) return req.error;
+  if (req.anonymous) return json(403, { error: 'crie uma conta para salvar o recorde', needsAccount: true });
   const key = scoreKey();
   if (!key) return json(503, { error: 'SCORE_KEY não configurada' });
   const run = req.body;

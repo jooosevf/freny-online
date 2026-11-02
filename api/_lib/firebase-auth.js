@@ -16,7 +16,8 @@ async function publicKeys() {
   return keys;
 }
 
-export async function verifyIdToken(token, projectId) {
+// The claims of a valid token, or null. `anonymous`: a guest (Firebase's sign_in_provider).
+export async function readIdToken(token, projectId) {
   const parts = (token || '').split('.');
   if (parts.length !== 3) return null;
   let header, claims;
@@ -26,6 +27,9 @@ export async function verifyIdToken(token, projectId) {
   } catch {
     return null;
   }
+  // the Firebase Auth emulator's tokens are not signed; this env var only exists in local tests
+  // (tools/api-server.js), never on Vercel
+  if (process.env.FIREBASE_AUTH_EMULATOR_HOST) return identity(claims);
   if (header.alg !== 'RS256') return null;
   const jwk = (await publicKeys()).find((k) => k.kid === header.kid);
   if (!jwk) return null;
@@ -36,5 +40,14 @@ export async function verifyIdToken(token, projectId) {
   const now = Date.now() / 1000;
   if (claims.aud !== projectId || claims.iss !== 'https://securetoken.google.com/' + projectId) return null;
   if (!(claims.exp > now) || !(claims.iat <= now + 60) || typeof claims.sub !== 'string' || !claims.sub) return null;
-  return claims.sub;
+  return identity(claims);
+}
+
+function identity(claims) {
+  return { uid: claims.sub, anonymous: claims.firebase?.sign_in_provider === 'anonymous' };
+}
+
+export async function verifyIdToken(token, projectId) {
+  const who = await readIdToken(token, projectId);
+  return who ? who.uid : null;
 }
