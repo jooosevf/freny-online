@@ -101,7 +101,7 @@
       "pontos": 300,
       "moedas": 4,
       "aparece": "Depois de 2 minutos",
-      "faz": "Anda atrás de um escudo de espinhos sempre virado para o Freny. De frente quase não leva dano: são 12 espadadas ou 36 tiros. Pelas costas, 2 espadadas ou 6 tiros acabam com ele. Ele demora para virar, e quanto mais difícil a Arena, mais rápido ele vira.",
+      "faz": "Anda atrás de um escudo de espinhos sempre virado para o Freny. Tudo que vem da frente bate no escudo, até de cima e enquanto ele ataca: são 12 espadadas ou 36 tiros. Pelas costas, 2 espadadas ou 6 tiros acabam com ele. Ele vira rápido (0,4 s, até 0,15 s no difícil) e se afasta quando o Freny chega por trás.",
       "ataques": [
         {
           "icone": "espada",
@@ -109,7 +109,7 @@
           "texto": "1 coração, de perto."
         }
       ],
-      "dica": "Pule por cima dele ou passe por trás na hora do ataque, e bata nas costas."
+      "dica": "Pule por cima dele e bata nas costas logo, antes que ele vire ou se afaste."
     },
     {
       "nome": "Mina-aranha",
@@ -163,11 +163,11 @@
         "ataque": 8
       },
       "tipo": "forte",
-      "vida": 6,
+      "vida": 8,
       "pontos": 500,
       "moedas": 6,
       "aparece": "Depois de 50 mil pontos",
-      "faz": "Pedra vermelha e olhos acesos. Um tanque: aguenta uma granada e quase não recua com os golpes. Carrega o soco e avança num dash junto. Se o Freny fica longe, joga minas.",
+      "faz": "Pedra vermelha e olhos acesos. Um tanque: aguenta duas granadas e quase não recua com os golpes. Carrega o soco e avança num dash junto. Se o Freny fica longe, joga minas. No máximo 3 de uma vez.",
       "ataques": [
         {
           "icone": "golem_vermelho",
@@ -177,7 +177,7 @@
         {
           "icone": "mina",
           "nome": "Mina",
-          "texto": "Jogada em arco, gruda no chão, pisca por 0,9 s e explode como uma granada: 2 corações no Freny e 3 de dano nos outros inimigos."
+          "texto": "Jogada em arco, gruda no chão, pisca e explode como uma granada 2 s depois (1,5 s quando a Arena fica difícil). Encostar nela não detona. 2 corações no Freny e 3 de dano nos outros inimigos. Quando um Golem joga uma mina, nenhum joga outra por 3 s."
         }
       ],
       "dica": "Acerte a mina antes de ela explodir, ou saia de perto. Não fique parado na frente dele quando ele carregar o soco."
@@ -215,8 +215,8 @@
       "vida": 100,
       "pontos": 5000,
       "moedas": 30,
-      "aparece": "Aos 50 mil pontos e depois a cada 100 mil (150 mil, 250 mil...); dois de uma vez só a partir de 1 milhão",
-      "faz": "O chefe gigante da Arena. Chega no centro do chão com a barra de chefe e não pula: fica sempre no chão. Cada luta traz mais ajuda: 2 feiticeiros na primeira e um a mais em cada uma seguinte (até 5), e a partir da segunda os outros inimigos também continuam vindo. Sempre vêm um morcego e um inseto atrás do Freny, para manter o combo vivo. O feitiço dos feiticeiros não fere o Ciclope. Depois de cada golpe ele descansa 3 s. Quando cai, deixa um baú.",
+      "aparece": "O primeiro aos 50 mil pontos; cada próximo 150 mil pontos depois de o anterior morrer. Dois de uma vez só a partir de 1 milhão",
+      "faz": "O chefe gigante da Arena. Prefere ficar no meio, embaixo da primeira plataforma. Chega no centro do chão com a barra de chefe e não pula: fica sempre no chão. Cada luta traz mais ajuda: 2 feiticeiros na primeira e um a mais em cada uma seguinte (até 5), e a partir da segunda os outros inimigos também continuam vindo. Sempre vêm um morcego e um inseto atrás do Freny, para manter o combo vivo. O feitiço dos feiticeiros não fere o Ciclope. Depois de cada golpe ele descansa 3 s. Quando cai, se desfaz em pedaços e deixa um baú. Na Lua de Sangue ele também recupera 1 de vida a cada 3 s. Enquanto ele está vivo, os outros inimigos valem só 1 ponto. Pode deixar cair a chave do baú dourado.",
       "ataques": [
         {
           "icone": "ciclope",
@@ -226,7 +226,7 @@
         {
           "icone": "espinho",
           "nome": "Pancada no chão",
-          "texto": "Uma onda corre pelo piso: 2 corações e o mesmo arremesso. Pule!"
+          "texto": "Um pulinho, a tela treme e uma onda corre pelo piso: 2 corações e o mesmo arremesso. Pule!"
         },
         {
           "icone": "mina",
@@ -236,7 +236,12 @@
         {
           "icone": "acido",
           "nome": "Vômito",
-          "texto": "Um jato de até 7 de distância que vira uma poça larga por 6 s. O jato e a poça queimam, e a poça deixa o Freny lento. Numa plataforma, o jato atravessa e cai no andar de baixo."
+          "texto": "Ele vomita e alaga o andar de baixo inteiro por 4 s. Quem está no chão queima, até os outros inimigos (menos ele): suba numa plataforma."
+        },
+        {
+          "icone": "lua_sangue",
+          "nome": "Raio do olho",
+          "texto": "Só na Lua de Sangue: até 3 raios vermelhos em direção ao Freny. 3 corações, e desintegra tudo no caminho."
         }
       ],
       "dica": "Acertar o olho tira o dobro. Bata nos 3 s de descanso depois de cada golpe."
