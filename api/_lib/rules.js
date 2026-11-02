@@ -15,8 +15,10 @@ export const BOARDS = [...MANUAL_BOARDS, ...AUTO_BOARDS];
 export const isAutoBoard = (board) => AUTO_BOARDS.includes(board);
 
 export const ENEMIES = {
-  Bug_Enemy: { score: 100, unlockAt: 0 },
-  Bat_Enemy: { score: 150, unlockAt: 0 },
+  // weak: a kill of it only counts half for the combo (ComboManager, Enemy.WeakKill), so the next kill
+  // may stay on the same step
+  Bug_Enemy: { score: 100, unlockAt: 0, weak: true },
+  Bat_Enemy: { score: 150, unlockAt: 0, weak: true },
   Golem_Enemy: { score: 200, unlockAt: 0.5 },
   Sorcerer_Enemy: { score: 350, unlockAt: 0.35 },
   Licker_Enemy: { score: 500, unlockAt: 0.2 },

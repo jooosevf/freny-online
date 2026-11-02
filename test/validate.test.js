@@ -22,6 +22,24 @@ test('the points of a kill follow the game: base x combo, rounded', () => {
   assert.equal(killPoints(600, 10), 1200);
 });
 
+test('bugs and bats count half for the combo: the step may stay after one, and only after one', () => {
+  // Bug, Bug, Licker, Bat, Bat, Licker: the game's steps with weak kills in pairs
+  const names = ['Bug_Enemy', 'Bug_Enemy', 'Licker_Enemy', 'Bat_Enemy', 'Bat_Enemy', 'Licker_Enemy'];
+  const steps = [0, 0, 1, 2, 2, 3];
+  const base = { Bug_Enemy: 100, Bat_Enemy: 150, Licker_Enemy: 500 };
+  const run = (k) => ({
+    board: 'leaderboard_medium',
+    score: names.reduce((sum, name, i) => sum + killPoints(base[name], k[i]), 0),
+    gameTime: 400,
+    kills: names.map((name, i) => [300 + i, name, k[i]]),
+  });
+  assert.equal(validateRun(run(steps), 400), null);
+  // the builds from before the change: one step per kill, still fine
+  assert.equal(validateRun(run([0, 1, 2, 3, 4, 5]), 400), null);
+  // a strong enemy always moves it on
+  assert.match(validateRun(run([0, 0, 1, 1, 2, 3]), 400), /combo/);
+});
+
 test('a real-looking run is accepted', () => {
   const run = steadyRun('leaderboard_medium', 100, 2);
   assert.equal(validateRun(run, run.gameTime), null);

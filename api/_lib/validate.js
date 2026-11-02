@@ -68,6 +68,7 @@ export function validateRun(run, realSeconds) {
   let total = 0;
   let prevT = -Infinity;
   let prevK = -1;
+  let prevWeak = false;
   for (let i = 0; i < kills.length; i++) {
     const kill = kills[i];
     if (!Array.isArray(kill) || (kill.length !== 3 && !(kill.length === 4 && kill[3] === 1))) return `abate ${i} inválido`;
@@ -77,9 +78,10 @@ export function validateRun(run, realSeconds) {
     if (typeof t !== 'number' || !(t >= 0) || t < prevT || t > gameTime + 1) return `abate ${i} fora de ordem`;
     if (!Number.isInteger(k) || k < 0) return `combo inválido no abate ${i}`;
 
-    // the combo goes up by one per kill and drops back to 1.0x after COMBO_SECONDS without one
+    // the combo goes up by one per kill and drops back to 1.0x after COMBO_SECONDS without one;
+    // after a weak enemy it may stay (the game counts them in pairs; the builds before that don't)
     const gap = t - prevT;
-    const keeps = k === prevK + 1 && gap <= COMBO_SECONDS + COMBO_SLACK;
+    const keeps = (k === prevK + 1 || (prevWeak && k === prevK)) && gap <= COMBO_SECONDS + COMBO_SLACK;
     const resets = k === 0 && gap >= COMBO_SECONDS - COMBO_SLACK;
     if (!keeps && !resets) return `combo não bate no abate ${i}`;
 
@@ -97,6 +99,7 @@ export function validateRun(run, realSeconds) {
     total += flat === 1 ? 1 : killPoints(enemy.score, k);
     prevT = t;
     prevK = k;
+    prevWeak = enemy.weak === true;
   }
   // float rounding can drift a point here and there in very long combos
   if (Math.abs(total - score) > Math.max(2, score * 0.0001)) return `os abates somam ${total}, não ${score}`;
