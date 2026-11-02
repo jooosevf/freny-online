@@ -263,11 +263,6 @@
           "texto": "Cada baú dourado oferece 3 bênçãos sorteadas entre as que você ainda não tem: mais vida, mais dano, ímã de moedas... A escolhida vale até o fim da corrida e soma com as outras."
         },
         {
-          "icone": "lua",
-          "titulo": "Mutadores da semana",
-          "texto": "Toda semana uma regra nova para todo mundo, como só espada, inimigos rápidos ou noite eterna."
-        },
-        {
           "icone": "tocha",
           "titulo": "Renascer",
           "texto": "Troque suas melhorias por um bônus permanente e uma estrela ★ ao lado do nome no ranking."
@@ -399,6 +394,11 @@
           "icone": "furia",
           "titulo": "Replay e fantasma do recorde",
           "texto": "Assista às melhores corridas e jogue contra o fantasma do seu recorde."
+        },
+        {
+          "icone": "lua",
+          "titulo": "Mutadores da semana",
+          "texto": "Uma regra nova por semana, como só espada ou noite eterna, de um jeito que não desequilibre o ranking."
         },
         {
           "icone": "espada",
