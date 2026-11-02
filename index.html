@@ -135,6 +135,30 @@
     .page h1 { font-size: 34px; margin: 0 0 12px; }
     .page h2 { font-size: 22px; margin: 28px 0 8px; color: var(--pink); }
     .page p { color: var(--muted); margin: 0 0 12px; }
+    /* Perfil: one player's page; signed in, the friends too */
+    #page-perfil { max-width: 960px; }
+    .pf-head { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; background: var(--panel); border: 2px solid var(--line); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; }
+    .pf-head canvas { width: 144px; height: 144px; image-rendering: pixelated; flex: none; }
+    .pf-head h1 { margin: 0; color: var(--pink); overflow-wrap: anywhere; }
+    .pf-head .seen, .pf-head .look { color: var(--muted); font-size: 15px; }
+    .pf-best { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .pf-best div { background: var(--panel); border: 2px solid var(--line); border-radius: 6px; padding: 10px 12px; }
+    .pf-best b { display: block; font-size: 22px; color: #FFD84A; }
+    .pf-best span { color: var(--muted); font-size: 14px; }
+    table.pf-stats { width: 100%; border-collapse: collapse; font-size: 16px; }
+    .pf-stats th, .pf-stats td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: right; }
+    .pf-stats th:first-child, .pf-stats td:first-child { text-align: left; color: var(--muted); font-weight: 400; }
+    .pf-stats .ahead { color: #FFD84A; }
+    .pf-form { display: grid; gap: 8px; max-width: 360px; }
+    .pf-form input, .pf-add input { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px; min-width: 0; }
+    .pf-msg { color: var(--pink); min-height: 22px; font-size: 15px; margin: 8px 0; }
+    .pf-add { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+    .pf-add input { flex: 1 1 200px; }
+    .pf-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+    .pf-row .who { flex: 1 1 200px; min-width: 0; overflow-wrap: anywhere; }
+    .pf-row small { display: block; color: var(--muted); font-size: 14px; }
+    .ranking li .name a { color: inherit; text-decoration: none; }
+    .ranking li .name a:hover { text-decoration: underline; }
     .ach-total { font-size: 15px; }
     .ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; margin-top: 16px; }
     .ach { display: flex; gap: 14px; align-items: center; background: var(--panel); border: 2px solid var(--line); border-radius: 6px; padding: 12px; }
@@ -281,6 +305,7 @@
       <a href="#sobre" data-page="sobre">Sobre</a>
       <a href="#jogar" data-page="jogar" class="active">Jogar</a>
       <a href="#conquistas" data-page="conquistas">Conquistas</a>
+      <a href="#perfil" data-page="perfil">Perfil</a>
       <a href="#bestiario" data-page="bestiario">Bestiário</a>
       <a href="#roadmap" data-page="roadmap">Roadmap</a>
       <a href="#devlog" data-page="devlog">Devlog</a>
@@ -321,6 +346,7 @@
       <div class="tabs">
         <button type="button" data-period="daily">Diário</button>
         <button type="button" data-period="all" class="active">Geral</button>
+        <button type="button" data-period="friends" id="tab-friends" hidden>Amigos</button>
       </div>
       <ol id="ranking-list"><li class="empty">Carregando...</li></ol>
     </aside>
@@ -338,6 +364,9 @@
     <p>Dez desafios da Arena. Só valem corridas <strong>manuais</strong> (sem o piloto automático), e cada conquista é conferida pelo servidor antes de contar aqui. Veja quantos jogadores já têm cada uma.</p>
     <p class="ach-total" id="ach-total"></p>
     <div class="ach-grid" id="ach-grid"><p>Carregando...</p></div>
+  </section>
+  <section class="page" id="page-perfil" hidden>
+    <div id="perfil-box"></div>
   </section>
   <section class="page" id="page-bestiario" hidden>
     <div class="devlog-hero">
@@ -380,6 +409,7 @@
         <a href="#sobre">Sobre</a>
         <a href="#jogar">Jogar</a>
         <a href="#conquistas">Conquistas</a>
+        <a href="#perfil">Perfil</a>
         <a href="#bestiario">Bestiário</a>
         <a href="#roadmap">Roadmap</a>
         <a href="#devlog">Devlog</a>
@@ -485,6 +515,9 @@
 
     // Top 10 from the board the game writes for each ranked difficulty (public read in firestore.rules).
     var FIREBASE = { apiKey: "AIzaSyDf7YvP-lQiMeVfN1bG8dWoahZQtmB0daM", projectId: "the-rise-of-freny" };
+    // local tests against the Firebase emulators: http://localhost:<port>/?emu=1
+    var EMU = location.hostname === "localhost" && /[?&]emu=1/.test(location.search);
+    var FS_BASE = EMU ? "http://127.0.0.1:8080" : "https://firestore.googleapis.com";
     // < Difícil > picks the difficulty; Diário reads that day's board (Brasília time),
     // daily_<level>_<yyyymmdd>, Geral the all-time leaderboard_<level>
     var LEVELS = [
@@ -503,6 +536,7 @@
     }
     function currentBoard() {
       var level = LEVELS[levelIndex].id;
+      if (period === "friends") return "friends_" + level;
       return period === "daily" ? "daily_" + level + "_" + today() : "leaderboard_" + level;
     }
     function switchBoard() {
@@ -532,14 +566,25 @@
     var RANKING_EVERY = 60000;
     var rankingLoadedAt = 0;
     function refreshRanking() {
-      if (document.hidden || Date.now() - rankingLoadedAt < RANKING_EVERY) return;
+      if (document.hidden || period === "friends" || Date.now() - rankingLoadedAt < RANKING_EVERY) return;
       loadRanking();
+    }
+    function rankingRow(i, nick, points) {
+      var li = document.createElement("li");
+      var pos = document.createElement("span"); pos.className = "pos"; pos.textContent = (i + 1) + ".";
+      var name = document.createElement("span"); name.className = "name";
+      var link = document.createElement("a"); link.href = "#perfil/" + encodeURIComponent(nick); link.textContent = nick;
+      name.appendChild(link);
+      var score = document.createElement("span"); score.textContent = points;
+      li.append(pos, name, score);
+      return li;
     }
     function loadRanking() {
       rankingLoadedAt = Date.now();
+      if (period === "friends") { board = currentBoard(); loadFriendsRanking(); return; }
       if (period === "daily" && board !== currentBoard()) board = currentBoard(); // past midnight
       var requested = board;
-      var url = "https://firestore.googleapis.com/v1/projects/" + FIREBASE.projectId +
+      var url = FS_BASE + "/v1/projects/" + FIREBASE.projectId +
         "/databases/(default)/documents:runQuery?key=" + FIREBASE.apiKey;
       fetch(url, {
         method: "POST",
@@ -557,20 +602,18 @@
         if (!docs.length) { list.innerHTML = '<li class="empty">' + (period === "daily" ? "Ninguém jogou hoje ainda" : "Ninguém no ranking ainda") + '</li>'; return; }
         docs.forEach(function (r, i) {
           var f = r.document.fields;
-          var li = document.createElement("li");
-          var pos = document.createElement("span"); pos.className = "pos"; pos.textContent = (i + 1) + ".";
-          var name = document.createElement("span"); name.className = "name"; name.textContent = f.name ? f.name.stringValue : "?";
-          var score = document.createElement("span"); score.textContent = f.score ? f.score.integerValue : "0";
-          li.append(pos, name, score);
-          list.appendChild(li);
+          var nick = f.name ? f.name.stringValue : "?";
+          // the uid is the entry's id: its profile opens with one read, not a lookup by nickname first
+          var key = nickKey(nick);
+          if (key) uidByKey[key] = r.document.name.slice(r.document.name.lastIndexOf("/") + 1);
+          list.appendChild(rankingRow(i, nick, f.score ? f.score.integerValue : "0"));
         });
       }).catch(function () {
         if (requested !== board) return;
         document.getElementById("ranking-list").innerHTML = '<li class="empty">Ranking indisponível agora.</li>';
       });
     }
-    loadRanking();
-    setInterval(refreshRanking, 5000);
+    // function declarations below (Perfil) are in place by now, and what they read is set up first
     document.addEventListener("visibilitychange", refreshRanking);
 
     // Devlog: entries live in devlog.json (one per update), loaded the first time the page opens
@@ -760,7 +803,7 @@
     // "played" for everyone who finished a manual run the ranking API accepted)
     var achLoaded = false;
     function countWith(field) {
-      var url = "https://firestore.googleapis.com/v1/projects/" + FIREBASE.projectId +
+      var url = FS_BASE + "/v1/projects/" + FIREBASE.projectId +
         "/databases/(default)/documents:runAggregationQuery?key=" + FIREBASE.apiKey;
       return fetch(url, {
         method: "POST",
@@ -816,10 +859,525 @@
       });
     }
 
-    // pages: #sobre, #jogar (the game), #conquistas, #bestiario, #roadmap, #devlog
-    var PAGES = ["sobre", "jogar", "conquistas", "bestiario", "roadmap", "devlog"];
+    // ---- Perfil, login and friends (the game's ProfileService and FriendsService, on the same
+    // collections and the same firestore.rules). Everything is read when a page opens: no polling.
+    // Accounts are created in the game; the site only signs in, by Firebase Auth's REST API.
+    var AUTH_BASE = EMU ? "http://127.0.0.1:9099/identitytoolkit.googleapis.com" : "https://identitytoolkit.googleapis.com";
+    var TOKEN_BASE = EMU ? "http://127.0.0.1:9099/securetoken.googleapis.com" : "https://securetoken.googleapis.com";
+    var DOCS = FS_BASE + "/v1/projects/" + FIREBASE.projectId + "/databases/(default)/documents";
+    var SESSION_KEY = "freny.session";
+    var session = null;       // { uid, email, refreshToken, idToken, expires }
+    try { session = JSON.parse(localStorage.getItem(SESSION_KEY)); } catch (e) {}
+
+    function saveSession() {
+      try {
+        if (session) localStorage.setItem(SESSION_KEY, JSON.stringify({ uid: session.uid, email: session.email, refreshToken: session.refreshToken }));
+        else localStorage.removeItem(SESSION_KEY);
+      } catch (e) {}
+    }
+    function authError(code) {
+      code = code || "";
+      if (/^(INVALID_LOGIN_CREDENTIALS|EMAIL_NOT_FOUND|INVALID_PASSWORD)/.test(code)) return "Email ou senha errados";
+      if (/^(INVALID_EMAIL|MISSING_EMAIL)/.test(code)) return "Esse email não parece certo";
+      if (/^MISSING_PASSWORD/.test(code)) return "Digite a senha";
+      if (/^TOO_MANY_ATTEMPTS/.test(code)) return "Muitas tentativas. Espere um pouco e tente de novo";
+      if (/^USER_DISABLED/.test(code)) return "Esta conta está bloqueada";
+      return "Sem conexão com o servidor";
+    }
+    function authPost(method, body) {
+      return fetch(AUTH_BASE + "/v1/accounts:" + method + "?key=" + FIREBASE.apiKey, {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+      }).then(function (r) {
+        return r.json().then(function (j) {
+          if (!r.ok) throw new Error(authError(j.error && j.error.message));
+          return j;
+        });
+      });
+    }
+    // a valid ID token, refreshed when it is about to expire; null when not signed in
+    function idToken() {
+      if (!session) return Promise.resolve(null);
+      if (session.idToken && Date.now() < session.expires - 300000) return Promise.resolve(session.idToken);
+      return fetch(TOKEN_BASE + "/v1/token?key=" + FIREBASE.apiKey, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "grant_type=refresh_token&refresh_token=" + encodeURIComponent(session.refreshToken),
+      }).then(function (r) { if (!r.ok) throw new Error("login"); return r.json(); }).then(function (j) {
+        session.idToken = j.id_token;
+        session.refreshToken = j.refresh_token;
+        session.expires = Date.now() + Number(j.expires_in) * 1000;
+        saveSession();
+        return session.idToken;
+      }).catch(function () { signOut(); return null; });
+    }
+    function signOut() {
+      session = null;
+      friendsCache = null;
+      saveSession();
+      updateFriendsTab();
+    }
+
+    // Firestore's REST API, with this player's token when there is one
+    function fsFetch(url, options) {
+      return idToken().then(function (token) {
+        options = options || {};
+        options.headers = options.headers || {};
+        if (token) options.headers.Authorization = "Bearer " + token;
+        return fetch(url, options);
+      });
+    }
+    function fsValue(v) {
+      if ("stringValue" in v) return v.stringValue;
+      if ("integerValue" in v) return Number(v.integerValue);
+      if ("timestampValue" in v) return new Date(v.timestampValue);
+      if ("arrayValue" in v) return (v.arrayValue.values || []).map(fsValue);
+      return null;
+    }
+    function fsDoc(d) {
+      var out = { id: d.name.slice(d.name.lastIndexOf("/") + 1) };
+      Object.keys(d.fields || {}).forEach(function (k) { out[k] = fsValue(d.fields[k]); });
+      return out;
+    }
+    // null for a document that isn't there
+    function fsGet(path) {
+      return fsFetch(DOCS + "/" + path + "?key=" + FIREBASE.apiKey).then(function (r) {
+        if (r.status === 404) return null;
+        if (!r.ok) throw new Error(r.status);
+        return r.json().then(fsDoc);
+      });
+    }
+    function fsQuery(query) {
+      return fsFetch(DOCS + ":runQuery?key=" + FIREBASE.apiKey, {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ structuredQuery: query }),
+      }).then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.json();
+      }).then(function (rows) {
+        return rows.filter(function (x) { return x.document; }).map(function (x) { return fsDoc(x.document); });
+      });
+    }
+    // one write; fields are Firestore values, times are the server's clock
+    function fsWrite(path, fields, times, mustBeNew) {
+      var write = {
+        update: { name: DOCS.slice(DOCS.indexOf("projects/")) + "/" + path, fields: fields },
+        updateMask: { fieldPaths: Object.keys(fields) },
+        updateTransforms: (times || []).map(function (t) { return { fieldPath: t, setToServerValue: "REQUEST_TIME" }; }),
+      };
+      if (mustBeNew) write.currentDocument = { exists: false };
+      return fsFetch(DOCS + ":commit?key=" + FIREBASE.apiKey, {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ writes: [write] }),
+      }).then(function (r) { if (!r.ok) throw new Error(r.status); });
+    }
+    function fsDelete(path) {
+      return fsFetch(DOCS + "/" + path + "?key=" + FIREBASE.apiKey, { method: "DELETE" }).then(function (r) { if (!r.ok) throw new Error(r.status); });
+    }
+    function str(s) { return { stringValue: s }; }
+
+    // "José_1" -> "jose_1", the id of apelidos/ (the game's ProfileService.NickKey)
+    function nickKey(nick) {
+      var key = String(nick || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      return /^[a-z0-9_-]+$/.test(key) ? key : null;
+    }
+
+    function el(tag, cls, text) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text !== undefined) e.textContent = text;
+      return e;
+    }
+    function nf(n) { return Number(n || 0).toLocaleString("pt-BR"); }
+    function duration(s) {
+      s = Number(s || 0);
+      return s >= 3600 ? Math.floor(s / 3600) + " h " + Math.floor(s / 60) % 60 + " min" : Math.floor(s / 60) + " min " + (s % 60) + " s";
+    }
+    function seen(when) {
+      if (!when) return "nunca";
+      var min = (Date.now() - when.getTime()) / 60000;
+      if (min < 3) return "agora";
+      if (min < 60) return "há " + Math.floor(min) + " min";
+      if (min < 1440) return "há " + Math.floor(min / 60) + " h";
+      var days = Math.floor(min / 1440);
+      return days === 1 ? "há 1 dia" : "há " + days + " dias";
+    }
+
+    // the look: same ids as the game's FrenyLook. The layers are cut by the game's Tools/ArtGen/site_looks.py;
+    // the cape is drawn here, behind him (the game draws its folds at runtime)
+    var LOOK_HELMET = { "helmet.berserker": ["berserker", "Capacete Berserker"], "helmet.gold": ["gold", "Elmo dourado"], "helmet.ice": ["ice", "Elmo de gelo"],
+      "helmet.viking": ["viking", "Elmo viking"], "helmet.shadow": ["shadow", "Elmo sombrio"], "helmet.crown": ["crown", "Coroa"], "helmet.cyclops": ["cyclops", "Elmo do Ciclope"] };
+    var LOOK_CAPE = { "cape.red": ["#b22830", "#e86054", "Capa vermelha"], "cape.night": ["#2c3874", "#7896e6", "Capa noturna"], "cape.blood": ["#6e101e", "#d02f2f", "Capa carmesim"],
+      "cape.royal": ["#642a92", "#ffd64a", "Capa real"], "cape.gold": ["#f0c446", "#fff4b4", "Capa dourada"] };
+    var LOOK_COLOR = { "color.red": ["#de4a46", "Vermelho"], "color.blue": ["#5478de", "Azul"], "color.green": ["#56b05c", "Verde"], "color.purple": ["#a05cd6", "Roxo"],
+      "color.black": ["#4a4856", "Preto"], "color.white": ["#faf8f0", "Branco"], "color.gold": ["#f0c446", "Dourado"] };
+    function lookImage(name) {
+      return new Promise(function (ok) {
+        var img = new Image();
+        img.onload = function () { ok(img); };
+        img.onerror = function () { ok(null); };
+        img.src = "perfil/" + name + ".png";
+      });
+    }
+    function drawLook(p) {
+      var canvas = el("canvas");
+      canvas.width = canvas.height = 140;
+      canvas.setAttribute("role", "img");
+      canvas.setAttribute("aria-label", "O Freny de " + p.apelido);
+      var helmet = LOOK_HELMET[p.helmet], cape = LOOK_CAPE[p.cape], color = LOOK_COLOR[p.color];
+      Promise.all([lookImage("freny"), color ? lookImage("shirt") : null, helmet ? lookImage("helmet_" + helmet[0]) : null]).then(function (layers) {
+        var c = canvas.getContext("2d");
+        if (cape) {
+          c.fillStyle = cape[0];
+          c.fillRect(54, 50, 32, 74);
+          c.fillStyle = cape[1];
+          c.fillRect(54, 124, 32, 4);
+        }
+        if (layers[0]) c.drawImage(layers[0], 0, 0);
+        if (layers[1]) {
+          var tint = el("canvas");
+          tint.width = tint.height = 140;
+          var t = tint.getContext("2d");
+          t.drawImage(layers[1], 0, 0);
+          t.globalCompositeOperation = "source-in";
+          t.fillStyle = color[0];
+          t.fillRect(0, 0, 140, 140);
+          c.drawImage(tint, 0, 0);
+        }
+        if (layers[2]) c.drawImage(layers[2], 0, 0);
+      });
+      return canvas;
+    }
+    function lookText(p) {
+      var parts = [];
+      if (LOOK_HELMET[p.helmet]) parts.push(LOOK_HELMET[p.helmet][1]);
+      if (LOOK_CAPE[p.cape]) parts.push(LOOK_CAPE[p.cape][2]);
+      if (LOOK_COLOR[p.color]) parts.push("Camisa " + LOOK_COLOR[p.color][1].toLowerCase());
+      return parts.length ? parts.join(" · ") : "Visual original";
+    }
+
+    // what a profile shows: label, value as text, and the number that decides who is ahead
+    var LEVEL_FIELD = { hard: "bestHard", freny: "bestFreny", medium: "bestMedium", easy: "bestEasy" };
+    function statRows(p) {
+      var combo = Math.max(10, p.bestCombo || 0) / 10;
+      return [
+        ["Inimigos derrotados", nf(p.kills), p.kills],
+        ["Ciclopes derrotados", nf(p.k_cyclops), p.k_cyclops],
+        ["Feiticeiros Supremos derrotados", nf(p.k_supreme), p.k_supreme],
+        ["Maior combo", combo.toFixed(1).replace(".", ",") + "x", p.bestCombo],
+        ["Corrida mais longa", duration(p.longestRun), p.longestRun],
+        ["Tempo de jogo", duration((p.secManual || 0) + (p.secAuto || 0)), (p.secManual || 0) + (p.secAuto || 0)],
+        ["Tempo no manual", duration(p.secManual), p.secManual],
+        ["Tempo no automático", duration(p.secAuto), p.secAuto],
+        ["Corridas manuais", nf(p.runsManual), p.runsManual],
+        ["Corridas no automático", nf(p.runsAuto), p.runsAuto],
+        ["Noites sobrevividas", nf(p.nights), p.nights],
+        ["Luas de Sangue sobrevividas", nf(p.bloodMoons), p.bloodMoons],
+        ["Baús abertos", nf(p.chests), p.chests],
+        ["Moedas ganhas", nf(p.coinsEarned), p.coinsEarned],
+        ["Quedas do Freny", nf(p.deaths), p.deaths],
+      ];
+    }
+    function renderProfile(box, p, mine) {
+      var head = el("div", "pf-head");
+      head.appendChild(drawLook(p));
+      var info = el("div");
+      info.append(el("h1", "", p.apelido), el("div", "look", lookText(p)), el("div", "seen", "Online " + seen(p.lastSeen)));
+      if (p.codigo) info.appendChild(el("div", "seen", "Código de amigo: " + p.codigo));
+      head.appendChild(info);
+      box.appendChild(head);
+      var best = el("div", "pf-best");
+      LEVELS.forEach(function (l) {
+        var cell = el("div");
+        cell.append(el("b", "", nf(p[LEVEL_FIELD[l.id]])), el("span", "", "Recorde no " + l.label));
+        best.appendChild(cell);
+      });
+      box.appendChild(best);
+      var table = el("table", "pf-stats");
+      if (mine) {
+        var top = el("tr");
+        top.append(el("th", "", ""), el("th", "", mine.apelido), el("th", "", p.apelido));
+        table.appendChild(top);
+      }
+      var a = mine ? statRows(mine) : null;
+      statRows(p).forEach(function (row, i) {
+        var tr = el("tr");
+        tr.appendChild(el("td", "", row[0]));
+        if (a) tr.appendChild(el("td", (a[i][2] || 0) > (row[2] || 0) ? "ahead" : "", a[i][1]));
+        tr.appendChild(el("td", a && (row[2] || 0) > (a[i][2] || 0) ? "ahead" : "", row[1]));
+        table.appendChild(tr);
+      });
+      box.appendChild(table);
+    }
+
+    // the uids of the names shown on the ranking, so opening one takes only one read
+    var uidByKey = {};
+    var perfilAsked = null;   // the view on screen: an answer for an older one is dropped
+    function showPerfil(nick) {
+      var box = document.getElementById("perfil-box");
+      perfilAsked = nick;
+      box.innerHTML = "<p>Carregando...</p>";
+      if (!nick) {
+        if (session) showMine(box);
+        else showLogin(box);
+        return;
+      }
+      var key = nickKey(nick);
+      var uid = key && uidByKey[key];
+      (uid ? Promise.resolve(uid) : key ? fsGet("apelidos/" + key).then(function (d) { return d && d.uid; }) : Promise.resolve(null)).then(function (found) {
+        return found ? fsGet("perfis/" + found) : null;
+      }).then(function (p) {
+        if (perfilAsked !== nick) return;
+        box.innerHTML = "";
+        if (!p) {
+          box.appendChild(el("h1", "", nick));
+          box.appendChild(el("p", "", "Este jogador ainda não tem perfil: ele aparece depois que a conta dele jogar uma corrida."));
+          return;
+        }
+        if (session && session.uid !== p.id) {
+          // side by side with mine: one more read
+          return fsGet("perfis/" + session.uid).then(function (me) {
+            if (perfilAsked !== nick) return;
+            renderProfile(box, p, me);
+          });
+        }
+        renderProfile(box, p);
+      }).catch(function () {
+        if (perfilAsked === nick) box.innerHTML = "<p>Não foi possível carregar o perfil agora.</p>";
+      });
+    }
+
+    function showLogin(box) {
+      box.innerHTML = "";
+      box.appendChild(el("h1", "", "Entrar"));
+      box.appendChild(el("p", "", "Use o email e a senha da sua conta do jogo para ver o seu perfil e os seus amigos. Para criar uma conta, abra o jogo: Perfil > Conta."));
+      var form = el("form", "pf-form");
+      var email = el("input"); email.type = "email"; email.placeholder = "Email"; email.autocomplete = "email"; email.required = true;
+      var pass = el("input"); pass.type = "password"; pass.placeholder = "Senha"; pass.autocomplete = "current-password"; pass.required = true;
+      var enter = el("button", "", "Entrar"); enter.type = "submit";
+      var forgot = el("button", "", "Esqueci a senha"); forgot.type = "button";
+      var msg = el("div", "pf-msg");
+      form.append(email, pass, enter, forgot, msg);
+      form.onsubmit = function (e) {
+        e.preventDefault();
+        msg.textContent = "Aguarde...";
+        authPost("signInWithPassword", { email: email.value.trim(), password: pass.value, returnSecureToken: true }).then(function (j) {
+          session = { uid: j.localId, email: j.email, refreshToken: j.refreshToken, idToken: j.idToken, expires: Date.now() + Number(j.expiresIn) * 1000 };
+          saveSession();
+          updateFriendsTab();
+          showPerfil(null);
+        }).catch(function (err) { msg.textContent = err.message; });
+      };
+      forgot.onclick = function () {
+        if (!email.value.trim()) { msg.textContent = "Digite o seu email primeiro"; return; }
+        msg.textContent = "Aguarde...";
+        authPost("sendOobCode", { requestType: "PASSWORD_RESET", email: email.value.trim() }).then(function () {
+          msg.textContent = "Se esse email tem conta, mandamos o link para trocar a senha.";
+        }).catch(function (err) { msg.textContent = err.message; });
+      };
+      box.appendChild(form);
+    }
+
+    function showMine(box) {
+      fsGet("perfis/" + session.uid).then(function (p) {
+        if (perfilAsked !== null) return;
+        box.innerHTML = "";
+        if (p) renderProfile(box, p);
+        else box.appendChild(el("p", "", "A sua conta ainda não tem perfil: jogue uma corrida no jogo com ela."));
+        var out = el("button", "", "Sair da conta");
+        out.style.marginTop = "12px";
+        out.onclick = function () { signOut(); showPerfil(null); };
+        box.appendChild(out);
+        if (p) showFriends(box, p);
+      }).catch(function () {
+        if (perfilAsked === null) box.innerHTML = "<p>Não foi possível carregar o perfil agora.</p>";
+      });
+    }
+
+    // ---- friends ----
+    var friendsCache = null;   // { lista, perfis, at }, kept for a minute
+    function readFriends(force) {
+      if (!session) return Promise.resolve({ lista: [], perfis: [] });
+      if (!force && friendsCache && Date.now() - friendsCache.at < 60000) return Promise.resolve(friendsCache);
+      return fsGet("amigos/" + session.uid).then(function (d) {
+        var lista = d && d.lista ? d.lista : [];
+        var chunks = [];
+        for (var i = 0; i < lista.length; i += 30) chunks.push(lista.slice(i, i + 30));
+        var root = DOCS.slice(DOCS.indexOf("projects/"));
+        return Promise.all(chunks.map(function (uids) {
+          return fsQuery({
+            from: [{ collectionId: "perfis" }],
+            where: { fieldFilter: { field: { fieldPath: "__name__" }, op: "IN", value: { arrayValue: { values: uids.map(function (u) { return { referenceValue: root + "/perfis/" + u }; }) } } } },
+          });
+        })).then(function (parts) {
+          friendsCache = { lista: lista, perfis: [].concat.apply([], parts), at: Date.now() };
+          return friendsCache;
+        });
+      });
+    }
+    function writeFriends(next, novo) {
+      friendsCache = null;
+      return fsWrite("amigos/" + session.uid, {
+        lista: { arrayValue: { values: next.map(str) } },
+        novo: str(novo || ""),
+      }, ["updatedAt"]);
+    }
+    function sendPedido(to, tipo, apelido) {
+      return fsWrite("pedidos/" + to + "_" + session.uid, {
+        de: str(session.uid), para: str(to), tipo: str(tipo), apelido: str(apelido || ""),
+      }, ["criadoEm"], true);
+    }
+    function quiet(p) { return p.catch(function () {}); }
+    // what the others sent: requests wait for an answer, the rest is applied now
+    function syncPedidos() {
+      return fsQuery({
+        from: [{ collectionId: "pedidos" }],
+        where: { fieldFilter: { field: { fieldPath: "para" }, op: "EQUAL", value: str(session.uid) } },
+        limit: 100,
+      }).then(function (docs) {
+        var waiting = docs.filter(function (d) { return d.tipo === "pedido"; });
+        var others = docs.filter(function (d) { return d.tipo !== "pedido"; });
+        if (!others.length) return waiting;
+        return fsGet("amigos/" + session.uid).then(function (me) {
+          var lista = me && me.lista ? me.lista : [];
+          return others.reduce(function (chain, d) {
+            return chain.then(function () {
+              var has = lista.indexOf(d.de) >= 0;
+              var want = d.tipo === "aceito";
+              if (has === want) return;
+              var next = want ? lista.concat([d.de]) : lista.filter(function (u) { return u !== d.de; });
+              return writeFriends(next, want ? d.de : "").then(function () { lista = next; });
+            }).then(function () { return fsDelete("pedidos/" + session.uid + "_" + d.de); }).catch(function () {});
+          }, Promise.resolve()).then(function () { return waiting; });
+        });
+      });
+    }
+    function acceptPedido(d, mine) {
+      return fsGet("amigos/" + session.uid).then(function (me) {
+        var lista = me && me.lista ? me.lista : [];
+        if (lista.length >= 50) throw new Error("Sua lista está cheia (50 amigos)");
+        return lista.indexOf(d.de) >= 0 ? null : writeFriends(lista.concat([d.de]), d.de);
+      }).then(function () {
+        return quiet(fsDelete("pedidos/" + d.de + "_" + session.uid));
+      }).then(function () {
+        return quiet(sendPedido(d.de, "aceito", mine.apelido));
+      }).then(function () {
+        return quiet(fsDelete("pedidos/" + session.uid + "_" + d.de));
+      });
+    }
+    function showFriends(box, mine) {
+      var old = document.getElementById("pf-friends");
+      if (old) old.remove();
+      var wrap = el("div"); wrap.id = "pf-friends";
+      wrap.appendChild(el("h2", "", "Amigos"));
+      var add = el("form", "pf-add");
+      var input = el("input"); input.placeholder = "Código (FRENY-XXXX) ou apelido"; input.maxLength = 20;
+      var send = el("button", "", "Adicionar"); send.type = "submit";
+      add.append(input, send);
+      wrap.appendChild(add);
+      var msg = el("div", "pf-msg");
+      wrap.appendChild(msg);
+      var requests = el("div"), list = el("div");
+      list.textContent = "Carregando...";
+      wrap.append(requests, list);
+      box.appendChild(wrap);
+      var again = function () { showFriends(box, mine); };
+
+      var incoming = [];
+      add.onsubmit = function (e) {
+        e.preventDefault();
+        var text = input.value.trim();
+        var code = text.toUpperCase().indexOf("FRENY-") === 0;
+        var key = code ? null : nickKey(text);
+        if (!code && (!key || key.length < 3)) { msg.textContent = "Digite um código (FRENY-XXXX) ou um apelido"; return; }
+        msg.textContent = "Aguarde...";
+        fsGet(code ? "codigos/" + text.toUpperCase() : "apelidos/" + key).then(function (d) {
+          if (!d) throw new Error(code ? "Nenhum jogador com esse código" : "Nenhum jogador com esse apelido");
+          if (d.uid === session.uid) throw new Error("Esse é você!");
+          return readFriends(true).then(function (f) {
+            if (f.lista.indexOf(d.uid) >= 0) throw new Error("Vocês já são amigos");
+            if (f.lista.length >= 50) throw new Error("Sua lista está cheia (50 amigos)");
+            var theirs = incoming.filter(function (x) { return x.de === d.uid; })[0];
+            if (theirs) return acceptPedido(theirs, mine).then(again);
+            return sendPedido(d.uid, "pedido", mine.apelido).then(function () {
+              input.value = "";
+              msg.textContent = "Pedido enviado!";
+            }, function () { throw new Error("O pedido já foi enviado"); });
+          });
+        }).catch(function (err) { msg.textContent = err.message; });
+      };
+
+      syncPedidos().then(function (waiting) {
+        incoming = waiting;
+        waiting.forEach(function (d) {
+          var row = el("div", "pf-row");
+          row.appendChild(el("span", "who", (d.apelido || "Alguém") + " quer ser seu amigo"));
+          var yes = el("button", "", "Aceitar"), no = el("button", "", "Recusar");
+          yes.onclick = function () { acceptPedido(d, mine).then(again).catch(function (err) { msg.textContent = err.message; }); };
+          no.onclick = function () { fsDelete("pedidos/" + session.uid + "_" + d.de).then(again).catch(function () { msg.textContent = "Sem conexão com o servidor"; }); };
+          row.append(yes, no);
+          requests.appendChild(row);
+        });
+        return readFriends(true);
+      }).then(function (f) {
+        list.innerHTML = "";
+        if (!f.perfis.length) list.textContent = "Você ainda não tem amigos aqui. Passe o seu código " + (mine.codigo || "") + " para eles.";
+        f.perfis.slice().sort(function (a, b) { return (b.lastSeen || 0) - (a.lastSeen || 0); }).forEach(function (p) {
+          uidByKey[nickKey(p.apelido)] = p.id;
+          var row = el("div", "pf-row");
+          var who = el("div", "who");
+          var link = el("a", "", p.apelido); link.href = "#perfil/" + encodeURIComponent(p.apelido);
+          who.append(link, el("small", "", lookText(p) + " · Recorde no Difícil: " + nf(p.bestHard) + " · online " + seen(p.lastSeen)));
+          var remove = el("button", "", "Remover");
+          remove.onclick = function () {
+            if (remove.textContent !== "Certeza?") { remove.textContent = "Certeza?"; return; }
+            writeFriends(f.lista.filter(function (u) { return u !== p.id; }), "").then(function () {
+              return quiet(fsDelete("pedidos/" + p.id + "_" + session.uid));
+            }).then(function () {
+              return quiet(sendPedido(p.id, "removido", mine.apelido));
+            }).then(again).catch(function () { msg.textContent = "Sem conexão com o servidor"; });
+          };
+          row.append(who, remove);
+          list.appendChild(row);
+        });
+      }).catch(function () { list.textContent = "Não foi possível carregar os amigos agora."; });
+    }
+
+    // the Amigos tab of the ranking: only for someone signed in, read when the tab opens
+    function updateFriendsTab() {
+      var tab = document.getElementById("tab-friends");
+      tab.hidden = !session;
+      if (!session && period === "friends") {
+        period = "all";
+        document.querySelectorAll(".ranking .tabs button").forEach(function (o) { o.classList.toggle("active", o.dataset.period === "all"); });
+        switchBoard();
+      }
+    }
+    function loadFriendsRanking() {
+      var requested = board;
+      var list = document.getElementById("ranking-list");
+      Promise.all([readFriends(false), fsGet("perfis/" + session.uid)]).then(function (res) {
+        if (requested !== board) return;
+        var field = LEVEL_FIELD[LEVELS[levelIndex].id];
+        var all = res[0].perfis.concat(res[1] ? [res[1]] : []);
+        all.sort(function (a, b) { return (b[field] || 0) - (a[field] || 0); });
+        list.innerHTML = "";
+        if (!all.length) { list.innerHTML = '<li class="empty">Adicione amigos na aba Perfil</li>'; return; }
+        all.forEach(function (p, i) {
+          uidByKey[nickKey(p.apelido)] = p.id;
+          list.appendChild(rankingRow(i, p.apelido, p[field] || 0));
+        });
+      }).catch(function () {
+        if (requested === board) list.innerHTML = '<li class="empty">Ranking indisponível agora.</li>';
+      });
+    }
+    updateFriendsTab();
+
+    loadRanking();
+    setInterval(refreshRanking, 5000);
+
+    // pages: #sobre, #jogar (the game), #conquistas, #perfil, #perfil/<apelido>, #bestiario, #roadmap, #devlog
+    var PAGES = ["sobre", "jogar", "conquistas", "perfil", "bestiario", "roadmap", "devlog"];
     function showPage() {
-      var page = location.hash.slice(1);
+      var parts = location.hash.slice(1).split("/");
+      var page = parts[0];
       if (PAGES.indexOf(page) < 0) page = "jogar";
       document.body.classList.toggle("on-jogar", page === "jogar");
       PAGES.forEach(function (p) {
@@ -832,6 +1390,11 @@
       if (page === "roadmap") loadRoadmap();
       if (page === "bestiario") loadBestiario();
       if (page === "conquistas") loadAchievements();
+      if (page === "perfil") {
+        var who = null;
+        try { who = parts[1] ? decodeURIComponent(parts[1]) : null; } catch (e) {}
+        showPerfil(who);
+      }
       window.scrollTo(0, 0);
     }
     window.addEventListener("hashchange", showPage);

@@ -1,5 +1,7 @@
 // Runs the /api functions locally without the Vercel CLI, for testing with the Unity editor:
 //   SCORE_KEY=... node tools/api-server.js        (or put SCORE_KEY in .env.local)
+// With the Firebase emulators: FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099 too (it takes their
+// unsigned tokens, so only ever set it here).
 // then "apiUrl": "http://localhost:3000" in the game's Assets/Resources/FirebaseConfig.json.
 import http from 'node:http';
 import fs from 'node:fs';
