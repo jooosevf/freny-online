@@ -337,10 +337,10 @@
 
     <aside class="side ranking">
       <h1>Ranking</h1>
-      <p class="rule">Só valem corridas manuais na Arena. O ranking oficial é o do Difícil.</p>
+      <p class="rule">Só valem corridas manuais na Arena. O ranking oficial é o do Freny.</p>
       <div class="level">
         <button type="button" id="level-prev" aria-label="Dificuldade anterior">&lt;</button>
-        <span id="level-name">Difícil</span>
+        <span id="level-name">Freny</span>
         <button type="button" id="level-next" aria-label="Próxima dificuldade">&gt;</button>
       </div>
       <div class="tabs">
@@ -518,11 +518,10 @@
     // local tests against the Firebase emulators: http://localhost:<port>/?emu=1
     var EMU = location.hostname === "localhost" && /[?&]emu=1/.test(location.search);
     var FS_BASE = EMU ? "http://127.0.0.1:8080" : "https://firestore.googleapis.com";
-    // < Difícil > picks the difficulty; Diário reads that day's board (Brasília time),
+    // < Freny > picks the difficulty; Diário reads that day's board (Brasília time),
     // daily_<level>_<yyyymmdd>, Geral the all-time leaderboard_<level>
     var LEVELS = [
-      { id: "hard", label: "Difícil" },
-      { id: "freny", label: "Freny" },
+      { id: "hard", label: "Freny" },
       { id: "medium", label: "Médio" },
       { id: "easy", label: "Fácil" },
     ];
@@ -1328,7 +1327,7 @@
           var row = el("div", "pf-row");
           var who = el("div", "who");
           var link = el("a", "", p.apelido); link.href = "#perfil/" + encodeURIComponent(p.apelido);
-          who.append(link, el("small", "", lookText(p) + " · Recorde no Difícil: " + nf(p.bestHard) + " · online " + seen(p.lastSeen)));
+          who.append(link, el("small", "", lookText(p) + " · Recorde no Freny: " + nf(p.bestHard) + " · online " + seen(p.lastSeen)));
           var remove = el("button", "", "Remover");
           remove.onclick = function () {
             if (remove.textContent !== "Certeza?") { remove.textContent = "Certeza?"; return; }
