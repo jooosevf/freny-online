@@ -46,7 +46,9 @@ export function dailyBoardOf(board, now) {
 }
 
 // Checks that the run's kill log adds up to its score and could have happened in the game.
-// run: { board, score, gameTime, kills: [[seconds since start, enemy prefab name, combo step], ...] }
+// run: { board, score, gameTime, kills: [[seconds since start, enemy prefab name, combo step(, 1)], ...] }
+// A 4th field, 1, marks a kill worth 1 flat point: the game pays only that for any enemy but the
+// Ciclope while a Ciclope is alive (UIManager.ScoresFlat, 2026-11-01); the combo still counts up.
 // realSeconds: the server's time between the run's start and now.
 // Returns null when the run is fine, or the reason it is refused.
 export function validateRun(run, realSeconds) {
@@ -66,8 +68,8 @@ export function validateRun(run, realSeconds) {
   let prevK = -1;
   for (let i = 0; i < kills.length; i++) {
     const kill = kills[i];
-    if (!Array.isArray(kill) || kill.length !== 3) return `abate ${i} inválido`;
-    const [t, name, k] = kill;
+    if (!Array.isArray(kill) || (kill.length !== 3 && !(kill.length === 4 && kill[3] === 1))) return `abate ${i} inválido`;
+    const [t, name, k, flat] = kill;
     const enemy = Object.prototype.hasOwnProperty.call(ENEMIES, name) ? ENEMIES[name] : null;
     if (!enemy) return `inimigo desconhecido: ${String(name).slice(0, 40)}`;
     if (typeof t !== 'number' || !(t >= 0) || t < prevT || t > gameTime + 1) return `abate ${i} fora de ordem`;
@@ -90,7 +92,7 @@ export function validateRun(run, realSeconds) {
     while (first > 0 && t - kills[first - 1][0] < KILL_WINDOW_SECONDS) first--;
     if (i - first + 1 > maxKillsInWindow(board, t)) return `abates demais em ${KILL_WINDOW_SECONDS} s (${t.toFixed(1)} s)`;
 
-    total += killPoints(enemy.score, k);
+    total += flat === 1 ? 1 : killPoints(enemy.score, k);
     prevT = t;
     prevK = k;
   }
