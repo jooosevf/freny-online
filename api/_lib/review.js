@@ -68,5 +68,7 @@ export async function writeEntry(key, uid, board, name, score) {
   await setDoc(board + '/' + uid, {
     name: cleanName(current?.name || name), score,
     sig: await sha256Hex(key + '|' + uid + '|' + board + '|' + score), updatedAt: new Date(),
+    // Renascer's star stays on the entry (the rules allow the field, only the game sets it)
+    ...(Number.isInteger(current?.rebirths) ? { rebirths: current.rebirths } : {}),
   });
 }
