@@ -1,6 +1,13 @@
 {
   "headers": [
     {
+      "source": "/Build/(.*).js.br",
+      "headers": [
+        { "key": "Content-Encoding", "value": "br" },
+        { "key": "Content-Type", "value": "application/javascript" }
+      ]
+    },
+    {
       "source": "/Build/(.*).js.gz",
       "headers": [
         { "key": "Content-Encoding", "value": "gzip" },
@@ -8,10 +15,24 @@
       ]
     },
     {
+      "source": "/Build/(.*).wasm.br",
+      "headers": [
+        { "key": "Content-Encoding", "value": "br" },
+        { "key": "Content-Type", "value": "application/wasm" }
+      ]
+    },
+    {
       "source": "/Build/(.*).wasm.gz",
       "headers": [
         { "key": "Content-Encoding", "value": "gzip" },
         { "key": "Content-Type", "value": "application/wasm" }
+      ]
+    },
+    {
+      "source": "/Build/(.*).data.br",
+      "headers": [
+        { "key": "Content-Encoding", "value": "br" },
+        { "key": "Content-Type", "value": "application/octet-stream" }
       ]
     },
     {

@@ -390,9 +390,9 @@
   <script>
     var buildUrl = "Build";
     var config = {
-      dataUrl: buildUrl + "/WebGL.data.gz",
-      frameworkUrl: buildUrl + "/WebGL.framework.js.gz",
-      codeUrl: buildUrl + "/WebGL.wasm.gz",
+      dataUrl: buildUrl + "/WebGL.data.br",
+      frameworkUrl: buildUrl + "/WebGL.framework.js.br",
+      codeUrl: buildUrl + "/WebGL.wasm.br",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "The Rise of Freny",
@@ -520,7 +520,15 @@
       };
     });
 
+    // Firestore's free tier counts reads (10 per refresh): at most one refresh a minute, none while the tab is hidden
+    var RANKING_EVERY = 60000;
+    var rankingLoadedAt = 0;
+    function refreshRanking() {
+      if (document.hidden || Date.now() - rankingLoadedAt < RANKING_EVERY) return;
+      loadRanking();
+    }
     function loadRanking() {
+      rankingLoadedAt = Date.now();
       if (period === "daily" && board !== currentBoard()) board = currentBoard(); // past midnight
       var requested = board;
       var url = "https://firestore.googleapis.com/v1/projects/" + FIREBASE.projectId +
@@ -554,7 +562,8 @@
       });
     }
     loadRanking();
-    setInterval(loadRanking, 15000);
+    setInterval(refreshRanking, 5000);
+    document.addEventListener("visibilitychange", refreshRanking);
 
     // Devlog: entries live in devlog.json (one per update), loaded the first time the page opens
     var devlogLoaded = false;
@@ -819,7 +828,7 @@
     }
     window.addEventListener("hashchange", showPage);
     showPage();
-    window.addEventListener("focus", loadRanking);
+    window.addEventListener("focus", refreshRanking);
   </script>
 </body>
 </html>
