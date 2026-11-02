@@ -43,7 +43,7 @@
         {
           "icone": "ciclope",
           "titulo": "Ciclope, o chefe da Arena",
-          "texto": "Chega aos 50 mil pontos e depois a cada 100 mil, com soco, onda no chão, bomba e vômito. Acertar o olho tira o dobro."
+          "texto": "O primeiro chega aos 50 mil pontos e cada próximo 150 mil pontos depois do anterior, com soco, onda no chão, bomba e vômito. Acertar o olho tira o dobro."
         },
         {
           "icone": "escudeiro",
@@ -64,6 +64,23 @@
           "icone": "golem",
           "titulo": "Bestiário no site",
           "texto": "Todos os inimigos, o que cada um faz e como vencer, na aba Bestiário."
+        }
+      ]
+    },
+    {
+      "fase": "Em teste",
+      "titulo": "Na próxima versão",
+      "status": "proxima",
+      "itens": [
+        {
+          "icone": "lua_sangue",
+          "titulo": "Lua de Sangue",
+          "texto": "Uma noite em cada três a lua fica vermelha por 30 s (a primeira por volta dos 10 minutos de corrida). Os inimigos ficam 25% mais rápidos, tiram 1 a mais (as bolas de feitiço também) e recuperam 1 de vida a cada 3 s, com olhos vermelhos e um rastro vermelho. O Ciclope também se recupera."
+        },
+        {
+          "icone": "ciclope",
+          "titulo": "Ciclope mais bravo",
+          "texto": "O vômito alaga o chão inteiro, a pancada faz a tela tremer, na Lua de Sangue ele solta raios do olho, e quando morre se desfaz em pedaços."
         }
       ]
     },
@@ -113,11 +130,6 @@
           "icone": "bau_dourado",
           "titulo": "Baú dourado",
           "texto": "Só abre com a chave e guarda as recompensas mais raras da Arena."
-        },
-        {
-          "icone": "lua_sangue",
-          "titulo": "Lua de Sangue",
-          "texto": "Algumas noites a lua fica vermelha: os inimigos ficam mais fortes e os pontos valem em dobro."
         },
         {
           "icone": "tocha",

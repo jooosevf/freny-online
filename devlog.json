@@ -2,6 +2,95 @@
   "_como_usar": "Uma entrada por atualização, a mais nova primeiro. data = AAAA-MM-DD e hora = HH:MM no horário de Brasília (hora em que subiu no site). Enquanto a versão ainda não subiu, use \"proxima\": true e deixe data e hora vazias. Cada mudança é {\"icone\", \"texto\"}; icone é o nome de um PNG da pasta devlog/ (ex.: espada, mago, golem, pocao, bau, tecla, freny). Prints opcionais: \"prints\": [{\"img\": \"devlog/prints/arquivo.jpg\", \"legenda\": \"...\"}] (JPG de até 1280 px).",
   "versoes": [
     {
+      "versao": "Próxima versão",
+      "proxima": true,
+      "data": "",
+      "hora": "",
+      "titulo": "Lua de Sangue e um Ciclope mais bravo",
+      "mudancas": [
+        {
+          "icone": "lua_sangue",
+          "texto": "Lua de Sangue: a cada 3 noites a lua fica vermelha por 30 s. Os inimigos ficam 25% mais rápidos, tiram 1 a mais, recuperam vida (o Ciclope também) e ganham olhos vermelhos com rastro."
+        },
+        {
+          "icone": "acido",
+          "texto": "O vômito do Ciclope agora alaga o chão inteiro por 4 s: suba numa plataforma. Os outros inimigos também queimam."
+        },
+        {
+          "icone": "ciclope",
+          "texto": "Na Lua de Sangue o Ciclope solta até 3 raios vermelhos do olho (3 corações), que desintegram tudo no caminho. A pancada no chão faz a tela tremer."
+        },
+        {
+          "icone": "ciclope",
+          "texto": "Ciclope 20% maior, no meio da Arena embaixo da primeira plataforma. O próximo vem 150 mil pontos depois do anterior morrer, e ele se desfaz em pedaços."
+        },
+        {
+          "icone": "golem_vermelho",
+          "texto": "Golem Vermelho: no máximo 3 de uma vez, 8 de vida, e as minas explodem num pavio de 2 s em vez de ao encostar."
+        },
+        {
+          "icone": "escudeiro",
+          "texto": "Escudeiro: o escudo cobre a frente toda, ele vira mais rápido e se afasta quando o Freny chega por trás."
+        },
+        {
+          "icone": "lua",
+          "texto": "Dia de 1 minuto e noite de 4. A Arena para de apertar no primeiro Ciclope e só volta em 1 milhão."
+        },
+        {
+          "icone": "freny",
+          "texto": "Ninguém fica mais preso dentro da parede, e o piloto automático sabe lutar contra o Ciclope."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Analógico sem tremer, HUD reorganizado, versão no canto inferior direito e velocidade do jogo fixa em 1x."
+        },
+        {
+          "icone": "diamante",
+          "texto": "Ranking mais protegido contra trapaça: vida, munição e pontos protegidos, cada dano e cura conferidos pelo servidor e detecção de speedhack. Recordes suspeitos vão para revisão."
+        },
+        {
+          "icone": "moeda",
+          "texto": "Armeiro mais caro: a loja inteira passa de 15.600 para 67.600 moedas, e o piloto automático pede mais XP a cada nível. Quem já comprou continua com o que tem."
+        },
+        {
+          "icone": "freny",
+          "texto": "Piloto automático: enquanto ele joga cai só 1/3 das moedas e as mortes dão metade do XP. Corridas no Automático ganham um ranking próprio por dificuldade, e ele sempre recomeça sozinho em 10 s."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Agora dá para trocar as teclas de andar, mirar para cima e agachar em Configurações > Controles. As setas continuam valendo, e no controle o Freny anda pelo analógico ou pelo direcional."
+        },
+        {
+          "icone": "furia",
+          "texto": "Fúria na tecla F: com a barra cheia, você escolhe a hora. Ela começa com um grito de guerra, e a barra brilha quando está pronta."
+        },
+        {
+          "icone": "arma",
+          "texto": "Granada com pavio de 5 s: quica, rola e explode onde estiver. Segurar o E queima o pavio na mão."
+        },
+        {
+          "icone": "ciclope",
+          "texto": "Com um Ciclope vivo, os outros inimigos valem só 1 ponto cada (o combo continua)."
+        },
+        {
+          "icone": "lua_sangue",
+          "texto": "A Lua de Sangue chega com uivos de lobo e uma risada grave."
+        },
+        {
+          "icone": "elmo",
+          "texto": "Nova aba Cosméticos com a Armeira: Capacete Berserker por 1.000 moedas. Armeiro e Inventário abrem direto da pausa."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Mouse preso durante o jogo (Esc solta e pausa), HUD das armas mais baixo e jogo uns 16% menor para baixar."
+        },
+        {
+          "icone": "lua",
+          "texto": "Trilha sonora nova no clima Dark Fantasy: o menu principal ganha música (O Despertar, com violão, violoncelo e coral) e a Arena uma trilha de batalha com coral, tambores de guerra e metais (Arena de Sangue)."
+        }
+      ]
+    },
+    {
       "versao": "Alpha 0.0.2",
       "data": "2026-10-29",
       "hora": "18:40",
@@ -73,8 +162,14 @@
       "hora": "15:41",
       "titulo": "Roadmap com tudo o que vem por aí",
       "mudancas": [
-        { "icone": "ciclope", "texto": "Aba Roadmap com as fases da Arena: conquistas e ranking diário, o Ciclope, Escudeiro e Mina, a Arena 2 do Poço de Ácido e mais." },
-        { "icone": "tecla", "texto": "Dark Reader não deixa mais os inimigos do devlog brancos." }
+        {
+          "icone": "ciclope",
+          "texto": "Aba Roadmap com as fases da Arena: conquistas e ranking diário, o Ciclope, Escudeiro e Mina, a Arena 2 do Poço de Ácido e mais."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Dark Reader não deixa mais os inimigos do devlog brancos."
+        }
       ]
     },
     {
