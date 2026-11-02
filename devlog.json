@@ -125,6 +125,10 @@
           "texto": "Armeiro e Inventário abrem direto da pausa, e o Capacete Berserker vira um visual por 1.000 moedas."
         },
         {
+          "icone": "elmo",
+          "texto": "Traje Berserker: visual novo por 10.000 moedas, liberado depois de derrotar um Ciclope."
+        },
+        {
           "icone": "tecla",
           "texto": "Mouse preso durante o jogo (Esc solta e pausa), HUD das armas mais baixo e jogo uns 16% menor para baixar."
         },
