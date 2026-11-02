@@ -2,23 +2,23 @@
   "_como_usar": "Uma entrada por atualização, a mais nova primeiro. data = AAAA-MM-DD e hora = HH:MM no horário de Brasília (hora em que subiu no site). Enquanto a versão ainda não subiu, use \"proxima\": true e deixe data e hora vazias. Cada mudança é {\"icone\", \"texto\"}; icone é o nome de um PNG da pasta devlog/ (ex.: espada, mago, golem, pocao, bau, tecla, freny). Prints opcionais: \"prints\": [{\"img\": \"devlog/prints/arquivo.jpg\", \"legenda\": \"...\"}] (JPG de até 1280 px).",
   "versoes": [
     {
-      "versao": "Próxima versão",
+      "versao": "Alpha 0.1.0",
       "proxima": true,
       "data": "",
       "hora": "",
-      "titulo": "Lua de Sangue, o Poço de Ácido e cada corrida diferente",
+      "titulo": "Lua de Sangue, contas e amigos, e a Arena que nunca para de endurecer",
       "mudancas": [
         {
-          "icone": "acido",
-          "texto": "Arena 2: o Poço de Ácido, liberado com 50 mil pontos, com Tentáculo, Rastejante, espinhos e blocos que desmoronam ou se movem."
-        },
-        {
           "icone": "pocao",
-          "texto": "Bênçãos: no começo da corrida, escolha uma das 10. Mutadores da semana mudam as regras para todo mundo."
+          "texto": "Bênçãos: cada baú dourado oferece 3, e a escolhida soma com as outras até o fim da corrida."
         },
         {
           "icone": "tocha",
           "texto": "Renascer: troque suas melhorias por um bônus permanente e uma ★ ao lado do nome."
+        },
+        {
+          "icone": "diamante",
+          "texto": "Power-ups raros: às vezes um inimigo deixa um item girando no chão. Insta-kill deixa todos com 1 coração por 10 s, Nuke limpa a tela (menos o Ciclope) e Ímã puxa moedas e itens por 10 s."
         },
         {
           "icone": "moeda",
@@ -26,7 +26,19 @@
         },
         {
           "icone": "bau_dourado",
-          "texto": "O Ciclope pode deixar cair uma chave que abre o baú dourado, com o Elmo do Ciclope ou a Capa dourada. Tochas vermelhas e música própria na luta."
+          "texto": "O primeiro Ciclope da corrida sempre deixa a chave do baú dourado, e os seguintes 25% das vezes. O baú traz uma bênção à sua escolha e pode trazer o Elmo do Ciclope ou a Capa dourada. Tochas vermelhas e música própria na luta."
+        },
+        {
+          "icone": "golem",
+          "texto": "Cada Ciclope derrotado deixa os outros inimigos com mais vida, mais rápidos, atacando mais e em maior número, sem limite."
+        },
+        {
+          "icone": "furia",
+          "texto": "Três dificuldades: Fácil, Médio e Freny. O antigo Difícil agora se chama Freny e continua sendo o ranking oficial."
+        },
+        {
+          "icone": "bau",
+          "texto": "O baú comum da Arena agora é prata, para não confundir com o dourado."
         },
         {
           "icone": "arma",
@@ -38,7 +50,7 @@
         },
         {
           "icone": "freny",
-          "texto": "Piloto automático mais esperto: pega o item certo, caça o chefe e sabe andar no Poço de Ácido."
+          "texto": "Piloto automático mais esperto: pega o item certo e caça o chefe."
         },
         {
           "icone": "lua_sangue",
@@ -66,7 +78,7 @@
         },
         {
           "icone": "lua",
-          "texto": "Dia de 1 minuto e noite de 4. A Arena para de apertar no primeiro Ciclope e só volta em 1 milhão."
+          "texto": "Dia de 1 minuto e noite de 2. A Lua de Sangue ganha música própria (A Lua Rubra) e a primeira chega em uns 6 minutos."
         },
         {
           "icone": "freny",
@@ -94,7 +106,7 @@
         },
         {
           "icone": "arma",
-          "texto": "Granada com pavio de 5 s: quica, rola e explode onde estiver. Segurar o E queima o pavio na mão."
+          "texto": "Granada com pavio de 3 s: quica, rola e explode onde estiver. Segurar o E queima o pavio na mão."
         },
         {
           "icone": "ciclope",
@@ -107,6 +119,58 @@
         {
           "icone": "elmo",
           "texto": "Armeiro e Inventário abrem direto da pausa, e o Capacete Berserker vira um visual por 1.000 moedas."
+        },
+        {
+          "icone": "elmo",
+          "texto": "Traje Berserker: visual novo por 10.000 moedas, liberado depois de derrotar um Ciclope."
+        },
+        {
+          "icone": "elmo",
+          "texto": "Tela Visual refeita: o Freny no centro e uma tela para cada parte (Traje, Elmo, Capa e Torso), com o que você usa, o que pode comprar e o que está bloqueado. A capa agora fica atrás do corpo."
+        },
+        {
+          "icone": "moeda",
+          "texto": "O Armeiro agora é a Armeira: a Rede aparece logo na primeira tela da loja e cada prateleira ganhou ícone. Na pausa, os botões ficaram centralizados e o Guia ganhou rolagem."
+        },
+        {
+          "icone": "espada",
+          "texto": "A espada ficou mais seca e pesada: o corte é instantâneo, com uma meia-lua fina, o jogo para por um instante no impacto (mais no golpe final do combo) e o inimigo pisca em branco."
+        },
+        {
+          "icone": "furia",
+          "texto": "Banners de Double, Triple, Quadra, Penta e Multi Kill quando um golpe, uma granada ou um tiro de escopeta derruba vários de uma vez."
+        },
+        {
+          "icone": "furia",
+          "texto": "O combo cresce, muda de cor, pulsa e treme conforme sobe. Insetos e morcegos sobem o combo pela metade."
+        },
+        {
+          "icone": "inseto",
+          "texto": "Insetos e morcegos ficam mais rápidos ao longo da corrida, até o primeiro Ciclope."
+        },
+        {
+          "icone": "ciclope",
+          "texto": "O Ciclope ri toda vez que joga a bomba."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Ctrl também dá dash no chão, e o narrador dá as boas-vindas: \"Bem-vindo à arena\"."
+        },
+        {
+          "icone": "freny",
+          "texto": "Contas: crie uma com apelido só seu, e-mail e senha, ou jogue como convidado. A conta nova leva junto o progresso e o recorde de convidado."
+        },
+        {
+          "icone": "conquista",
+          "texto": "Perfil novo, no menu e na pausa: abates por inimigo e por arma, tempo de jogo, maiores combos, quedas, noites e Luas de Sangue sobrevividas, moedas e baús."
+        },
+        {
+          "icone": "elmo",
+          "texto": "Página pública no site com o visual do seu Freny e seus recordes. Clique num nome do ranking para ver o perfil."
+        },
+        {
+          "icone": "coracao",
+          "texto": "Amigos: adicione pelo código FRENY-XXXX ou pelo apelido, no jogo ou no site, veja o ranking só de vocês e compare as estatísticas lado a lado."
         },
         {
           "icone": "tecla",

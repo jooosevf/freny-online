@@ -78,19 +78,94 @@
       ]
     },
     {
-      "fase": "Terça, 03/11",
-      "titulo": "Arena mais brava",
+      "fase": "Alpha 0.1.0 · Terça, 03/11",
+      "titulo": "A maior atualização da Arena até agora",
       "status": "proxima",
       "itens": [
         {
+          "icone": "freny",
+          "titulo": "Contas, perfil e amigos",
+          "texto": "Crie sua conta com um apelido só seu ou jogue como convidado: o progresso e o recorde de convidado vão junto quando você cria a conta."
+        },
+        {
+          "icone": "conquista",
+          "titulo": "Perfil completo",
+          "texto": "Abates por inimigo e por arma, tempo de jogo, maiores combos, quedas, noites e Luas de Sangue sobrevividas, moedas e baús. No menu e na pausa."
+        },
+        {
+          "icone": "elmo",
+          "titulo": "Perfil público no site",
+          "texto": "O visual do seu Freny e os seus recordes numa página só sua. Clique em qualquer nome do ranking para ver o perfil."
+        },
+        {
+          "icone": "coracao",
+          "titulo": "Amigos e ranking dos amigos",
+          "texto": "Adicione pelo código FRENY-XXXX ou pelo apelido, no jogo ou no site, veja o ranking só de vocês e compare as estatísticas lado a lado."
+        },
+        {
           "icone": "lua_sangue",
           "titulo": "Lua de Sangue",
-          "texto": "Uma noite em cada três a lua fica vermelha por 30 s (a primeira por volta dos 10 minutos de corrida). Os inimigos ficam 25% mais rápidos, tiram 1 a mais (as bolas de feitiço também) e recuperam 1 de vida a cada 3 s, com olhos vermelhos e um rastro vermelho. O Ciclope também se recupera."
+          "texto": "A lua fica vermelha por 30 s, com música própria (A Lua Rubra), uivos de lobo e uma risada grave. Os inimigos ficam mais rápidos, batem mais forte e se curam. A primeira chega em uns 6 minutos."
+        },
+        {
+          "icone": "lua",
+          "titulo": "Noites mais longas",
+          "texto": "Dia de 1 minuto e noite de 2: a Arena passa mais tempo no escuro."
         },
         {
           "icone": "ciclope",
           "titulo": "Ciclope mais bravo",
-          "texto": "O vômito alaga o chão inteiro, a pancada faz a tela tremer, na Lua de Sangue ele solta raios do olho, e quando morre se desfaz em pedaços. Com ele vivo, os outros inimigos valem 1 ponto."
+          "texto": "O vômito alaga o chão inteiro, a pancada faz a tela tremer, ele ri a cada bomba, solta raios do olho na Lua de Sangue e se desfaz em pedaços quando morre."
+        },
+        {
+          "icone": "tocha",
+          "titulo": "Clima de chefe",
+          "texto": "Tochas vermelhas e música própria (O Olho do Abismo) enquanto o Ciclope está na Arena."
+        },
+        {
+          "icone": "golem",
+          "titulo": "A Arena não para de endurecer",
+          "texto": "Cada Ciclope derrotado deixa os inimigos com mais vida, mais rápidos, atacando mais e em maior número, sem limite. Até onde você aguenta?"
+        },
+        {
+          "icone": "chave",
+          "titulo": "Chave do chefe",
+          "texto": "O primeiro Ciclope da corrida sempre deixa a chave, e os seguintes 25% das vezes."
+        },
+        {
+          "icone": "bau_dourado",
+          "titulo": "Baú dourado",
+          "texto": "Só abre com a chave e guarda as recompensas mais raras, como o Elmo do Ciclope e a Capa dourada."
+        },
+        {
+          "icone": "pocao",
+          "titulo": "Bênçãos",
+          "texto": "Cada baú dourado oferece 3 bênçãos sorteadas. A escolhida vale até o fim da corrida e soma com as outras."
+        },
+        {
+          "icone": "bau",
+          "titulo": "Baú prata",
+          "texto": "O baú comum da Arena agora é prata, para não confundir com o dourado."
+        },
+        {
+          "icone": "diamante",
+          "titulo": "Power-ups raros",
+          "texto": "Às vezes um inimigo deixa um item girando no chão: Insta-kill, Nuke que limpa a tela e Ímã de moedas."
+        },
+        {
+          "icone": "furia",
+          "titulo": "Banners de multi-kill",
+          "texto": "Double, Triple, Quadra, Penta e Multi Kill quando um golpe, uma granada ou um tiro de escopeta derruba vários de uma vez."
+        },
+        {
+          "icone": "furia",
+          "titulo": "Combo com mais impacto",
+          "texto": "O número do combo cresce, muda de cor, pulsa e treme conforme sobe."
+        },
+        {
+          "icone": "espada",
+          "titulo": "Espada mais pesada",
+          "texto": "O corte é instantâneo, com uma meia-lua fina, o jogo para por um instante no impacto e o inimigo pisca em branco."
         },
         {
           "icone": "furia",
@@ -100,7 +175,27 @@
         {
           "icone": "arma",
           "titulo": "Granada com pavio",
-          "texto": "Quica, rola e explode 5 s depois de puxar o pino. Segurar o E queima o pavio na mão."
+          "texto": "Quica, rola e explode 3 s depois de puxar o pino. Segurar o E queima o pavio na mão."
+        },
+        {
+          "icone": "tecla",
+          "titulo": "Dash no chão",
+          "texto": "O Ctrl também dá dash no chão, não só no ar."
+        },
+        {
+          "icone": "rede",
+          "titulo": "Rede",
+          "texto": "Arma nova na tecla G: prende os inimigos por 4 s. O Ciclope só fica mais lento."
+        },
+        {
+          "icone": "hexball",
+          "titulo": "Cajado do Mago",
+          "texto": "Às vezes cai quando um mago morre e deixa o Freny lançar bolas de feitiço por um tempo."
+        },
+        {
+          "icone": "mina",
+          "titulo": "Mina-aranha",
+          "texto": "Um inimigo novo que anda até o Freny e explode. Melhor acertar de longe."
         },
         {
           "icone": "golem_vermelho",
@@ -108,14 +203,49 @@
           "texto": "No máximo 3 Golens Vermelhos, minas com pavio, e o Escudeiro protege a frente toda e vira mais rápido."
         },
         {
+          "icone": "inseto",
+          "titulo": "Enxame cada vez mais rápido",
+          "texto": "Insetos e morcegos aceleram ao longo da corrida, até o primeiro Ciclope."
+        },
+        {
           "icone": "moeda",
-          "titulo": "Pausa e Cosméticos",
-          "texto": "Armeiro e Inventário direto da pausa, e o Capacete Berserker como visual por 1.000 moedas."
+          "titulo": "A Armeira",
+          "texto": "A loja foi refeita: as armas vêm do chão e dos baús, e a Armeira vende melhorias de dano, munição e recarga, níveis 2 e 3, crítico e mais tempo de Fúria. Quem já tinha comprado recebe as moedas de volta."
+        },
+        {
+          "icone": "elmo",
+          "titulo": "Tela Visual nova",
+          "texto": "O Freny no centro e uma tela para Traje, Elmo, Capa e Torso, com o que você usa, o que pode comprar e o que está bloqueado."
+        },
+        {
+          "icone": "elmo",
+          "titulo": "Traje Berserker",
+          "texto": "Um visual inteiro novo por 10.000 moedas, liberado só depois de derrotar um Ciclope."
+        },
+        {
+          "icone": "tocha",
+          "titulo": "Renascer",
+          "texto": "Troque suas melhorias por um bônus permanente e uma estrela ★ ao lado do nome no ranking."
+        },
+        {
+          "icone": "moeda",
+          "titulo": "Missões diárias",
+          "texto": "Três missões novas por dia, iguais para todo mundo. Pagam 50, 100 e 200 moedas."
+        },
+        {
+          "icone": "elmo",
+          "titulo": "Títulos",
+          "texto": "Títulos ao lado do nome no ranking, liberados pelas conquistas, como Matador de Gigantes e Caçador de Magos. Rei da Arena fica com o 1º do Freny."
+        },
+        {
+          "icone": "furia",
+          "titulo": "Três dificuldades",
+          "texto": "Fácil, Médio e Freny. O antigo Difícil agora se chama Freny e continua sendo o ranking oficial."
         },
         {
           "icone": "freny",
           "titulo": "Automático com ranking próprio",
-          "texto": "Corridas no automático têm um ranking separado, rendem 1/3 das moedas e metade do XP."
+          "texto": "Corridas no piloto automático têm um ranking separado, rendem 1/3 das moedas e metade do XP. E o piloto ficou mais esperto: pega o item certo e caça o chefe."
         },
         {
           "icone": "diamante",
@@ -124,106 +254,30 @@
         },
         {
           "icone": "tocha",
-          "titulo": "Trilha sonora nova",
-          "texto": "Música no menu e uma trilha de batalha com coral e tambores na Arena."
+          "titulo": "Trilha sonora Dark Fantasy",
+          "texto": "Música no menu, trilha de batalha com coral e tambores na Arena, e o narrador dá as boas-vindas: \"Bem-vindo à arena\"."
         },
         {
           "icone": "tecla",
-          "titulo": "Controles",
-          "texto": "Teclas de andar, mirar e agachar trocáveis, analógico sem tremer e mouse preso durante o jogo."
+          "titulo": "Controles e menus",
+          "texto": "Teclas de andar, mirar e agachar trocáveis, analógico sem tremer, mouse preso durante o jogo, pausa reorganizada e Guia com rolagem."
         }
       ]
     },
     {
-      "fase": "Terça, 03/11 · Fase 2",
-      "titulo": "Desafios do dia",
-      "status": "proxima",
-      "itens": [
-        {
-          "icone": "moeda",
-          "titulo": "Missões diárias",
-          "texto": "Três missões novas por dia, como derrotar 50 insetos ou passar de 5 mil pontos sem poção, que pagam moedas."
-        },
-        {
-          "icone": "elmo",
-          "titulo": "Títulos",
-          "texto": "Títulos ao lado do nome no ranking, como Rei da Arena, Caçador de Magos e Madrugador."
-        },
-        {
-          "icone": "furia",
-          "titulo": "Estatísticas da conta",
-          "texto": "Inimigos derrotados, maior combo, tempo de jogo e melhor corrida de cada dificuldade."
-        }
-      ]
-    },
-    {
-      "fase": "Terça, 03/11 · Fase 3",
-      "titulo": "Os tesouros do Ciclope",
-      "status": "proxima",
-      "itens": [
-        {
-          "icone": "chave",
-          "titulo": "Chave do chefe",
-          "texto": "Derrotar o Ciclope pode deixar cair uma chave."
-        },
-        {
-          "icone": "bau_dourado",
-          "titulo": "Baú dourado",
-          "texto": "Só abre com a chave e guarda as recompensas mais raras, como o Elmo do Ciclope e a Capa dourada."
-        },
-        {
-          "icone": "tocha",
-          "titulo": "Clima de chefe",
-          "texto": "Tochas vermelhas e música própria (O Olho do Abismo) enquanto o Ciclope está na Arena."
-        }
-      ]
-    },
-    {
-      "fase": "Terça, 03/11 · Fase 4",
-      "titulo": "Mais inimigos e o Armeiro reformulado",
-      "status": "proxima",
-      "itens": [
-        {
-          "icone": "mina",
-          "titulo": "Mina-aranha",
-          "texto": "Anda até o Freny e explode. Melhor acertar de longe."
-        },
-        {
-          "icone": "arma",
-          "titulo": "Armeiro reformulado",
-          "texto": "As armas passam a vir do chão e dos baús. A loja vende melhorias de dano, munição e recarga, níveis 2 e 3, chance de crítico e duração da Fúria. Quem já comprou recebe as moedas de volta."
-        },
-        {
-          "icone": "rede",
-          "titulo": "Rede",
-          "texto": "Arma nova na tecla G que prende os inimigos por alguns segundos."
-        },
-        {
-          "icone": "hexball",
-          "titulo": "Cajado do Mago",
-          "texto": "Às vezes cai quando um mago morre e deixa o Freny lançar bolas de feitiço por um tempo."
-        },
-        {
-          "icone": "freny",
-          "titulo": "Piloto automático mais esperto",
-          "texto": "Pega o item certo, caça o chefe, foge do vômito do Ciclope e sabe andar nos blocos do Poço de Ácido."
-        }
-      ]
-    },
-    {
-      "fase": "Terça, 03/11 · Fase 5",
-      "titulo": "Arena 2: o Poço de Ácido",
-      "status": "proxima",
+      "fase": "Fase 7",
+      "titulo": "O Poço de Ácido",
+      "status": "planejada",
       "itens": [
         {
           "icone": "acido",
-          "titulo": "Poço de Ácido",
-          "texto": "Uma Arena nova, liberada com 50 mil pontos, cheia de piscinas de ácido. As corridas nela valem no mesmo ranking."
+          "titulo": "Arena 2: o Poço de Ácido",
+          "texto": "Uma Arena nova, liberada com 50 mil pontos, cheia de piscinas de ácido. Já está construída e sendo afiada."
         },
         {
           "icone": "tentaculo",
           "titulo": "Tentáculo",
-          "texto": "Sai do ácido e cospe nos jogadores que ficam parados."
+          "texto": "Sai do ácido e cospe em quem fica parado."
         },
         {
           "icone": "rastejante",
@@ -233,109 +287,55 @@
         {
           "icone": "espinho",
           "titulo": "Armadilhas",
-          "texto": "Espinhos que caem do teto e blocos que desmoronam ou se movem."
-        }
-      ]
-    },
-    {
-      "fase": "Terça, 03/11 · Fase 6",
-      "titulo": "Cada corrida diferente",
-      "status": "proxima",
-      "itens": [
-        {
-          "icone": "pocao",
-          "titulo": "Bênçãos",
-          "texto": "No começo da corrida, escolha qualquer uma das 10 bênçãos: mais vida, mais dano, ímã de moedas..."
-        },
-        {
-          "icone": "lua",
-          "titulo": "Mutadores da semana",
-          "texto": "Toda semana uma regra nova para todo mundo, como só espada, inimigos rápidos ou noite eterna."
-        },
-        {
-          "icone": "tocha",
-          "titulo": "Renascer",
-          "texto": "Troque suas melhorias por um bônus permanente e uma estrela ★ ao lado do nome no ranking."
-        },
-        {
-          "icone": "elmo",
-          "titulo": "Visual do Freny",
-          "texto": "Capacetes, capas e cores para deixar o Freny do seu jeito, na aba Cosméticos."
-        }
-      ]
-    },
-    {
-      "fase": "Fase 7",
-      "titulo": "Arte nova: inimigos e armas",
-      "status": "planejada",
-      "itens": [
-        {
-          "icone": "elmo",
-          "titulo": "Capacetes novos",
-          "texto": "Mais capacetes para o visual do Freny."
+          "texto": "Espinhos que caem do teto, plataformas que desmoronam e plataformas que se movem."
         },
         {
           "icone": "acido",
-          "titulo": "Slime de ácido",
-          "texto": "Inimigo novo, com a arte sendo desenhada agora."
+          "titulo": "Lodo ácido e Rato da peste",
+          "texto": "Um se divide em dois menores, o outro solta uma nuvem venenosa."
         },
         {
-          "icone": "inseto",
-          "titulo": "Rato da peste",
-          "texto": "Inimigo novo, com a arte sendo desenhada agora."
-        },
-        {
-          "icone": "arma",
-          "titulo": "Besta e machado de arremesso",
-          "texto": "Duas armas novas, com a arte sendo desenhada agora."
-        },
-        {
-          "icone": "mago",
-          "titulo": "Esqueleto arqueiro",
-          "texto": "Inimigo novo, com a arte sendo desenhada agora."
-        },
-        {
-          "icone": "morcego",
-          "titulo": "Gárgula",
-          "texto": "Inimigo novo, com a arte sendo desenhada agora."
+          "icone": "ciclope",
+          "titulo": "O Arauto do Poço",
+          "texto": "Um chefe de duas fases que sobe do fundo do ácido."
         }
       ]
     },
     {
       "fase": "Fase 8",
-      "titulo": "Contas e amigos",
+      "titulo": "Arsenal e bestas novas",
       "status": "planejada",
       "itens": [
         {
-          "icone": "freny",
-          "titulo": "Entrar ou jogar como convidado",
-          "texto": "Comece sem conta e salve o progresso depois."
+          "icone": "arma",
+          "titulo": "Besta e machado de arremesso",
+          "texto": "Duas armas novas para acertar de longe."
+        },
+        {
+          "icone": "arma",
+          "titulo": "Lança, mangual, chicote e cajado-bomba",
+          "texto": "Mais armas, cada uma com o seu jeito de bater."
+        },
+        {
+          "icone": "golem",
+          "titulo": "Esqueleto arqueiro e gárgula",
+          "texto": "Um atira flechas de longe, a outra fica pousada e mergulha no Freny."
+        },
+        {
+          "icone": "ciclope",
+          "titulo": "Cultista e carniçal",
+          "texto": "O cultista invoca ajuda, o carniçal se alimenta dos mortos para crescer."
         },
         {
           "icone": "elmo",
-          "titulo": "Perfil",
-          "texto": "Seu nome, visual do Freny, títulos e estatísticas num perfil."
-        },
-        {
-          "icone": "diamante",
-          "titulo": "Perfil público",
-          "texto": "Veja o perfil de quem está no ranking."
-        },
-        {
-          "icone": "coracao",
-          "titulo": "Amigos",
-          "texto": "Adicione amigos e compare os recordes."
-        },
-        {
-          "icone": "sol",
-          "titulo": "Mais títulos",
-          "texto": "Títulos novos, conferidos pelo servidor."
+          "titulo": "Capacetes e capas novos",
+          "texto": "Elmo de cruzado, máscara da peste, chifres de demônio, capuz de caçador, capas com desenho, cachecol e ombreiras."
         }
       ]
     },
     {
       "fase": "Fase 9",
-      "titulo": "Animações novas",
+      "titulo": "Animações e a voz da Arena",
       "status": "planejada",
       "itens": [
         {
@@ -347,6 +347,48 @@
           "icone": "escudeiro",
           "titulo": "Escudeiro e Feiticeiro animados",
           "texto": "Os dois ganham animações novas, mais vivas."
+        },
+        {
+          "icone": "furia",
+          "titulo": "Narrador completo",
+          "texto": "A voz da Arena anuncia cada Double, Triple e Penta Kill, a chegada do Ciclope e a Lua de Sangue."
+        },
+        {
+          "icone": "sol",
+          "titulo": "Mais títulos",
+          "texto": "Títulos novos, conferidos pelo servidor, como Madrugador e Imortal da Lua."
+        }
+      ]
+    },
+    {
+      "fase": "Fase 10",
+      "titulo": "A Catedral Afundada",
+      "status": "planejada",
+      "itens": [
+        {
+          "icone": "tocha",
+          "titulo": "Arena 3: a Catedral Afundada",
+          "texto": "Ruínas de uma catedral meio engolida pela terra, com vitrais quebrados e velas que se apagam com o vento."
+        },
+        {
+          "icone": "lua",
+          "titulo": "Sinos da cripta",
+          "texto": "Quando o sino toca, uma horda de mortos sobe do chão. Derrube os sinos antes que toquem."
+        },
+        {
+          "icone": "mago",
+          "titulo": "Freira profana",
+          "texto": "Reza por cima dos outros inimigos e deixa todos mais fortes enquanto estiver viva."
+        },
+        {
+          "icone": "ciclope",
+          "titulo": "O Bispo Carniçal",
+          "texto": "O chefe da Catedral: invoca ossos, prende o Freny em correntes e muda de forma na Lua de Sangue."
+        },
+        {
+          "icone": "bau_dourado",
+          "titulo": "Relíquias amaldiçoadas",
+          "texto": "Itens raros com um bônus forte e uma maldição junto. Vale o risco?"
         }
       ]
     },
@@ -355,6 +397,36 @@
       "titulo": "Ideias para mais adiante",
       "status": "ideia",
       "itens": [
+        {
+          "icone": "chave",
+          "titulo": "Corrida da semana",
+          "texto": "A mesma Arena com os mesmos inimigos na mesma ordem para todo mundo, com ranking próprio: ganha quem joga melhor."
+        },
+        {
+          "icone": "elmo",
+          "titulo": "Temporadas",
+          "texto": "O ranking fecha de tempos em tempos, e os melhores ficam com um visual e um título daquela temporada."
+        },
+        {
+          "icone": "arma",
+          "titulo": "Campo de treino",
+          "texto": "Treine contra qualquer inimigo ou chefe, sem valer pontos."
+        },
+        {
+          "icone": "ciclope",
+          "titulo": "Corrida de chefes",
+          "texto": "Só os chefes, um atrás do outro, com ranking por tempo."
+        },
+        {
+          "icone": "furia",
+          "titulo": "Replay e fantasma do recorde",
+          "texto": "Assista às melhores corridas e jogue contra o fantasma do seu recorde."
+        },
+        {
+          "icone": "lua",
+          "titulo": "Mutadores da semana",
+          "texto": "Uma regra nova por semana, como só espada ou noite eterna, de um jeito que não desequilibre o ranking."
+        },
         {
           "icone": "espada",
           "titulo": "Duelo de pontos 1x1",
@@ -369,6 +441,16 @@
           "icone": "chave",
           "titulo": "Volta da campanha",
           "texto": "As masmorras da campanha voltam, com fases novas."
+        },
+        {
+          "icone": "lua_sangue",
+          "titulo": "Eclipse",
+          "texto": "Um evento raro em que a noite não acaba e todos os inimigos viram versões de Lua de Sangue."
+        },
+        {
+          "icone": "coracao",
+          "titulo": "Clãs",
+          "texto": "Junte-se aos amigos num clã com ranking próprio e um estandarte no perfil."
         },
         {
           "icone": "tecla",
