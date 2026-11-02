@@ -1,5 +1,5 @@
 {
-  "_como_usar": "Um inimigo por entrada, na ordem em que aparecem na Arena. sprite = nome dos PNGs da pasta bestiario/ (<sprite>_anda.png e <sprite>_ataque.png, tiras de quadros lado a lado, em 1x; o site amplia 3x). quadros = quantos quadros tem cada tira. aparece = quando surge na Arena no Médio (no Fácil vem mais tarde, no Difícil e no Freny mais cedo). ataques: [{icone, nome, texto}], icone é um PNG da pasta devlog/. Atualize junto com o Guia do jogo quando mudar algum número.",
+  "_como_usar": "Um inimigo por entrada, na ordem em que aparecem na Arena. sprite = nome dos PNGs da pasta bestiario/ (<sprite>_anda.png e <sprite>_ataque.png, tiras de quadros lado a lado, em 1x; o site amplia 3x). quadros = quantos quadros tem cada tira. aparece = quando surge na Arena no Médio (no Fácil vem mais tarde, no Freny mais cedo). ataques: [{icone, nome, texto}], icone é um PNG da pasta devlog/. Atualize junto com o Guia do jogo quando mudar algum número.",
   "inimigos": [
     {
       "nome": "Inseto",
@@ -101,7 +101,7 @@
       "pontos": 300,
       "moedas": 4,
       "aparece": "Depois de 2 minutos",
-      "faz": "Anda atrás de um escudo de espinhos sempre virado para o Freny. Tudo que vem da frente bate no escudo, até de cima e enquanto ele ataca: são 12 espadadas ou 36 tiros. Pelas costas, 2 espadadas ou 6 tiros acabam com ele. Ele vira rápido (0,4 s, até 0,15 s no difícil) e se afasta quando o Freny chega por trás.",
+      "faz": "Anda atrás de um escudo de espinhos sempre virado para o Freny. Tudo que vem da frente bate no escudo, até de cima e enquanto ele ataca: são 12 espadadas ou 36 tiros. Pelas costas, 2 espadadas ou 6 tiros acabam com ele. Ele vira rápido (0,4 s, até 0,15 s quando a Arena aperta) e se afasta quando o Freny chega por trás.",
       "ataques": [
         {
           "icone": "espada",
