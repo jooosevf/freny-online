@@ -235,6 +235,15 @@
     .road .items b { display: block; color: var(--text); font-size: 16px; }
     .road .items span { padding-top: 0; color: var(--muted); font-size: 15px; line-height: 1.4; }
     .road .feito .items .ic { opacity: .75; }
+    /* a phase can split its items into groups (roadmap.json "grupos"): each one opens and closes */
+    .road .grupo { border-top: 1px solid var(--line); padding: 4px 0; }
+    .road .grupo:first-of-type { border-top: 0; }
+    .road .grupo summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px; padding: 10px 0; font-size: 18px; font-weight: 600; color: var(--text); }
+    .road .grupo summary::-webkit-details-marker { display: none; }
+    .road .grupo summary::before { content: "▸"; color: var(--pink); width: 12px; transition: transform .15s; }
+    .road .grupo[open] summary::before { transform: rotate(90deg); }
+    .road .grupo summary .n { color: var(--muted); font-size: 14px; font-weight: 400; }
+    .road .grupo .items { padding: 4px 0 12px 22px; }
     /* Bestiário: one card per enemy, read from bestiario.json; the sprite walks, and attacks on hover or tap */
     .beasts { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 16px; }
     .beast { border: 2px solid var(--line); background: var(--panel); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
@@ -783,16 +792,28 @@
           head.append(fase, tag);
           card.appendChild(head);
           var h = document.createElement("h3"); h.textContent = f.titulo; card.appendChild(h);
-          var ul = document.createElement("ul"); ul.className = "items";
-          (f.itens || []).forEach(function (it) {
-            var li = document.createElement("li");
-            var t = document.createElement("span");
-            var b = document.createElement("b"); b.textContent = it.titulo;
-            t.append(b, document.createTextNode(it.texto || ""));
-            li.append(sprite(it.icone || "moeda", "ic"), t);
-            ul.appendChild(li);
+          function itemList(itens) {
+            var ul = document.createElement("ul"); ul.className = "items";
+            (itens || []).forEach(function (it) {
+              var li = document.createElement("li");
+              var t = document.createElement("span");
+              var b = document.createElement("b"); b.textContent = it.titulo;
+              t.append(b, document.createTextNode(it.texto || ""));
+              li.append(sprite(it.icone || "moeda", "ic"), t);
+              ul.appendChild(li);
+            });
+            return ul;
+          }
+          if (f.itens) card.appendChild(itemList(f.itens));
+          // "grupos": the phase's items by category, each one collapsible; the first starts open
+          (f.grupos || []).forEach(function (g, gi) {
+            var d = document.createElement("details"); d.className = "grupo"; d.open = gi === 0;
+            var sum = document.createElement("summary");
+            var n = document.createElement("span"); n.className = "n"; n.textContent = (g.itens || []).length + " novidades";
+            sum.append(document.createTextNode(g.titulo), n);
+            d.append(sum, itemList(g.itens));
+            card.appendChild(d);
           });
-          card.appendChild(ul);
           box.appendChild(card);
         });
       }).catch(function () {
