@@ -314,10 +314,10 @@
 
     <aside class="side ranking">
       <h1>Ranking</h1>
-      <p class="rule">Diário e Geral: só corridas manuais na Arena. O ranking oficial é o Geral do Difícil. Automático: corridas no piloto automático.</p>
+      <p class="rule">Diário e Geral: só corridas manuais na Arena. O ranking oficial é o Geral do Freny. Automático: corridas no piloto automático.</p>
       <div class="level">
         <button type="button" id="level-prev" aria-label="Dificuldade anterior">&lt;</button>
-        <span id="level-name">Difícil</span>
+        <span id="level-name">Freny</span>
         <button type="button" id="level-next" aria-label="Próxima dificuldade">&gt;</button>
       </div>
       <div class="tabs">
@@ -488,12 +488,11 @@
 
     // Top 10 from the board the game writes for each ranked difficulty (public read in firestore.rules).
     var FIREBASE = { apiKey: "AIzaSyDf7YvP-lQiMeVfN1bG8dWoahZQtmB0daM", projectId: "the-rise-of-freny" };
-    // < Difícil > picks the difficulty; Diário reads that day's board (Brasília time),
+    // < Freny > picks the difficulty (id hard: the boards kept the old name); Diário reads that day's board (Brasília time),
     // daily_<level>_<yyyymmdd>, Geral the all-time leaderboard_<level>, Automático the autopilot's
     // own board auto_<level> (game PR #167)
     var LEVELS = [
-      { id: "hard", label: "Difícil" },
-      { id: "freny", label: "Freny" },
+      { id: "hard", label: "Freny" },
       { id: "medium", label: "Médio" },
       { id: "easy", label: "Fácil" },
     ];
@@ -600,7 +599,7 @@
 
     // Títulos (the game's PlayerTitles.cs): the "title" field of achievements/{uid}, shown only when
     // it is backed up: a Conquista's title needs that Conquista's signed field in the same document
-    // (firestore.rules checks it too), and "rei" only shows next to whoever is 1st on the Difícil
+    // (firestore.rules checks it too), and "rei" only shows next to whoever is 1st on the Freny board
     // board, all-time or today's. Same keys and names as the game: change them together.
     var TITLES = {
       played: "Gladiador", rei: "Rei da Arena", cyclops: "Matador de Gigantes", supreme: "Caçador de Magos",

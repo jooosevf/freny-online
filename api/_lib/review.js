@@ -44,6 +44,7 @@ export async function keepLog(uid, run, realSeconds, status, note = '') {
     note: String(note).slice(0, 200), gameTime: Number(run.gameTime) || 0, realSeconds,
     killCount: Array.isArray(run.kills) ? run.kills.length : 0,
     kills: cap(run.kills), vitals: cap(run.vitals).slice(0, 200000), flags: cap(run.flags).slice(0, 200),
+    blessings: cap(run.blessings).slice(0, 400),
     createdAt: new Date(),
   });
 }

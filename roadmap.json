@@ -147,7 +147,7 @@
         {
           "icone": "elmo",
           "titulo": "Títulos",
-          "texto": "Títulos ao lado do nome no ranking, liberados pelas conquistas, como Matador de Gigantes e Caçador de Magos. Rei da Arena fica com o 1º do Difícil."
+          "texto": "Títulos ao lado do nome no ranking, liberados pelas conquistas, como Matador de Gigantes e Caçador de Magos. Rei da Arena fica com o 1º do Freny."
         },
         {
           "icone": "furia",
@@ -164,17 +164,32 @@
         {
           "icone": "chave",
           "titulo": "Chave do chefe",
-          "texto": "Derrotar o Ciclope pode deixar cair uma chave."
+          "texto": "O primeiro Ciclope da corrida sempre deixa a chave, e os seguintes 25% das vezes. Cada chave traz um baú dourado novo."
         },
         {
           "icone": "bau_dourado",
           "titulo": "Baú dourado",
-          "texto": "Só abre com a chave e guarda as recompensas mais raras, como o Elmo do Ciclope e a Capa dourada."
+          "texto": "Só abre com a chave. Traz uma bênção à sua escolha e guarda as recompensas mais raras, como o Elmo do Ciclope e a Capa dourada."
         },
         {
           "icone": "tocha",
           "titulo": "Clima de chefe",
           "texto": "Tochas vermelhas e música própria (O Olho do Abismo) enquanto o Ciclope está na Arena."
+        },
+        {
+          "icone": "golem",
+          "titulo": "Inimigos mais fortes",
+          "texto": "Cada Ciclope derrotado deixa os outros inimigos com mais vida até o fim da corrida: +25% nos 4 primeiros e +10% depois, até o máximo de 3x."
+        },
+        {
+          "icone": "bau",
+          "titulo": "Baú prata",
+          "texto": "O baú comum da Arena agora é prata, para não confundir com o dourado."
+        },
+        {
+          "icone": "furia",
+          "titulo": "Três dificuldades",
+          "texto": "Fácil, Médio e Freny. O antigo Difícil agora se chama Freny e continua sendo o ranking oficial."
         }
       ]
     },
@@ -245,7 +260,7 @@
         {
           "icone": "pocao",
           "titulo": "Bênçãos",
-          "texto": "No começo da corrida, escolha qualquer uma das 10 bênçãos: mais vida, mais dano, ímã de moedas... Nada de sorte: a escolha é sua."
+          "texto": "Cada baú dourado oferece 3 bênçãos sorteadas entre as que você ainda não tem: mais vida, mais dano, ímã de moedas... A escolhida vale até o fim da corrida e soma com as outras."
         },
         {
           "icone": "lua",

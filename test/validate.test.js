@@ -160,7 +160,7 @@ test('the week\'s mutator matches the game (WeeklyMutators.cs) and turns on Mond
 
 test('a run with a blessing and a mutator in its log is checked like any other', () => {
   const run = steadyRun('leaderboard_hard', 100, 2);
-  run.blessing = 'strength';
+  run.blessings = [[0, 'strength'], [312, 'vampire']];
   run.mutator = 'giants';
   assert.equal(validateRun(run, run.gameTime), null);
 });

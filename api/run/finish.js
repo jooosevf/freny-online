@@ -53,12 +53,24 @@ export default async function handler(request) {
     }
     await keepLog(req.uid, run, realSeconds, 'accepted');
   }
-  // the blessing and the week's mutator change no points (rules.js): only noted, with a warning when
+  // the blessings and the week's mutator change no points (rules.js): only noted, with a warning when
   // the game's week is not the server's (a wrong clock, or a run across Monday 00:00)
   const week = weeklyMutator(ticket.startedAt);
   const mutator = typeof run.mutator === 'string' ? run.mutator.slice(0, 40) : '';
-  const blessing = typeof run.blessing === 'string' ? run.blessing.slice(0, 40) : '';
+  const blessings = blessingList(run);
   console.log(`accepted ${req.uid} ${run.board} ${run.score} (${run.kills.length} kills, ${realSeconds.toFixed(0)} s` +
-    `, blessing ${blessing || '-'}, mutator ${mutator || '-'}${mutator && mutator !== week ? ' (week: ' + week + ')' : ''})`);
+    `, blessings ${blessings || '-'}, mutator ${mutator || '-'}${mutator && mutator !== week ? ' (week: ' + week + ')' : ''})`);
   return json(200, { sig: await sign(run.board), dailyBoard, dailySig: dailyBoard ? await sign(dailyBoard) : null });
+}
+
+// the run's blessings for the log, "key@seconds": each golden chest adds one, as
+// [[gameSeconds,"key"],...]; a game from before that (Alpha 0.0.2) sends just "blessing":"key"
+function blessingList(run) {
+  if (!Array.isArray(run.blessings)) {
+    return typeof run.blessing === 'string' ? run.blessing.slice(0, 40) : '';
+  }
+  return run.blessings.slice(0, 10)
+    .filter((b) => Array.isArray(b) && typeof b[1] === 'string')
+    .map((b) => `${b[1].slice(0, 40)}@${Number(b[0]) || 0}`)
+    .join(' ');
 }

@@ -14,7 +14,7 @@
         },
         {
           "icone": "pocao",
-          "texto": "Bênçãos: no começo da corrida, escolha uma das 10. Mutadores da semana mudam as regras para todo mundo."
+          "texto": "Bênçãos: cada baú dourado oferece 3, e a escolhida soma com as outras até o fim da corrida. Mutadores da semana mudam as regras para todo mundo."
         },
         {
           "icone": "tocha",
@@ -26,7 +26,19 @@
         },
         {
           "icone": "bau_dourado",
-          "texto": "O Ciclope pode deixar cair uma chave que abre o baú dourado, com o Elmo do Ciclope ou a Capa dourada. Tochas vermelhas e música própria na luta."
+          "texto": "O primeiro Ciclope da corrida sempre deixa a chave do baú dourado, e os seguintes 25% das vezes. O baú traz uma bênção à sua escolha e pode trazer o Elmo do Ciclope ou a Capa dourada. Tochas vermelhas e música própria na luta."
+        },
+        {
+          "icone": "golem",
+          "texto": "Cada Ciclope derrotado deixa os outros inimigos com mais vida até o fim da corrida, até o máximo de 3x."
+        },
+        {
+          "icone": "furia",
+          "texto": "Três dificuldades: Fácil, Médio e Freny. O antigo Difícil agora se chama Freny e continua sendo o ranking oficial."
+        },
+        {
+          "icone": "bau",
+          "texto": "O baú comum da Arena agora é prata, para não confundir com o dourado."
         },
         {
           "icone": "arma",

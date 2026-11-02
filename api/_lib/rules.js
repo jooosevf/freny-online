@@ -5,6 +5,8 @@
 //   LEVELS = ArenaDifficulty.cs (RampFactor, StartAt, UnlockShift)
 //   COMBO_SECONDS = ComboManager.totalTime in "ZE Arena.unity"
 
+// leaderboard_hard is the game's "Freny"; leaderboard_freny was a level of its own, gone from the game
+// and the site, kept here for the Alpha 0.0.2 builds still sending to it
 export const MANUAL_BOARDS = ['leaderboard_hard', 'leaderboard_freny', 'leaderboard_medium', 'leaderboard_easy'];
 // the autopilot's own boards (game PR #167, José 2026-11-01): runs started in Automático, same
 // rules as the manual board of that difficulty, but no daily board and no Conquistas
@@ -64,7 +66,7 @@ export const MAX_SCORE = 1000000000;
 // the same for everyone, by the ISO week in Brasília time (Monday 00:00, UTC-3). None of them changes
 // what a kill is worth, the combo or the spawns, so validateRun needs nothing new; the run's log
 // says which one the game used ("mutator") and finish.js logs it next to this week's. The game also
-// sends the run's Bênção ("blessing"), which changes no points either. Keep the keys, the order and
+// sends the run's Bênçãos ("blessings"), which change no points either. Keep the keys, the order and
 // the sum below the same as the game's.
 export const MUTATORS = [
   'only_sword', 'fast_enemies', 'eternal_night', 'coin_rain', 'giants', 'red_moon', 'arsenal', 'swift_feet',
