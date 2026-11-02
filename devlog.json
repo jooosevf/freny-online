@@ -129,6 +129,10 @@
           "texto": "Traje Berserker: visual novo por 10.000 moedas, liberado depois de derrotar um Ciclope."
         },
         {
+          "icone": "espada",
+          "texto": "A espada ficou mais seca e pesada: o corte é instantâneo, com uma meia-lua fina, o jogo para por um instante no impacto (mais no golpe final do combo) e o inimigo pisca em branco."
+        },
+        {
           "icone": "freny",
           "texto": "Contas: crie uma com apelido só seu, e-mail e senha, ou jogue como convidado. A conta nova leva junto o progresso e o recorde de convidado."
         },
