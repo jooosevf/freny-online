@@ -64,12 +64,22 @@
           "icone": "golem",
           "titulo": "Bestiário no site",
           "texto": "Todos os inimigos, o que cada um faz e como vencer, na aba Bestiário."
+        },
+        {
+          "icone": "conquista",
+          "titulo": "Conquistas",
+          "texto": "As 10 primeiras da Arena, na pausa, e aqui no site quantos % dos jogadores têm cada uma."
+        },
+        {
+          "icone": "sol",
+          "titulo": "Ranking diário",
+          "texto": "Um ranking que zera à meia-noite (horário de Brasília). Todo dia alguém pode ser o primeiro."
         }
       ]
     },
     {
       "fase": "Terça, 03/11",
-      "titulo": "Chega na próxima atualização",
+      "titulo": "Arena mais brava",
       "status": "proxima",
       "itens": [
         {
@@ -99,8 +109,8 @@
         },
         {
           "icone": "moeda",
-          "titulo": "Armeiro novo",
-          "texto": "Loja mais cara, Armeiro e Inventário direto da pausa, e a aba Cosméticos com o Capacete Berserker."
+          "titulo": "Pausa e Cosméticos",
+          "texto": "Armeiro e Inventário direto da pausa, e a aba Cosméticos com o Capacete Berserker."
         },
         {
           "icone": "freny",
@@ -125,24 +135,14 @@
       ]
     },
     {
-      "fase": "Fase 2",
-      "titulo": "Conquistas e desafios do dia",
+      "fase": "Terça, 03/11 · Fase 2",
+      "titulo": "Desafios do dia",
       "status": "proxima",
       "itens": [
-        {
-          "icone": "diamante",
-          "titulo": "Conquistas",
-          "texto": "Uma tela de conquistas no jogo e, aqui no site, quantos % dos jogadores já têm cada uma e quem tem mais."
-        },
         {
           "icone": "moeda",
           "titulo": "Missões diárias",
           "texto": "Três missões novas por dia, como derrotar 50 insetos ou passar de 5 mil pontos sem poção, que pagam moedas."
-        },
-        {
-          "icone": "sol",
-          "titulo": "Ranking diário",
-          "texto": "Além do ranking geral, um ranking que zera à meia-noite (horário de Brasília). Todo dia alguém pode ser o primeiro."
         },
         {
           "icone": "elmo",
@@ -157,9 +157,9 @@
       ]
     },
     {
-      "fase": "Fase 3",
+      "fase": "Terça, 03/11 · Fase 3",
       "titulo": "Os tesouros do Ciclope",
-      "status": "planejada",
+      "status": "proxima",
       "itens": [
         {
           "icone": "chave",
@@ -169,19 +169,19 @@
         {
           "icone": "bau_dourado",
           "titulo": "Baú dourado",
-          "texto": "Só abre com a chave e guarda as recompensas mais raras da Arena."
+          "texto": "Só abre com a chave e guarda as recompensas mais raras, como o Elmo do Ciclope e a Capa dourada."
         },
         {
           "icone": "tocha",
-          "titulo": "Música de chefe",
-          "texto": "Trilha própria e tochas piscando enquanto o Ciclope está na Arena."
+          "titulo": "Clima de chefe",
+          "texto": "Tochas vermelhas e música própria (O Olho do Abismo) enquanto o Ciclope está na Arena."
         }
       ]
     },
     {
-      "fase": "Fase 4",
-      "titulo": "Mais inimigos e o Armeiro turbinado",
-      "status": "planejada",
+      "fase": "Terça, 03/11 · Fase 4",
+      "titulo": "Mais inimigos e o Armeiro reformulado",
+      "status": "proxima",
       "itens": [
         {
           "icone": "mina",
@@ -190,13 +190,13 @@
         },
         {
           "icone": "arma",
-          "titulo": "Armeiro nível 2 e 3",
-          "texto": "Novos níveis de melhoria para pistola, escopeta, espadão e granada."
+          "titulo": "Armeiro reformulado",
+          "texto": "As armas passam a vir do chão e dos baús. A loja vende melhorias de dano, munição e recarga, níveis 2 e 3, chance de crítico e duração da Fúria. Quem já comprou recebe as moedas de volta."
         },
         {
           "icone": "rede",
           "titulo": "Rede",
-          "texto": "Arma nova que prende os inimigos por alguns segundos."
+          "texto": "Arma nova na tecla G que prende os inimigos por alguns segundos."
         },
         {
           "icone": "hexball",
@@ -206,14 +206,14 @@
         {
           "icone": "freny",
           "titulo": "Piloto automático mais esperto",
-          "texto": "Desvia de bolas de feitiço, bebe poção na hora certa e sabe lidar com escudeiros e minas."
+          "texto": "Pega o item certo, caça o chefe, foge do vômito do Ciclope e sabe andar nos blocos do Poço de Ácido."
         }
       ]
     },
     {
-      "fase": "Fase 5",
+      "fase": "Terça, 03/11 · Fase 5",
       "titulo": "Arena 2: o Poço de Ácido",
-      "status": "planejada",
+      "status": "proxima",
       "itens": [
         {
           "icone": "acido",
@@ -238,9 +238,9 @@
       ]
     },
     {
-      "fase": "Fase 6",
+      "fase": "Terça, 03/11 · Fase 6",
       "titulo": "Cada corrida diferente",
-      "status": "planejada",
+      "status": "proxima",
       "itens": [
         {
           "icone": "pocao",
@@ -255,12 +255,98 @@
         {
           "icone": "tocha",
           "titulo": "Renascer",
-          "texto": "Troque suas melhorias por um bônus permanente e uma estrela ao lado do nome."
+          "texto": "Troque suas melhorias por um bônus permanente e uma estrela ★ ao lado do nome no ranking."
         },
         {
           "icone": "elmo",
           "titulo": "Visual do Freny",
-          "texto": "Capacetes, capas e cores para deixar o Freny do seu jeito."
+          "texto": "Capacetes, capas e cores para deixar o Freny do seu jeito, na aba Cosméticos."
+        }
+      ]
+    },
+    {
+      "fase": "Fase 7",
+      "titulo": "Arte nova: inimigos e armas",
+      "status": "planejada",
+      "itens": [
+        {
+          "icone": "elmo",
+          "titulo": "Capacetes novos",
+          "texto": "Mais capacetes para o visual do Freny."
+        },
+        {
+          "icone": "acido",
+          "titulo": "Slime de ácido",
+          "texto": "Inimigo novo, com a arte sendo desenhada agora."
+        },
+        {
+          "icone": "inseto",
+          "titulo": "Rato da peste",
+          "texto": "Inimigo novo, com a arte sendo desenhada agora."
+        },
+        {
+          "icone": "arma",
+          "titulo": "Besta e machado de arremesso",
+          "texto": "Duas armas novas, com a arte sendo desenhada agora."
+        },
+        {
+          "icone": "mago",
+          "titulo": "Esqueleto arqueiro",
+          "texto": "Inimigo novo, com a arte sendo desenhada agora."
+        },
+        {
+          "icone": "morcego",
+          "titulo": "Gárgula",
+          "texto": "Inimigo novo, com a arte sendo desenhada agora."
+        }
+      ]
+    },
+    {
+      "fase": "Fase 8",
+      "titulo": "Contas e amigos",
+      "status": "planejada",
+      "itens": [
+        {
+          "icone": "freny",
+          "titulo": "Entrar ou jogar como convidado",
+          "texto": "Comece sem conta e salve o progresso depois."
+        },
+        {
+          "icone": "elmo",
+          "titulo": "Perfil",
+          "texto": "Seu nome, visual do Freny, títulos e estatísticas num perfil."
+        },
+        {
+          "icone": "diamante",
+          "titulo": "Perfil público",
+          "texto": "Veja o perfil de quem está no ranking."
+        },
+        {
+          "icone": "coracao",
+          "titulo": "Amigos",
+          "texto": "Adicione amigos e compare os recordes."
+        },
+        {
+          "icone": "sol",
+          "titulo": "Mais títulos",
+          "texto": "Títulos novos, conferidos pelo servidor."
+        }
+      ]
+    },
+    {
+      "fase": "Fase 9",
+      "titulo": "Animações novas",
+      "status": "planejada",
+      "itens": [
+        {
+          "icone": "espada",
+          "titulo": "Golpes novos do Freny",
+          "texto": "Animações mais fluidas para os golpes e movimentos."
+        },
+        {
+          "icone": "escudeiro",
+          "titulo": "Escudeiro e Feiticeiro animados",
+          "texto": "Os dois ganham animações novas, mais vivas."
         }
       ]
     },
