@@ -241,11 +241,17 @@
 
     /* Phones and tablets: the game takes the whole screen; ranking sits below it. */
     @media (pointer: coarse) {
-      .top, .foot { display: none; }
+      /* the menu stays on top, as a row of tabs that scrolls sideways if it does not fit */
+      .top { height: 48px; padding: 0 4px; gap: 0; }
+      .top .logo { display: none; }
+      .top nav { margin: 0; width: 100%; gap: 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; justify-content: space-between; }
+      .top nav::-webkit-scrollbar { display: none; }
+      .top nav a { padding: 12px 8px; font-size: 15px; flex: 0 0 auto; }
+      body.on-jogar .foot { display: none; }
       main { display: flex; flex-direction: column; align-items: center; padding: 0 0 24px; gap: 16px; }
       .intro { display: none; }
-      .game { max-width: none; min-width: 0; }
-      #unity-container { width: 100vw; height: 100vh; height: 100dvh; aspect-ratio: auto; border-radius: 0; }
+      .game { max-width: none; min-width: 0; width: 100%; }
+      #unity-container { width: 100vw; height: calc(100vh - 48px); height: calc(100dvh - 48px); aspect-ratio: auto; border-radius: 0; }
       #unity-canvas { touch-action: none; }
       .controls { display: none; }
       #warning { padding: 0 16px; }
@@ -261,8 +267,10 @@
     #unity-container:fullscreen { width: 100vw; height: 100vh; aspect-ratio: auto; border-radius: 0; }
     #unity-container:-webkit-full-screen { width: 100vw; height: 100vh; aspect-ratio: auto; border-radius: 0; }
     @media (pointer: coarse) and (orientation: portrait) {
-      #rotate { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 24px; text-align: center; background: var(--bg); color: var(--muted); font-size: 18px; }
-      #rotate strong { color: var(--pink); font-size: 22px; }
+      /* standing up, the game is a 16:9 box under the menu, so the ranking and the tabs stay in reach */
+      #unity-container { height: 56.25vw; min-height: 220px; }
+      #rotate { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 16px; text-align: center; background: var(--bg); color: var(--muted); font-size: 15px; }
+      #rotate strong { color: var(--pink); font-size: 19px; }
     }
   </style>
 </head>
