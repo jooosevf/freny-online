@@ -376,6 +376,31 @@
       "status": "ideia",
       "itens": [
         {
+          "icone": "chave",
+          "titulo": "Corrida da semana",
+          "texto": "A mesma Arena com os mesmos inimigos na mesma ordem para todo mundo, com ranking próprio: ganha quem joga melhor."
+        },
+        {
+          "icone": "elmo",
+          "titulo": "Temporadas",
+          "texto": "O ranking fecha de tempos em tempos, e os melhores ficam com um visual e um título daquela temporada."
+        },
+        {
+          "icone": "arma",
+          "titulo": "Campo de treino",
+          "texto": "Treine contra qualquer inimigo ou chefe, sem valer pontos."
+        },
+        {
+          "icone": "ciclope",
+          "titulo": "Corrida de chefes",
+          "texto": "Só os chefes, um atrás do outro, com ranking por tempo."
+        },
+        {
+          "icone": "furia",
+          "titulo": "Replay e fantasma do recorde",
+          "texto": "Assista às melhores corridas e jogue contra o fantasma do seu recorde."
+        },
+        {
           "icone": "espada",
           "titulo": "Duelo de pontos 1x1",
           "texto": "Desafie um amigo: os dois jogam a mesma Arena e ganha quem fizer mais pontos."
