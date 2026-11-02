@@ -20,6 +20,13 @@ export const ENEMIES = {
   Shielded_Enemy: { score: 300, unlockAt: 0.4 },
   // first at 50 000 points, then every 100 000 (PR #154); two at once only from 1 000 000
   Cyclops_Boss: { score: 5000, unlockAt: 0, unlockScore: 50000 },
+  // the Mina-aranha: made at runtime from the Golem prefab (ArenaDirector, EnemyTemplates)
+  SpiderMine_Enemy: { score: 250, unlockAt: 0.45 },
+  // the Poço de Ácido (game phase 5): same boards, same pace, its own two enemies
+  // (AcidPitArena.EnemyTable; scoreToAdd in Tentacle.cs / Crawler.cs). The arena only opens after
+  // a 50 000-point run, but that is the player's record, not this run's score: no unlockScore here
+  Tentacle_Enemy: { score: 250, unlockAt: 0 },
+  Crawler_Enemy: { score: 200, unlockAt: 0.15 },
 };
 
 export const LEVELS = {
@@ -46,3 +53,26 @@ export const PEAK_SPAWN_SECONDS = 0.8;
 export const SPARSE_SPAWN_FACTOR = 0.35;
 export const MAX_RUN_SECONDS = 6 * 3600;
 export const MAX_SCORE = 1000000000;
+
+// The game's Mutador da semana (WeeklyMutators.cs): one extra rule for every Arena run of the week,
+// the same for everyone, by the ISO week in Brasília time (Monday 00:00, UTC-3). None of them changes
+// what a kill is worth, the combo or the spawns, so validateRun needs nothing new; the run's log
+// says which one the game used ("mutator") and finish.js logs it next to this week's. The game also
+// sends the run's Bênção ("blessing"), which changes no points either. Keep the keys, the order and
+// the sum below the same as the game's.
+export const MUTATORS = [
+  'only_sword', 'fast_enemies', 'eternal_night', 'coin_rain', 'giants', 'red_moon', 'arsenal', 'swift_feet',
+];
+const FIRST_MONDAY = Date.UTC(2026, 0, 5);   // week 0
+const DAY = 24 * 3600 * 1000;
+
+export function weekIndex(now) {
+  const brasilia = now - 3 * 3600 * 1000;
+  return Math.floor(Math.floor((brasilia - FIRST_MONDAY) / DAY) / 7);
+}
+
+// steps of 5 over 8: all eight before one repeats, never the same two weeks in a row
+export function weeklyMutator(now) {
+  const n = MUTATORS.length;
+  return MUTATORS[(((weekIndex(now) * 5 + 3) % n) + n) % n];
+}

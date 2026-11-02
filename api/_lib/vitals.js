@@ -11,7 +11,7 @@
 // possible but rare, so it goes to José's review instead of being refused.
 
 export const BASE_MAX_HEALTH = 4;          // Player.MaxHealth in "ZE Arena.unity"
-export const MAX_HEALTH = BASE_MAX_HEALTH + 4;   // + FrenyProgress MaxHealth upgrade, 4 levels
+export const MAX_HEALTH = BASE_MAX_HEALTH + 4 + 1;   // + FrenyProgress MaxHealth upgrade, 4 levels, + the Coração extra blessing
 export const ARMOR_MAX = 3;                // Player.ArmorMax
 const MAX_HIT = 10;
 const DEATH_SLACK = 2;                     // game seconds between the last hit and the run's end

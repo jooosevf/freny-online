@@ -10,7 +10,7 @@ function steadyRun(board, count, every, names = ['Bug_Enemy', 'Bat_Enemy']) {
   for (let i = 0; i < count; i++) {
     const name = names[i % names.length];
     kills.push([3 + i * every, name, i]);
-    score += killPoints({ Bug_Enemy: 100, Bat_Enemy: 150, Golem_Red: 500 }[name], i);
+    score += killPoints({ Bug_Enemy: 100, Bat_Enemy: 150, Golem_Red: 500, Tentacle_Enemy: 250, Crawler_Enemy: 200 }[name], i);
   }
   return { board, score, gameTime: 3 + count * every, kills };
 }
@@ -113,4 +113,54 @@ test('the Feiticeiro Supremo only counts after 100 000 points', () => {
   run.gameTime = 401;
   run.score = killPoints(600, 0);
   assert.match(validateRun(run, run.gameTime), /antes de 100000/);
+});
+
+test('the Mina-aranha counts once the arena is past 0.45', () => {
+  const early = steadyRun('leaderboard_medium', 1, 2, ['SpiderMine_Enemy']);
+  early.kills[0][0] = 10;
+  early.gameTime = 11;
+  early.score = killPoints(250, 0);
+  assert.match(validateRun(early, early.gameTime), /cedo/);
+  const late = steadyRun('leaderboard_medium', 1, 2, ['SpiderMine_Enemy']);
+  late.kills[0][0] = 40;
+  late.gameTime = 41;
+  late.score = killPoints(250, 0);
+  assert.equal(validateRun(late, late.gameTime), null);
+});
+
+test("the Poço de Ácido's Tentáculo and Rastejante count, the Rastejante a little into the run", () => {
+  // same boards as the classic arena: a Médio run with both of them in it
+  const run = steadyRun('leaderboard_medium', 60, 2, ['Tentacle_Enemy', 'Bug_Enemy', 'Crawler_Enemy']);
+  // the Rastejante unlocks at 0.15 of the curve: 9 s into a Médio run at the shortest ramp
+  run.kills.forEach((k, i) => { k[0] = 10 + i * 2; });
+  run.gameTime = 10 + 60 * 2;
+  assert.equal(validateRun(run, run.gameTime), null);
+  const early = steadyRun('leaderboard_medium', 1, 2, ['Crawler_Enemy']);
+  assert.match(validateRun(early, early.gameTime), /cedo/);
+  // the Tentáculo comes from the start, on every level
+  const tentacle = steadyRun('leaderboard_easy', 1, 2, ['Tentacle_Enemy']);
+  assert.equal(validateRun(tentacle, tentacle.gameTime), null);
+});
+
+test('the week\'s mutator matches the game (WeeklyMutators.cs) and turns on Monday, Brasília time', async () => {
+  const { weeklyMutator, weekIndex, MUTATORS } = await import('../api/_lib/rules.js');
+  // Sunday 2026-11-01 is week 42: (42 * 5 + 3) % 8 = 5
+  assert.equal(weekIndex(Date.UTC(2026, 10, 1, 12)), 42);
+  assert.equal(weeklyMutator(Date.UTC(2026, 10, 1, 12)), 'red_moon');
+  // still Sunday in Brasília at 02:59 UTC on Monday; the new week at 03:00
+  assert.equal(weeklyMutator(Date.UTC(2026, 10, 2, 2, 59)), 'red_moon');
+  assert.equal(weeklyMutator(Date.UTC(2026, 10, 2, 3, 0)), 'eternal_night');
+  // eight weeks in a row: all eight, no week like the one before
+  const weeks = [];
+  for (let w = 0; w < 8; w++) weeks.push(weeklyMutator(Date.UTC(2026, 10, 2, 12) + w * 7 * 24 * 3600 * 1000));
+  assert.equal(new Set(weeks).size, MUTATORS.length);
+  // and before the first Monday it still lands in the pool
+  assert.ok(MUTATORS.includes(weeklyMutator(Date.UTC(2025, 5, 1))));
+});
+
+test('a run with a blessing and a mutator in its log is checked like any other', () => {
+  const run = steadyRun('leaderboard_hard', 100, 2);
+  run.blessing = 'strength';
+  run.mutator = 'giants';
+  assert.equal(validateRun(run, run.gameTime), null);
 });
