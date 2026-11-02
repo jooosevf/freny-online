@@ -68,8 +68,8 @@
       ]
     },
     {
-      "fase": "Em teste",
-      "titulo": "Na próxima versão",
+      "fase": "Terça, 03/11",
+      "titulo": "Chega na próxima atualização",
       "status": "proxima",
       "itens": [
         {
@@ -80,7 +80,47 @@
         {
           "icone": "ciclope",
           "titulo": "Ciclope mais bravo",
-          "texto": "O vômito alaga o chão inteiro, a pancada faz a tela tremer, na Lua de Sangue ele solta raios do olho, e quando morre se desfaz em pedaços."
+          "texto": "O vômito alaga o chão inteiro, a pancada faz a tela tremer, na Lua de Sangue ele solta raios do olho, e quando morre se desfaz em pedaços. Com ele vivo, os outros inimigos valem 1 ponto."
+        },
+        {
+          "icone": "furia",
+          "titulo": "Fúria na tecla F",
+          "texto": "Com a barra cheia, você escolhe a hora: ela começa com um grito de guerra e a tela treme."
+        },
+        {
+          "icone": "arma",
+          "titulo": "Granada com pavio",
+          "texto": "Quica, rola e explode 5 s depois de puxar o pino. Segurar o E queima o pavio na mão."
+        },
+        {
+          "icone": "golem_vermelho",
+          "titulo": "Golem Vermelho e Escudeiro",
+          "texto": "No máximo 3 Golens Vermelhos, minas com pavio, e o Escudeiro protege a frente toda e vira mais rápido."
+        },
+        {
+          "icone": "moeda",
+          "titulo": "Armeiro novo",
+          "texto": "Loja mais cara, Armeiro e Inventário direto da pausa, e a aba Cosméticos com o Capacete Berserker."
+        },
+        {
+          "icone": "freny",
+          "titulo": "Automático com ranking próprio",
+          "texto": "Corridas no automático têm um ranking separado, rendem 1/3 das moedas e metade do XP."
+        },
+        {
+          "icone": "diamante",
+          "titulo": "Ranking protegido",
+          "texto": "Vida, munição e pontos protegidos contra trapaça, e recordes suspeitos vão para revisão."
+        },
+        {
+          "icone": "tocha",
+          "titulo": "Trilha sonora nova",
+          "texto": "Música no menu e uma trilha de batalha com coral e tambores na Arena."
+        },
+        {
+          "icone": "tecla",
+          "titulo": "Controles",
+          "texto": "Teclas de andar, mirar e agachar trocáveis, analógico sem tremer e mouse preso durante o jogo."
         }
       ]
     },
