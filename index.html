@@ -314,7 +314,7 @@
 
     <aside class="side ranking">
       <h1>Ranking</h1>
-      <p class="rule">Só valem corridas manuais na Arena. O ranking oficial é o do Difícil.</p>
+      <p class="rule">Diário e Geral: só corridas manuais na Arena. O ranking oficial é o Geral do Difícil. Automático: corridas no piloto automático.</p>
       <div class="level">
         <button type="button" id="level-prev" aria-label="Dificuldade anterior">&lt;</button>
         <span id="level-name">Difícil</span>
@@ -323,6 +323,7 @@
       <div class="tabs">
         <button type="button" data-period="daily">Diário</button>
         <button type="button" data-period="all" class="active">Geral</button>
+        <button type="button" data-period="auto">Automático</button>
       </div>
       <ol id="ranking-list"><li class="empty">Carregando...</li></ol>
     </aside>
@@ -488,7 +489,8 @@
     // Top 10 from the board the game writes for each ranked difficulty (public read in firestore.rules).
     var FIREBASE = { apiKey: "AIzaSyDf7YvP-lQiMeVfN1bG8dWoahZQtmB0daM", projectId: "the-rise-of-freny" };
     // < Difícil > picks the difficulty; Diário reads that day's board (Brasília time),
-    // daily_<level>_<yyyymmdd>, Geral the all-time leaderboard_<level>
+    // daily_<level>_<yyyymmdd>, Geral the all-time leaderboard_<level>, Automático the autopilot's
+    // own board auto_<level> (game PR #167)
     var LEVELS = [
       { id: "hard", label: "Difícil" },
       { id: "freny", label: "Freny" },
@@ -505,7 +507,7 @@
     }
     function currentBoard() {
       var level = LEVELS[levelIndex].id;
-      return period === "daily" ? "daily_" + level + "_" + today() : "leaderboard_" + level;
+      return period === "daily" ? "daily_" + level + "_" + today() : (period === "auto" ? "auto_" : "leaderboard_") + level;
     }
     function switchBoard() {
       document.getElementById("level-name").textContent = LEVELS[levelIndex].label;

@@ -15,7 +15,7 @@ export default async function handler(request) {
   for (const board of BOARDS) {
     boards[board] = await listDocs(board, 'score', 15);
     const daily = dailyBoardOf(board, Date.now());
-    boards[daily] = await listDocs(daily, 'score', 15);
+    if (daily) boards[daily] = await listDocs(daily, 'score', 15);
   }
   return json(200, {
     pending: await listDocs('pending', 'score', 100),

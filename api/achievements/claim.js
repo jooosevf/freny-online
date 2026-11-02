@@ -2,6 +2,7 @@ import { json, readRequest, scoreKey } from '../_lib/http.js';
 import { readRunToken } from '../_lib/run-token.js';
 import { sha256Hex } from '../_lib/crypto.js';
 import { validateRun } from '../_lib/validate.js';
+import { isAutoBoard } from '../_lib/rules.js';
 import { earnedAchievements } from '../_lib/achievements.js';
 
 export const config = { runtime: 'edge' };
@@ -20,6 +21,7 @@ export default async function handler(request) {
   const ticket = await readRunToken(key, run.token);
   if (!ticket || ticket.uid !== req.uid) return json(403, { error: 'partida sem ticket válido' });
   if (ticket.board !== run.board) return json(403, { error: 'ticket de outro ranking' });
+  if (isAutoBoard(run.board)) return json(403, { error: 'o automático não ganha conquistas' });
 
   const reason = validateRun(run, (Date.now() - ticket.startedAt) / 1000);
   if (reason) {

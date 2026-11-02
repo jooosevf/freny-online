@@ -1,5 +1,5 @@
 import {
-  BOARDS, ENEMIES, LEVELS, MIN_RAMP_SECONDS, COMBO_SECONDS, MAX_GAME_SPEED,
+  BOARDS, isAutoBoard, ENEMIES, LEVELS, MIN_RAMP_SECONDS, COMBO_SECONDS, MAX_GAME_SPEED,
   KILL_WINDOW_SECONDS, KILL_POOL, PEAK_SPAWN_SECONDS, SPARSE_SPAWN_FACTOR, MAX_RUN_SECONDS, MAX_SCORE,
 } from './rules.js';
 
@@ -39,8 +39,10 @@ export function maxKillsInWindow(board, t) {
 }
 
 // Today's board for an all-time one: leaderboard_hard -> daily_hard_20261029, by Brasília time
-// (UTC-3, no daylight saving), the same day the site's Diário tab reads.
+// (UTC-3, no daylight saving), the same day the site's Diário tab reads. The autopilot's boards
+// have none (null).
 export function dailyBoardOf(board, now) {
+  if (isAutoBoard(board)) return null;
   const day = new Date(now - 3 * 3600 * 1000).toISOString().slice(0, 10).replace(/-/g, '');
   return 'daily_' + board.replace('leaderboard_', '') + '_' + day;
 }

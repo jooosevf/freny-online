@@ -60,5 +60,5 @@ export default async function handler(request) {
   const blessing = typeof run.blessing === 'string' ? run.blessing.slice(0, 40) : '';
   console.log(`accepted ${req.uid} ${run.board} ${run.score} (${run.kills.length} kills, ${realSeconds.toFixed(0)} s` +
     `, blessing ${blessing || '-'}, mutator ${mutator || '-'}${mutator && mutator !== week ? ' (week: ' + week + ')' : ''})`);
-  return json(200, { sig: await sign(run.board), dailyBoard, dailySig: await sign(dailyBoard) });
+  return json(200, { sig: await sign(run.board), dailyBoard, dailySig: dailyBoard ? await sign(dailyBoard) : null });
 }

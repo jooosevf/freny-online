@@ -5,7 +5,12 @@
 //   LEVELS = ArenaDifficulty.cs (RampFactor, StartAt, UnlockShift)
 //   COMBO_SECONDS = ComboManager.totalTime in "ZE Arena.unity"
 
-export const BOARDS = ['leaderboard_hard', 'leaderboard_freny', 'leaderboard_medium', 'leaderboard_easy'];
+export const MANUAL_BOARDS = ['leaderboard_hard', 'leaderboard_freny', 'leaderboard_medium', 'leaderboard_easy'];
+// the autopilot's own boards (game PR #167, José 2026-11-01): runs started in Automático, same
+// rules as the manual board of that difficulty, but no daily board and no Conquistas
+export const AUTO_BOARDS = MANUAL_BOARDS.map((b) => b.replace('leaderboard_', 'auto_'));
+export const BOARDS = [...MANUAL_BOARDS, ...AUTO_BOARDS];
+export const isAutoBoard = (board) => AUTO_BOARDS.includes(board);
 
 export const ENEMIES = {
   Bug_Enemy: { score: 100, unlockAt: 0 },
@@ -35,6 +40,7 @@ export const LEVELS = {
   leaderboard_hard: { rampFactor: 0.7, startAt: 0.15, unlockShift: -0.1, spawnIntervalFactor: 0.8 },
   leaderboard_freny: { rampFactor: 0.5, startAt: 0.3, unlockShift: -0.2, spawnIntervalFactor: 0.6 },
 };
+for (const board of AUTO_BOARDS) LEVELS[board] = LEVELS[board.replace('auto_', 'leaderboard_')];
 
 // the shortest ramp the Tuning slider allows (Tuning.RampSeconds, 60..600 s, 300 by default)
 export const MIN_RAMP_SECONDS = 60;

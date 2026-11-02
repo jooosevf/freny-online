@@ -164,3 +164,12 @@ test('a run with a blessing and a mutator in its log is checked like any other',
   run.mutator = 'giants';
   assert.equal(validateRun(run, run.gameTime), null);
 });
+
+test('the autopilot boards follow the manual rules, with no daily board', async () => {
+  const { dailyBoardOf } = await import('../api/_lib/validate.js');
+  const run = steadyRun('auto_hard', 100, 2);
+  assert.equal(validateRun(run, run.gameTime), null);
+  assert.equal(dailyBoardOf('auto_hard', Date.now()), null);
+  assert.match(dailyBoardOf('leaderboard_hard', Date.now()), /^daily_hard_20\d{6}$/);
+  assert.match(validateRun({ ...run, board: 'auto_nightmare' }, run.gameTime), /desconhecido/);
+});
