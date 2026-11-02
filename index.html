@@ -1020,8 +1020,10 @@
       canvas.width = canvas.height = 140;
       canvas.setAttribute("role", "img");
       canvas.setAttribute("aria-label", "O Freny de " + p.apelido);
-      var helmet = LOOK_HELMET[p.helmet], cape = LOOK_CAPE[p.cape], color = LOOK_COLOR[p.color];
-      Promise.all([lookImage("freny"), color ? lookImage("shirt") : null, helmet ? lookImage("helmet_" + helmet[0]) : null]).then(function (layers) {
+      // the Traje Berserker is a whole body with the broken helmet: no shirt or other helmet over it
+      var suit = p.suit === "suit.berserker";
+      var helmet = suit ? ["berserker"] : LOOK_HELMET[p.helmet], cape = LOOK_CAPE[p.cape], color = suit ? null : LOOK_COLOR[p.color];
+      Promise.all([lookImage(suit ? "traje" : "freny"), color ? lookImage("shirt") : null, helmet ? lookImage("helmet_" + helmet[0]) : null]).then(function (layers) {
         var c = canvas.getContext("2d");
         if (cape) {
           c.fillStyle = cape[0];
@@ -1046,9 +1048,10 @@
     }
     function lookText(p) {
       var parts = [];
-      if (LOOK_HELMET[p.helmet]) parts.push(LOOK_HELMET[p.helmet][1]);
+      if (p.suit === "suit.berserker") parts.push("Traje Berserker");
+      else if (LOOK_HELMET[p.helmet]) parts.push(LOOK_HELMET[p.helmet][1]);
       if (LOOK_CAPE[p.cape]) parts.push(LOOK_CAPE[p.cape][2]);
-      if (LOOK_COLOR[p.color]) parts.push("Camisa " + LOOK_COLOR[p.color][1].toLowerCase());
+      if (p.suit !== "suit.berserker" && LOOK_COLOR[p.color]) parts.push("Camisa " + LOOK_COLOR[p.color][1].toLowerCase());
       return parts.length ? parts.join(" · ") : "Visual original";
     }
 

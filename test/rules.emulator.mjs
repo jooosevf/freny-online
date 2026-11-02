@@ -56,7 +56,7 @@ for (const k of ['runsManual', 'runsAuto', 'secManual', 'secAuto', 'longestRun',
 
 const STAMP = { times: ['criadoEm'] };
 const perfil = (nick, code, extra = {}) => ({
-  apelido: nick, chave: nick, codigo: code, helmet: '', cape: '', color: '', rebirths: 0,
+  apelido: nick, chave: nick, codigo: code, helmet: '', cape: '', color: '', suit: '', rebirths: 0,
   bestEasy: 0, bestMedium: 0, bestHard: 0, sigEasy: '', sigMedium: '', sigHard: '',
   runsManual: 1, runsAuto: 0, secManual: 1, secAuto: 0, longestRun: 1, kills: 1, deaths: 1, bestCombo: 10,
   k_cyclops: 0, k_supreme: 0, nights: 0, bloodMoons: 0, chests: 0, coinsEarned: 0, ...extra,
