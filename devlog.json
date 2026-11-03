@@ -50,7 +50,7 @@
         },
         {
           "icone": "freny",
-          "texto": "Piloto automático mais esperto: pega o item certo e caça o chefe."
+          "texto": "Piloto automático mais esperto: pega o item certo, caça o chefe, revida em quem encosta nele (até contra o Ciclope), desvia melhor dos feitiços, foge da mina-aranha e da própria granada, e não larga a briga para buscar barril longe."
         },
         {
           "icone": "lua_sangue",
@@ -179,6 +179,10 @@
         {
           "icone": "lua",
           "texto": "Trilha sonora nova no clima Dark Fantasy: o menu principal ganha música (O Despertar, com violão, violoncelo e coral) e a Arena uma trilha de batalha com coral, tambores de guerra e metais (Arena de Sangue)."
+        },
+        {
+          "icone": "tecla",
+          "texto": "O aviso \"Os inimigos ficaram mais fortes\" não fica mais escondido atrás da conquista, e \"Precisa da chave\" some ao abrir o baú dourado."
         }
       ]
     },
