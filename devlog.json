@@ -26,7 +26,7 @@
         },
         {
           "icone": "bau_dourado",
-          "texto": "O primeiro Ciclope da corrida sempre deixa a chave do baú dourado, e os seguintes 25% das vezes. O baú traz uma bênção à sua escolha e pode trazer o Elmo do Ciclope ou a Capa dourada. Tochas vermelhas e música própria na luta."
+          "texto": "O primeiro Ciclope da corrida sempre deixa a chave do baú dourado, e os seguintes 25% das vezes. O baú traz uma bênção à sua escolha. Tochas vermelhas e música própria na luta."
         },
         {
           "icone": "golem",
@@ -126,7 +126,7 @@
         },
         {
           "icone": "elmo",
-          "texto": "Tela Visual refeita: o Freny no centro e uma tela para cada parte (Traje, Elmo, Capa e Torso), com o que você usa, o que pode comprar e o que está bloqueado. A capa agora fica atrás do corpo."
+          "texto": "Tela Visual refeita: o Freny no centro e uma tela para Traje, Elmo e Torso, com o que você usa e o que pode comprar. Com o Traje, o resto fica bloqueado."
         },
         {
           "icone": "moeda",
@@ -182,7 +182,7 @@
         },
         {
           "icone": "tecla",
-          "texto": "O aviso \"Os inimigos ficaram mais fortes\" não fica mais escondido atrás da conquista, e \"Precisa da chave\" some ao abrir o baú dourado."
+          "texto": "O aviso \"Os inimigos ficaram mais fortes\" não fica mais escondido atrás da conquista, e \"Precisa da chave\" some ao abrir o baú dourado. No fim da corrida do Automático com recorde, o botão de salvar não cobre mais Jogar agora e Menu, e \"[Tab] Ranking\" não fica mais em cima da versão."
         }
       ]
     },
