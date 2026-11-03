@@ -1520,6 +1520,17 @@
     window.addEventListener("hashchange", showPage);
     showPage();
     window.addEventListener("focus", refreshRanking);
+
+    // While the game is on screen, Ctrl/Alt + a key belongs to the game: Ctrl is the dash, and Ctrl+D
+    // (dash while running right) opened the bookmarks dialog and stopped the game. preventDefault keeps
+    // the browser's shortcut off; Unity still gets the key. Text fields keep their own shortcuts, and
+    // the ones the browser reserves (Ctrl+W, Ctrl+T, Ctrl+N) can't be blocked by any page.
+    window.addEventListener("keydown", function (e) {
+      if (!document.body.classList.contains("on-jogar")) return;
+      var t = e.target;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      if ((e.ctrlKey || e.metaKey || e.altKey) && e.key && e.key.length === 1) e.preventDefault();
+    }, true);
   </script>
 </body>
 </html>
