@@ -79,7 +79,7 @@
     },
     {
       "fase": "Alpha 0.1.0 · Terça, 03/11",
-      "titulo": "A maior atualização da Arena até agora: 43 novidades",
+      "titulo": "A maior atualização da Arena até agora: 44 novidades",
       "status": "proxima",
       "grupos": [
         {
@@ -258,7 +258,7 @@
             {
               "icone": "bau_dourado",
               "titulo": "Baú dourado",
-              "texto": "Só abre com a chave e guarda moedas, diamantes e uma bênção à sua escolha."
+              "texto": "Só abre com a chave do chefe e traz uma bênção à sua escolha."
             },
             {
               "icone": "pocao",
@@ -284,6 +284,11 @@
               "icone": "moeda",
               "titulo": "A Armeira",
               "texto": "A loja foi refeita: as armas vêm do chão e dos baús, e a Armeira vende melhorias de dano, munição e recarga, níveis 2 e 3, crítico e mais tempo de Fúria. Quem já tinha comprado recebe as moedas de volta."
+            },
+            {
+              "icone": "conquista",
+              "titulo": "Conquistas novas e mais difíceis",
+              "texto": "Agora são 13: Quinta Marcha pede combo 50x, e chegam Caça-Ciclopes, Exterminador e Maratonista, cada uma com seu título."
             }
           ]
         },
@@ -394,7 +399,7 @@
         {
           "icone": "elmo",
           "titulo": "Capacetes e capas novos",
-          "texto": "Elmo de cruzado, máscara da peste, chifres de demônio, capuz de caçador, capas com desenho, cachecol e ombreiras."
+          "texto": "Elmo do Ciclope e Capa dourada no baú dourado, torsos Branco e Dourado, elmo de cruzado, máscara da peste, chifres de demônio, capuz de caçador, capas, cachecol e ombreiras."
         }
       ]
     },
