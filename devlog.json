@@ -190,6 +190,10 @@
         {
           "icone": "tecla",
           "texto": "Ctrl, Alt e Cmd com uma letra não abrem mais os atalhos do navegador durante o jogo: o dash correndo para a direita (Ctrl+D) abria os favoritos e parava o jogo."
+        },
+        {
+          "icone": "moeda",
+          "texto": "Wipe da Alpha 0.1.0: moedas, melhorias, estatísticas, conquistas e rankings recomeçam do zero para todo mundo. Contas, apelidos e amigos continuam; quem tem conta só precisa entrar de novo."
         }
       ]
     },

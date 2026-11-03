@@ -467,6 +467,32 @@
     var loading = document.getElementById("loading");
     var fill = document.getElementById("bar-fill");
 
+    // Wipe (José, 2026-11-03): progress, coins, upgrades, stats and achievements start over for
+    // everyone. Firestore was cleared by hand, but the game keeps its save in this browser too
+    // (Unity's PlayerPrefs and files live in the IndexedDB database "/idbfs") and would upload it
+    // again. So once per WIPE id the site deletes that database before the game starts. Accounts
+    // stay: a player with an email account just logs in again. Bump WIPE for the next wipe.
+    var WIPE = "2026-11-03";
+    function wipeLocalSave(done) {
+      var key = "freny.wipe";
+      var seen = null;
+      try { seen = localStorage.getItem(key); } catch (e) {}
+      if (seen === WIPE || !window.indexedDB) return done();
+      var finished = false;
+      function finish() {
+        if (finished) return;
+        finished = true;
+        try { localStorage.setItem(key, WIPE); } catch (e) {}
+        done();
+      }
+      try {
+        var req = indexedDB.deleteDatabase("/idbfs");
+        req.onsuccess = req.onerror = finish;
+        req.onblocked = function () { console.warn("wipe: another tab still has the game open"); };
+      } catch (e) { finish(); }
+      setTimeout(finish, 4000); // never hold the game back for long
+    }
+
     var script = document.createElement("script");
     script.src = buildUrl + "/WebGL.loader.js";
     script.onload = function () {
@@ -481,7 +507,7 @@
         document.getElementById("warning").textContent = String(err);
       });
     };
-    document.body.appendChild(script);
+    wipeLocalSave(function () { document.body.appendChild(script); });
 
     // Phones: full screen of the game container (not the page, so the ranking below stays out of it).
     // The first tap on the game enters it, and the button brings it back after the player leaves it.
