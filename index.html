@@ -451,6 +451,12 @@
         if (type === "error") document.getElementById("warning").textContent = msg;
         else console.warn(msg);
       },
+      // the browser can refuse the mouse lock (Esc spam, tab in the background, iframe): Unity would
+      // stop the page with an alert(); the game just goes on with a free mouse instead
+      errorHandler: function (message) {
+        if (/pointer ?lock|WrongDocumentError/i.test(String(message))) { console.warn(message); return true; }
+        return false;
+      },
     };
     // phones: cap the render resolution so the game stays smooth on high-density screens
     if (matchMedia("(pointer: coarse)").matches) {
