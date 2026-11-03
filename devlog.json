@@ -17,6 +17,10 @@
           "texto": "Renascer: troque suas melhorias por um bônus permanente e uma ★ ao lado do nome."
         },
         {
+          "icone": "conquista",
+          "texto": "Conquistas remapeadas, agora 13: Quinta Marcha pede combo 50x, Escudo pra Quê? pede 10 Escudeiros pelas costas na mesma corrida, e chegam Caça-Ciclopes (3 Ciclopes numa corrida), Exterminador (500 inimigos) e Maratonista (30 minutos vivo), cada uma com título."
+        },
+        {
           "icone": "diamante",
           "texto": "Power-ups raros: às vezes um inimigo deixa um item girando no chão. Insta-kill deixa todos com 1 coração por 10 s, Nuke limpa a tela (menos o Ciclope) e Ímã puxa moedas e itens por 10 s."
         },
