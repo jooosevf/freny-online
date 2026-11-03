@@ -198,6 +198,10 @@
         {
           "icone": "moeda",
           "texto": "Moedas e pontos ganharam contorno escuro e agora dá para ler de dia. No HUD as moedas ficam curtas (1k, 1.2k, 10k, 1m), e a pausa mostra o número exato."
+        },
+        {
+          "icone": "conquista",
+          "texto": "Site: nova aba Feedback (freny-online.vercel.app/feedback) para mandar bugs, ideias e elogios direto para o time."
         }
       ]
     },
