@@ -78,9 +78,9 @@
       ]
     },
     {
-      "fase": "Alpha 0.1.0 · Terça, 03/11",
+      "fase": "Alpha 0.1.0 · 03/11",
       "titulo": "A maior atualização da Arena até agora: 44 novidades",
-      "status": "proxima",
+      "status": "feito",
       "grupos": [
         {
           "titulo": "Contas, amigos e ranking",
@@ -332,12 +332,13 @@
             }
           ]
         }
-      ]
+      ],
+      "versao": "Alpha 0.1.0"
     },
     {
       "fase": "Fase 7",
       "titulo": "O Poço de Ácido",
-      "status": "planejada",
+      "status": "proxima",
       "itens": [
         {
           "icone": "acido",
