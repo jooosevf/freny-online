@@ -6,7 +6,7 @@ import { dailyBoardOf } from '../_lib/validate.js';
 
 export const config = { runtime: 'edge' };
 
-// admin.html: the runs waiting for review, the banned accounts, and the top of every board
+// admin.html: the runs waiting for review, the banned accounts, the newest feedback, and the top of every board
 // (all-time and today's).
 export default async function handler(request) {
   const req = await readAdmin(request);
@@ -20,6 +20,7 @@ export default async function handler(request) {
   return json(200, {
     pending: await listDocs('pending', 'score', 100),
     bans: await listDocs('bans', null, 200),
+    feedback: await listDocs('feedback', 'criadoEm', 100),
     boards,
   });
 }

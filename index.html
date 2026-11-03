@@ -152,6 +152,23 @@
     .pf-stats th:first-child, .pf-stats td:first-child { text-align: left; color: var(--muted); font-weight: 400; }
     .pf-stats .ahead { color: #FFD84A; }
     .pf-form { display: grid; gap: 8px; max-width: 360px; }
+    /* Feedback */
+    .fb-form { display: grid; gap: 18px; max-width: 620px; margin-top: 20px; }
+    .fb-form label.t { display: block; color: var(--text); font-size: 16px; margin-bottom: 6px; }
+    .fb-form .opt { color: var(--muted); font-size: 14px; }
+    .fb-kinds, .fb-stars { display: flex; flex-wrap: wrap; gap: 8px; }
+    .fb-kinds button { flex: 1 1 120px; padding: 10px 8px; }
+    .fb-kinds button.on, .fb-stars button.on { border-color: var(--pink); color: var(--pink); }
+    .fb-stars button { width: 44px; padding: 6px 0; font-size: 22px; line-height: 1; color: var(--muted); }
+    .fb-form textarea, .fb-form input[type=text] { width: 100%; box-sizing: border-box; font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; }
+    .fb-form textarea { min-height: 150px; resize: vertical; }
+    .fb-form .count { text-align: right; font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .fb-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .fb-form .send { justify-self: start; padding: 10px 28px; font-size: 18px; border-color: var(--pink); }
+    .fb-msg { min-height: 22px; color: var(--pink); }
+    .fb-done { border: 1px solid var(--line); border-radius: 6px; padding: 24px; margin-top: 20px; background: var(--panel); }
+    .fb-done h2 { margin-top: 0; }
+    .fb-done p { margin-bottom: 14px; }
     .pf-form input, .pf-add input { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px; min-width: 0; }
     .pf-msg { color: var(--pink); min-height: 22px; font-size: 15px; margin: 8px 0; }
     .pf-add { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
@@ -320,6 +337,7 @@
       <a href="#bestiario" data-page="bestiario">Bestiário</a>
       <a href="#roadmap" data-page="roadmap">Roadmap</a>
       <a href="#devlog" data-page="devlog">Devlog</a>
+      <a href="#feedback" data-page="feedback">Feedback</a>
     </nav>
   </header>
 
@@ -414,6 +432,17 @@
     <div id="devlog-list"><p>Carregando...</p></div>
   </section>
 
+  <section class="page" id="page-feedback" hidden>
+    <div class="devlog-hero">
+      <h1>Feedback</h1>
+      <p>Achou um bug, teve uma ideia ou quer dizer o que achou do jogo? Escreva aqui. Toda mensagem é lida pelo time, e muita coisa do Roadmap nasceu assim.</p>
+      <div class="stage" aria-hidden="true">
+        <i class="spr tocha"></i><i class="spr freny"></i><i class="spr morcego"></i>
+      </div>
+    </div>
+    <div id="feedback-box"></div>
+  </section>
+
   <footer class="foot">
     <div class="in">
       <a href="#jogar"><img class="logo" src="TemplateData/title.png" alt="The Rise of Freny"></a>
@@ -425,6 +454,7 @@
         <a href="#bestiario">Bestiário</a>
         <a href="#roadmap">Roadmap</a>
         <a href="#devlog">Devlog</a>
+        <a href="#feedback">Feedback</a>
       </nav>
       <span class="ver">The Rise of Freny · <b id="foot-ver">Alpha</b> · © 2026</span>
     </div>
@@ -1518,8 +1548,100 @@
     // the tick itself is free; it only reads when the board is shown and the last load is a minute old
     setInterval(refreshRanking, 5000);
 
-    // pages: #sobre, #jogar (the game), #conquistas, #perfil, #perfil/<apelido>, #bestiario, #roadmap, #devlog
-    var PAGES = ["sobre", "jogar", "conquistas", "perfil", "bestiario", "roadmap", "devlog"];
+    // ---- Feedback (#feedback, also /feedback): sent to /api/feedback, which stores it in Firestore
+    // with the server's account (players can't read the collection). Signed in, the apelido goes along.
+    var FB_KINDS = [["bug", "🐞 Bug"], ["ideia", "💡 Ideia"], ["elogio", "❤ Elogio"], ["outro", "💬 Outro"]];
+    var fbShown = false;
+    function showFeedback(force) {
+      var box = document.getElementById("feedback-box");
+      if (fbShown && !force) return;
+      fbShown = true;
+      box.innerHTML = "";
+      var form = el("form", "fb-form");
+      var kind = null, stars = 0;
+
+      var kWrap = el("div"), kRow = el("div", "fb-kinds");
+      kWrap.append(el("label", "t", "Sobre o quê?"), kRow);
+      FB_KINDS.forEach(function (k) {
+        var b = el("button", "", k[1]); b.type = "button";
+        b.onclick = function () { kind = k[0]; kRow.querySelectorAll("button").forEach(function (o) { o.classList.toggle("on", o === b); }); };
+        kRow.appendChild(b);
+      });
+
+      var sWrap = el("div"), sRow = el("div", "fb-stars");
+      var sLabel = el("label", "t", "Que nota você dá para o jogo? "); sLabel.appendChild(el("span", "opt", "(opcional)"));
+      sWrap.append(sLabel, sRow);
+      for (var i = 1; i <= 5; i++) (function (n) {
+        var b = el("button", "", "★"); b.type = "button"; b.setAttribute("aria-label", n + (n > 1 ? " estrelas" : " estrela"));
+        b.onclick = function () {
+          stars = stars === n ? 0 : n;
+          sRow.querySelectorAll("button").forEach(function (o, j) { o.classList.toggle("on", j < stars); });
+        };
+        sRow.appendChild(b);
+      })(i);
+
+      var tWrap = el("div");
+      var text = el("textarea"); text.id = "fb-texto"; text.maxLength = 2000; text.required = true;
+      text.placeholder = "Conte o que aconteceu ou o que você gostaria de ver. Para bugs, diga o que estava fazendo e se foi no PC ou no celular.";
+      var count = el("div", "count", "0 / 2000");
+      text.oninput = function () { count.textContent = text.value.length + " / 2000"; };
+      var tLabel = el("label", "t", "Seu feedback"); tLabel.htmlFor = "fb-texto";
+      tWrap.append(tLabel, text, count);
+
+      var cWrap = el("div");
+      var contact = el("input"); contact.type = "text"; contact.id = "fb-contato"; contact.maxLength = 120;
+      contact.placeholder = "Email, Discord ou Instagram, se quiser resposta";
+      var cLabel = el("label", "t", "Contato "); cLabel.htmlFor = "fb-contato"; cLabel.appendChild(el("span", "opt", "(opcional)"));
+      cWrap.append(cLabel, contact);
+
+      var hp = el("input", "hp"); hp.type = "text"; hp.name = "site"; hp.tabIndex = -1; hp.autocomplete = "off"; hp.setAttribute("aria-hidden", "true");
+      var who = el("p", "opt", "");
+      var send = el("button", "send", "Enviar feedback"); send.type = "submit";
+      var msg = el("div", "fb-msg");
+      form.append(kWrap, sWrap, tWrap, cWrap, hp, who, send, msg);
+      box.appendChild(form);
+
+      if (session) {
+        who.textContent = "Enviando com a sua conta.";
+        fsGet("perfis/" + session.uid).then(function (p) { if (p && p.apelido) who.textContent = "Enviando como " + p.apelido + "."; }).catch(function () {});
+      } else who.textContent = "Você está enviando como convidado. Entre no Perfil se quiser que o seu apelido vá junto.";
+
+      form.onsubmit = function (e) {
+        e.preventDefault();
+        if (!kind) { msg.textContent = "Escolha sobre o quê é o feedback."; return; }
+        if (text.value.trim().length < 5) { msg.textContent = "Escreva um pouco mais."; text.focus(); return; }
+        send.disabled = true;
+        msg.textContent = "Enviando...";
+        var body = {
+          tipo: kind, texto: text.value, contato: contact.value, site: hp.value,
+          nota: stars || undefined,
+          plataforma: matchMedia("(pointer: coarse)").matches ? "celular" : "pc",
+        };
+        idToken().then(function (token) {
+          var headers = { "Content-Type": "application/json" };
+          if (token) headers.Authorization = "Bearer " + token;
+          return fetch("/api/feedback", { method: "POST", headers: headers, body: JSON.stringify(body) });
+        }).then(function (r) {
+          return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || "erro " + r.status); });
+        }).then(function () {
+          box.innerHTML = "";
+          var done = el("div", "fb-done");
+          done.append(el("h2", "", "Valeu! Feedback recebido."), el("p", "", "Obrigado por ajudar o Freny a crescer. A gente lê tudo."));
+          var again = el("button", "", "Mandar outro"); again.type = "button";
+          again.onclick = function () { showFeedback(true); };
+          var play = el("button", "", "Voltar a jogar"); play.type = "button"; play.style.marginLeft = "8px";
+          play.onclick = function () { location.hash = "#jogar"; };
+          done.append(again, play);
+          box.appendChild(done);
+        }).catch(function (err) {
+          send.disabled = false;
+          msg.textContent = "Não deu para enviar: " + err.message + ". Tente de novo daqui a pouco.";
+        });
+      };
+    }
+
+    // pages: #sobre, #jogar (the game), #conquistas, #perfil, #perfil/<apelido>, #bestiario, #roadmap, #devlog, #feedback
+    var PAGES = ["sobre", "jogar", "conquistas", "perfil", "bestiario", "roadmap", "devlog", "feedback"];
     function showPage() {
       var parts = location.hash.slice(1).split("/");
       var page = parts[0];
@@ -1529,12 +1651,17 @@
         var el = document.getElementById("page-" + p);
         if (el) el.hidden = p !== page;
       });
-      document.querySelectorAll(".top nav a").forEach(function (a) { a.classList.toggle("active", a.dataset.page === page); });
+      document.querySelectorAll(".top nav a").forEach(function (a) {
+        a.classList.toggle("active", a.dataset.page === page);
+        // phones scroll the tab menu sideways: keep the open tab in sight (Feedback is the last one)
+        if (a.dataset.page === page) setTimeout(function () { var n = a.parentNode; if (n.scrollWidth > n.clientWidth) n.scrollLeft = a.offsetLeft - n.offsetLeft - (n.clientWidth - a.offsetWidth) / 2; }, 50);
+      });
       if (page === "jogar") canvas.focus();
       if (page === "devlog") loadDevlog();
       if (page === "roadmap") loadRoadmap();
       if (page === "bestiario") loadBestiario();
       if (page === "conquistas") loadAchievements();
+      if (page === "feedback") showFeedback();
       if (page === "perfil") {
         var who = null;
         try { who = parts[1] ? decodeURIComponent(parts[1]) : null; } catch (e) {}

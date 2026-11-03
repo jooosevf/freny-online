@@ -9,6 +9,7 @@ export const config = { runtime: 'edge' };
 // admin.html's buttons:
 //   { action: 'approve', id }            a pending run goes to its all-time and daily boards
 //   { action: 'reject', id, ban? }       a pending run is dropped (and its account banned)
+//   { action: 'deleteFeedback', id }   a feedback is deleted
 //   { action: 'remove', board, uid, ban? } an entry leaves a board (and its account is banned)
 //   { action: 'unban', uid }
 export default async function handler(request) {
@@ -38,6 +39,10 @@ export default async function handler(request) {
     await deleteDoc(board + '/' + uid);
     if (ban) await banUid(uid, `removido de ${board}`);
     console.log(`admin remove ${board}/${uid}${ban ? ' +ban' : ''}`);
+    return json(200, { ok: true });
+  }
+  if (action === 'deleteFeedback' && typeof id === 'string' && /^[A-Za-z0-9]+$/.test(id)) {
+    await deleteDoc('feedback/' + id);
     return json(200, { ok: true });
   }
   if (action === 'unban' && typeof uid === 'string' && uid) {

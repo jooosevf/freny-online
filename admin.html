@@ -23,7 +23,7 @@
 </head>
 <body>
 <main>
-  <h1>Ranking · admin</h1>
+  <h1>Ranking e feedback · admin</h1>
   <p class="msg">Recordes em revisão, rankings e contas bloqueadas. A senha é a variável ADMIN_TOKEN da Vercel; fica salva só neste navegador.</p>
   <input id="token" type="password" placeholder="senha de admin"> <button id="load">Entrar / atualizar</button>
   <div id="msg" class="msg"></div>
@@ -74,6 +74,17 @@
       actions.appendChild(btn("Recusar", "", function () { act({ action: "reject", id: p.id }); }));
       actions.appendChild(btn("Recusar e bloquear", "bad", function () { act({ action: "reject", id: p.id, ban: true }, "Bloquear esta conta no ranking?"); }));
       return [who(p.name, p.uid), p.board, p.score.toLocaleString("pt-BR"), p.note || "muito acima do ranking", p.killCount, minutes(p.gameTime), minutes(p.realSeconds), actions];
+    })));
+
+    var fb = data.feedback || [];
+    var KIND = { bug: "Bug", ideia: "Ideia", elogio: "Elogio", outro: "Outro" };
+    out.appendChild(el("h2", "Feedback (" + fb.length + (fb.length >= 100 ? "+" : "") + ")"));
+    if (!fb.length) out.appendChild(el("p", "Nenhum feedback ainda.", "msg"));
+    else out.appendChild(table(["Quando", "Tipo", "Nota", "Feedback", "Quem", ""], fb.map(function (f) {
+      var text = el("div", f.texto); text.style.whiteSpace = "pre-wrap"; text.style.maxWidth = "520px";
+      var quem = who(f.apelido || "convidado", [f.contato, f.plataforma].filter(Boolean).join(" · "));
+      return [f.criadoEm ? new Date(f.criadoEm).toLocaleString("pt-BR") : "", KIND[f.tipo] || f.tipo, f.nota ? f.nota + "★" : "-", text, quem,
+        btn("Apagar", "", function () { act({ action: "deleteFeedback", id: f.id }, "Apagar este feedback?"); })];
     })));
 
     Object.keys(data.boards).forEach(function (board) {

@@ -4,7 +4,7 @@ export const PROJECT_ID = process.env.FIREBASE_PROJECT_ID || 'the-rise-of-freny'
 
 // Any page may call the API: the player is identified by the Firebase token, not by cookies, so
 // a copy of the game on another address (a Vercel alias, a custom domain) works the same.
-const CORS = {
+export const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Authorization, Content-Type',

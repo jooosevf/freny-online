@@ -11,6 +11,7 @@ const ROUTES = {
   '/api/run/start': '../api/run/start.js',
   '/api/run/finish': '../api/run/finish.js',
   '/api/achievements/claim': '../api/achievements/claim.js',
+  '/api/feedback': '../api/feedback.js',
 };
 
 if (!process.env.SCORE_KEY && fs.existsSync(new URL('../.env.local', import.meta.url))) {
