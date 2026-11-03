@@ -258,7 +258,7 @@
             {
               "icone": "bau_dourado",
               "titulo": "Baú dourado",
-              "texto": "Só abre com a chave e guarda as recompensas mais raras, como o Elmo do Ciclope e a Capa dourada."
+              "texto": "Só abre com a chave e guarda moedas, diamantes e uma bênção à sua escolha."
             },
             {
               "icone": "pocao",
@@ -293,7 +293,7 @@
             {
               "icone": "elmo",
               "titulo": "Tela Visual nova",
-              "texto": "O Freny no centro e uma tela para Traje, Elmo, Capa e Torso, com o que você usa, o que pode comprar e o que está bloqueado. O Capacete Berserker vira um visual por 1.000 moedas."
+              "texto": "O Freny no centro e uma tela para Traje, Elmo e Torso, com o que você usa e o que pode comprar. O Capacete Berserker vira um visual por 1.000 moedas, e o torso tem cinco cores. Com o Traje, o resto fica bloqueado."
             },
             {
               "icone": "elmo",

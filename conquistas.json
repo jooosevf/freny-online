@@ -34,7 +34,7 @@
     {
       "id": "backstab",
       "nome": "Escudo pra Quê?",
-      "como": "Derrote um Escudeiro acertando onde o escudo não cobre."
+      "como": "Derrote 10 Escudeiros numa corrida, acertando onde o escudo não cobre."
     },
     {
       "id": "eye",
@@ -42,14 +42,29 @@
       "como": "Dê o golpe final no Ciclope acertando o olho dele."
     },
     {
-      "id": "combo5",
+      "id": "combo50",
       "nome": "Quinta Marcha",
-      "como": "Chegue ao combo 5.0x."
+      "como": "Chegue ao combo 50x."
     },
     {
       "id": "survivor",
       "nome": "Duro de Matar",
       "como": "Fique vivo 10 minutos numa corrida."
+    },
+    {
+      "id": "cyclops3",
+      "nome": "Caça-Ciclopes",
+      "como": "Derrote 3 Ciclopes numa corrida."
+    },
+    {
+      "id": "kills500",
+      "nome": "Exterminador",
+      "como": "Derrote 500 inimigos numa corrida."
+    },
+    {
+      "id": "marathon",
+      "nome": "Maratonista",
+      "como": "Fique vivo 30 minutos numa corrida."
     }
   ]
 }
