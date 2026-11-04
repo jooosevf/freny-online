@@ -206,6 +206,10 @@
         {
           "icone": "conquista",
           "texto": "O aviso de conquista ficou pequeno, embaixo das moedas, e o botão Conquistas mostra \"(nova!)\" até você ver a conquista nova."
+        },
+        {
+          "icone": "conquista",
+          "texto": "Reforçamos a segurança do ranking: contas banidas não voltam mais ao ranking nem ganham conquistas, e conquistas de partidas em revisão só valem depois da aprovação."
         }
       ]
     },
