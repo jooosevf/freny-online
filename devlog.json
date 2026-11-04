@@ -2,6 +2,38 @@
   "_como_usar": "Uma entrada por atualização, a mais nova primeiro. data = AAAA-MM-DD e hora = HH:MM no horário de Brasília (hora em que subiu no site). Enquanto a versão ainda não subiu, use \"proxima\": true e deixe data e hora vazias. Cada mudança é {\"icone\", \"texto\"}; icone é o nome de um PNG da pasta devlog/ (ex.: espada, mago, golem, pocao, bau, tecla, freny). Prints opcionais: \"prints\": [{\"img\": \"devlog/prints/arquivo.jpg\", \"legenda\": \"...\"}] (JPG de até 1280 px).",
   "versoes": [
     {
+      "versao": "Alpha 0.1.1",
+      "data": "2026-11-04",
+      "hora": "20:38",
+      "titulo": "Correções: Inventário com o seu visual, moedas na Armeira e o pulo do Automático",
+      "mudancas": [
+        {
+          "icone": "freny",
+          "texto": "O Inventário agora mostra o Freny com o visual que você escolheu (traje, elmo, capa e torso), igual à tela Visual."
+        },
+        {
+          "icone": "moeda",
+          "texto": "Voltando de uma compra na Armeira, as moedas e o progresso das prateleiras já aparecem atualizados."
+        },
+        {
+          "icone": "moeda",
+          "texto": "O ícone da moeda aparece junto das moedas na Armeira, no Visual e na pausa, e ao lado dos preços."
+        },
+        {
+          "icone": "golem",
+          "texto": "Inimigos não ficam mais andando sozinhos até a beira do mapa."
+        },
+        {
+          "icone": "coracao",
+          "texto": "O Freny não consegue mais agir no mesmo instante em que morre."
+        },
+        {
+          "icone": "tecla",
+          "texto": "O pulo do piloto automático agora tira o Freny do chão de verdade, então o Automático ficou um pouco mais forte."
+        }
+      ]
+    },
+    {
       "versao": "Alpha 0.1.0",
       "data": "2026-11-03",
       "hora": "10:12",

@@ -336,6 +336,44 @@
       "versao": "Alpha 0.1.0"
     },
     {
+      "fase": "Alpha 0.1.1 · 04/11",
+      "titulo": "Correções de bugs",
+      "status": "feito",
+      "itens": [
+        {
+          "icone": "freny",
+          "titulo": "Inventário com o seu visual",
+          "texto": "O Inventário agora mostra o Freny com o visual que você escolheu (traje, elmo, capa e torso), igual à tela Visual."
+        },
+        {
+          "icone": "moeda",
+          "titulo": "Armeira atualizada",
+          "texto": "Voltando de uma compra na Armeira, as moedas e o progresso das prateleiras já aparecem atualizados."
+        },
+        {
+          "icone": "moeda",
+          "titulo": "Ícone da moeda nos menus",
+          "texto": "O ícone da moeda aparece junto das moedas na Armeira, no Visual e na pausa, e ao lado dos preços."
+        },
+        {
+          "icone": "golem",
+          "titulo": "Inimigo perdido",
+          "texto": "Inimigos não ficam mais andando sozinhos até a beira do mapa."
+        },
+        {
+          "icone": "coracao",
+          "titulo": "Sem ação depois da morte",
+          "texto": "O Freny não consegue mais agir no mesmo instante em que morre."
+        },
+        {
+          "icone": "tecla",
+          "titulo": "Pulo do Automático",
+          "texto": "O pulo do piloto automático agora tira o Freny do chão de verdade, então o Automático ficou um pouco mais forte."
+        }
+      ],
+      "versao": "Alpha 0.1.1"
+    },
+    {
       "fase": "Fase 7",
       "titulo": "O Poço de Ácido",
       "status": "proxima",
