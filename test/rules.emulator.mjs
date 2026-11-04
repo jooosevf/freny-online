@@ -134,6 +134,22 @@ await check('friends: 51 is too many', async () => {
   assert.equal(await write(c, 'amigos/' + c.uid, list(many), NOW), 403);
 });
 
+const cheater = await account();
+const entry = (who, score) => ({ name: 'Trapaça', score, sig: sha(`${KEY}|${who.uid}|leaderboard_hard|${score}`) });
+const achSigOf = (who, id) => sha(`${KEY}|${who.uid}|ach|${id}`);
+await check('ban: before it, a signed score goes', async () =>
+  assert.equal(await write(cheater, 'leaderboard_hard/' + cheater.uid, entry(cheater, 500), NOW), 200));
+await write({ token: 'owner' }, 'bans/' + cheater.uid, { reason: 'teste' });
+await write({ token: 'owner' }, 'leaderboard_hard/' + cheater.uid, { name: 'x' });
+await del({ token: 'owner' }, 'leaderboard_hard/' + cheater.uid);
+await check('ban: the same signature cannot bring the entry back', async () =>
+  assert.equal(await write(cheater, 'leaderboard_hard/' + cheater.uid, entry(cheater, 500), NOW), 403));
+await check('ban: a signed achievement is refused', async () =>
+  assert.equal(await write(cheater, 'achievements/' + cheater.uid, { played: achSigOf(cheater, 'played') }, NOW), 403));
+await del({ token: 'owner' }, 'bans/' + cheater.uid);
+await check('ban: lifted, the signature works again', async () =>
+  assert.equal(await write(cheater, 'leaderboard_hard/' + cheater.uid, entry(cheater, 500), NOW), 200));
+
 await sleep(21000);
 await check('stats: after 20 s it goes', async () => assert.equal(await write(a, 'stats/' + a.uid, { kills: 6 }, SEEN), 200));
 await sleep(100);

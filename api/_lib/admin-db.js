@@ -106,6 +106,26 @@ export async function deleteDoc(path) {
   await call('DELETE', '/' + path);
 }
 
+// changes only these fields; setDoc replaces the whole document
+export async function patchFields(path, obj) {
+  const mask = Object.keys(obj).map((k) => 'updateMask.fieldPaths=' + encodeURIComponent(k)).join('&');
+  await call('PATCH', '/' + path + '?' + mask, { fields: toFields(obj) });
+}
+
+// every doc of a collection, page by page: [{ id, ...fields }]
+export async function listAll(collection) {
+  const all = [];
+  let page = '';
+  do {
+    const body = await call('GET', `/${collection}?pageSize=300${page ? '&pageToken=' + encodeURIComponent(page) : ''}`);
+    for (const d of body?.documents || []) {
+      all.push({ id: d.name.slice(d.name.lastIndexOf('/') + 1), ...fromFields(d.fields) });
+    }
+    page = body?.nextPageToken || '';
+  } while (page);
+  return all;
+}
+
 // up to `limit` docs of a collection, highest `orderBy` first (or as stored): [{ id, ...fields }]
 export async function listDocs(collection, orderBy, limit = 50) {
   const query = { from: [{ collectionId: collection }], limit };
