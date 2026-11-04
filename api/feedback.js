@@ -3,6 +3,7 @@ import { readIdToken } from './_lib/firebase-auth.js';
 import { addDoc, getDoc, hasAdminDb } from './_lib/admin-db.js';
 import { readFeedback, tooMany } from './_lib/feedback.js';
 import { sha256Hex } from './_lib/crypto.js';
+import { clientIp } from './_lib/rate-limit.js';
 
 export const config = { runtime: 'edge' };
 
@@ -22,7 +23,7 @@ export default async function handler(request) {
   if (read.error === 'spam') return json(200, { ok: true });
   if (read.error) return json(400, { error: read.error });
 
-  const ip = (request.headers.get('x-forwarded-for') || '').split(',')[0].trim() || 'sem-ip';
+  const ip = clientIp(request);
   const who = (await sha256Hex('feedback|' + ip)).slice(0, 16);
   if (tooMany(who)) return json(429, { error: 'muitos feedbacks seguidos, espere uns minutos' });
 

@@ -1,6 +1,7 @@
 // The site's Feedback page (#feedback, /feedback). Anyone can send one, signed in or not; the
 // server writes it to feedback/ with the service account, so no Firestore rule lets a player
 // read or write that collection. José reads them in admin.html.
+import { tooMany as countCall, LIMITS } from './rate-limit.js';
 
 export const KINDS = ['bug', 'ideia', 'elogio', 'outro'];
 export const MAX_TEXT = 2000;
@@ -35,16 +36,7 @@ export function readFeedback(body) {
   return { value };
 }
 
-// a few per address in a short window; best effort, per server instance
-const recent = new Map();
-export function tooMany(key, now = Date.now(), limit = 5, windowMs = 10 * 60 * 1000) {
-  const list = (recent.get(key) || []).filter((t) => now - t < windowMs);
-  if (recent.size > 5000) recent.clear();
-  if (list.length >= limit) {
-    recent.set(key, list);
-    return true;
-  }
-  list.push(now);
-  recent.set(key, list);
-  return false;
+// a few per address in a short window; best effort, per server instance (rate-limit.js)
+export function tooMany(key, now = Date.now(), limit = LIMITS.feedback.ip, windowMs = LIMITS.feedback.windowMs) {
+  return countCall('feedback|' + key, now, limit, windowMs);
 }

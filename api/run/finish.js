@@ -19,7 +19,7 @@ export const config = { runtime: 'edge' };
 // A guest (anonymous login) gets 403: the ranking is for accounts. The game offers "Criar conta
 // para salvar", which keeps the user id, so the same run's ticket is good right after it.
 export default async function handler(request) {
-  const req = await readRequest(request);
+  const req = await readRequest(request, 'finish');
   if (req.error) return req.error;
   if (req.anonymous) return json(403, { error: 'crie uma conta para salvar o recorde', needsAccount: true });
   const key = scoreKey();

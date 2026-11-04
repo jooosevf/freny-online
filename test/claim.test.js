@@ -34,6 +34,7 @@ globalThis.fetch = async (url, init = {}) => {
 
 const { default: handler } = await import('../api/achievements/claim.js');
 const { makeRunToken } = await import('../api/_lib/run-token.js');
+const { forgetAll } = await import('../api/_lib/rate-limit.js');
 
 function idToken() {
   const now = Math.floor(Date.now() / 1000);
@@ -47,6 +48,7 @@ function idToken() {
 
 // a run with no kills adds up to 0 points, so only "score" and "flags" change between the tests
 async function claim(extra = {}) {
+  forgetAll();   // these tests are about the checks, not the per-minute limit (rate-limit.test.js)
   const token = await makeRunToken(process.env.SCORE_KEY, 'u1', 'leaderboard_hard', Date.now() - 60000);
   return handler(new Request('http://x/api/achievements/claim', {
     method: 'POST',
