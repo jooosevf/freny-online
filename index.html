@@ -1485,8 +1485,9 @@
       var name = "freny-" + (nickKey(p.apelido) || "perfil") + ".png";
       var file = typeof File === "function" ? new File([blob], name, { type: "image/png" }) : null;
       var phone = matchMedia("(pointer: coarse)").matches;
-      // the system share sheet with the file: phones, and Windows/Mac Chrome and Edge (WhatsApp's app is in it when installed)
-      var canFiles = !!(file && navigator.canShare && navigator.canShare({ files: [file] }));
+      // phones: the system share sheet with the file. Computers skip it (José, 2026-11-05: Windows' sheet is worse):
+      // WhatsApp Web opens with the text and the image is pasted, since no site can hand it an image
+      var canFiles = !!(phone && file && navigator.canShare && navigator.canShare({ files: [file] }));
       var shade = el("div", "sh-shade");
       var box = el("div", "sh-box");
       var img = el("img"); img.src = URL.createObjectURL(blob); img.alt = "Card do perfil de " + p.apelido;
@@ -1494,10 +1495,7 @@
       var save = el("button", "", "Baixar imagem");
       var close = el("button", "", "Fechar");
       var msg = el("div", "pf-msg");
-      var web = el("button", "", "WhatsApp Web");
-      var row = el("div", "sh-row"); row.append(send);
-      if (canFiles && !phone) row.appendChild(web);   // a computer without the WhatsApp app: the web chat, image by paste
-      row.append(save, close);
+      var row = el("div", "sh-row"); row.append(send, save, close);
       box.append(img, row, msg);
       shade.appendChild(box);
       function done() { URL.revokeObjectURL(img.src); shade.remove(); document.removeEventListener("keydown", onKey); }
@@ -1516,15 +1514,15 @@
         }
         openChat();
       };
-      web.onclick = openChat;
       // no share sheet with files: the chat opens with the text and the link; the image goes by paste or file
       function openChat() {
-        window.open("https://wa.me/?text=" + encodeURIComponent(shareText(p)), "_blank", "noopener");
+        // a computer goes straight to WhatsApp Web (wa.me first shows a page asking app or web)
+        window.open((phone ? "https://wa.me/?text=" : "https://web.whatsapp.com/send?text=") + encodeURIComponent(shareText(p)), "_blank", "noopener");
         var copied = !phone && navigator.clipboard && window.ClipboardItem
           ? navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]).then(function () { return true; }, function () { return false; })
           : Promise.resolve(false);
         copied.then(function (ok) {
-          if (ok) msg.textContent = "Abrimos o WhatsApp. A imagem já está copiada: escolha a conversa e cole com Ctrl+V.";
+          if (ok) msg.textContent = "Abrimos o WhatsApp Web com o texto. A imagem já está copiada: escolha a conversa e aperte Ctrl+V para ela ir junto.";
           else { download(blob, name); msg.textContent = "Abrimos o WhatsApp e baixamos a imagem: escolha a conversa e anexe o arquivo " + name + "."; }
         });
       }
