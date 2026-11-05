@@ -374,6 +374,34 @@
       "versao": "Alpha 0.1.1"
     },
     {
+      "fase": "Alpha 0.1.2 · 05/11",
+      "titulo": "Correções de bugs",
+      "status": "feito",
+      "itens": [
+        {
+          "icone": "conquista",
+          "titulo": "Bênção só com clique",
+          "texto": "Bênção do baú dourado: agora só é escolhida com clique ou toque em cima do card, e só meio segundo depois da tela aparecer. Espaço, Enter e as teclas 1, 2, 3 não escolhem mais, então pular ou trocar de arma no meio da luta não pega uma bênção sem você ver. No controle: escolha com o direcional e segure A por 1 segundo."
+        },
+        {
+          "icone": "bau_dourado",
+          "titulo": "Bênção voa para o HUD",
+          "texto": "Ao escolher uma bênção, o card ganha uma borda dourada brilhando e toca um som; as outras somem, ele fica sozinho por um instante e voa até o seu lugar embaixo das armas, onde ficam os ícones das bênçãos que você tem."
+        },
+        {
+          "icone": "tecla",
+          "titulo": "Bênção no Automático",
+          "texto": "Com o modo automático ligado, a tela de bênção agora aparece se você estiver jogando; o piloto só escolhe sozinho quando está mesmo no controle (3 s sem você apertar nada)."
+        },
+        {
+          "icone": "moeda",
+          "titulo": "Aviso de missão no canto",
+          "texto": "O aviso de missão diária cumprida saiu do meio da tela e agora aparece no canto, embaixo das moedas, como o das conquistas. Se uma conquista e uma missão vierem juntas, os avisos aparecem um depois do outro. O primeiro aviso depois de abrir o jogo também não aparece mais fora do lugar."
+        }
+      ],
+      "versao": "Alpha 0.1.2"
+    },
+    {
       "fase": "Fase 7",
       "titulo": "O Poço de Ácido",
       "status": "proxima",
