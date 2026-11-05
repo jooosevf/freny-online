@@ -6,8 +6,8 @@ import { dailyBoardOf } from '../_lib/validate.js';
 
 export const config = { runtime: 'edge' };
 
-// admin.html: the runs waiting for review, the banned accounts, the newest feedback, and the top of every board
-// (all-time and today's).
+// admin.html: the runs waiting for review, the banned accounts, the newest feedback, the top of every board
+// (all-time and today's), and which runs have a replay to watch (replay.html).
 export default async function handler(request) {
   const req = await readAdmin(request);
   if (req.error) return req.error;
@@ -22,5 +22,6 @@ export default async function handler(request) {
     bans: await listDocs('bans', null, 200),
     feedback: await listDocs('feedback', 'criadoEm', 100),
     boards,
+    replays: (await listDocs('replays', 'createdAt', 300)).map((r) => r.id),
   });
 }

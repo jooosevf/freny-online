@@ -24,7 +24,7 @@
 <body>
 <main>
   <h1>Ranking e feedback · admin</h1>
-  <p class="msg">Recordes em revisão, rankings e contas bloqueadas. A senha é a variável ADMIN_TOKEN da Vercel; fica salva só neste navegador.</p>
+  <p class="msg">Recordes em revisão, rankings e contas bloqueadas. "Assistir" abre a gravação da partida (só dos recordes do topo ou em revisão, de versões do jogo que gravam). A senha é a variável ADMIN_TOKEN da Vercel; fica salva só neste navegador.</p>
   <input id="token" type="password" placeholder="senha de admin"> <button id="load">Entrar / atualizar</button>
   <div id="msg" class="msg"></div>
   <div id="out"></div>
@@ -61,15 +61,24 @@
     wrap.appendChild(t);
     return wrap;
   }
+  // replay.html#<id>, the id the API keeps it under (api/_lib/replay.js replayId)
+  function replayId(uid, board, score) {
+    var clean = function (s) { return String(s).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 64); };
+    return clean(uid) + "__" + clean(board) + "__" + (Number(score) || 0);
+  }
+  function watch(id) { return btn("Assistir", "ok", function () { window.open("/replay.html#" + encodeURIComponent(id), "_blank"); }); }
   function who(name, uid) { var d = el("div"); d.appendChild(el("div", name)); d.appendChild(el("div", uid, "uid")); return d; }
 
   function render(data) {
+    var replays = {};
+    (data.replays || []).forEach(function (id) { replays[id] = true; });
     var out = document.getElementById("out");
     out.innerHTML = "";
     out.appendChild(el("h2", "Em revisão (" + data.pending.length + ")"));
     if (!data.pending.length) out.appendChild(el("p", "Nenhum recorde esperando.", "msg"));
     else out.appendChild(table(["Jogador", "Ranking", "Pontos", "Motivo", "Abates", "Tempo de jogo", "Tempo real", ""], data.pending.map(function (p) {
       var actions = el("div");
+      if (p.replay) actions.appendChild(watch(p.replay));
       actions.appendChild(btn("Aprovar", "ok", function () { act({ action: "approve", id: p.id }); }));
       actions.appendChild(btn("Recusar", "", function () { act({ action: "reject", id: p.id }); }));
       actions.appendChild(btn("Recusar e bloquear", "bad", function () { act({ action: "reject", id: p.id, ban: true }, "Bloquear esta conta no ranking?"); }));
@@ -92,7 +101,8 @@
       out.appendChild(el("h2", board));
       if (!rows.length) { out.appendChild(el("p", "Vazio.", "msg")); return; }
       out.appendChild(table(["#", "Jogador", "Pontos", ""], rows.map(function (e, i) {
-        var actions = el("div");
+        var actions = el("div"), rid = replayId(e.id, board, e.score);
+        if (replays[rid]) actions.appendChild(watch(rid));
         actions.appendChild(btn("Remover", "", function () { act({ action: "remove", board: board, uid: e.id }, "Remover " + e.name + " de " + board + "?"); }));
         actions.appendChild(btn("Remover e bloquear", "bad", function () { act({ action: "remove", board: board, uid: e.id, ban: true }, "Remover " + e.name + " e bloquear a conta?"); }));
         return [i + 1, who(e.name, e.id), (e.score || 0).toLocaleString("pt-BR"), actions];

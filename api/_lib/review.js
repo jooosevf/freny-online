@@ -38,7 +38,7 @@ export async function wouldPlace(uid, board, score, top = SUSPECT_TOP) {
 
 // every run that reaches the server is kept (accepted, sent to review or refused, with the
 // reason), with its whole kill and life logs; refused ones cut short, one per account per hour
-export async function keepLog(uid, run, realSeconds, status, note = '', now = Date.now()) {
+export async function keepLog(uid, run, realSeconds, status, note = '', now = Date.now(), replay = null) {
   const refused = status === 'refused';
   const max = refused ? MAX_REFUSED_CHARS : MAX_LOG_CHARS;
   const cap = (list) => {
@@ -52,6 +52,7 @@ export async function keepLog(uid, run, realSeconds, status, note = '', now = Da
     kills: cap(run.kills), vitals: cap(run.vitals).slice(0, 200000), flags: cap(run.flags).slice(0, 200),
     blessings: cap(run.blessings).slice(0, 400),
     createdAt: new Date(now),
+    replay: replay || undefined,   // replays/{id} (replay.js), when this run's was kept
   };
   if (refused) await setDoc('runlogs/' + refusedLogId(uid, now), doc);
   else await addDoc('runlogs', doc);
@@ -62,11 +63,12 @@ export function refusedLogId(uid, now = Date.now()) {
   return 'refused_' + String(uid).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 64) + '_' + new Date(now).toISOString().slice(0, 13).replace(/[-T]/g, '');
 }
 
-export async function holdForReview(uid, run, realSeconds, dailyBoard, note = '') {
+export async function holdForReview(uid, run, realSeconds, dailyBoard, note = '', replay = null) {
   const save = await getDoc('saves/' + uid);   // the game keeps the player's name there
   await setDoc('pending/' + pendingId(uid, run.board), {
     uid, board: run.board, dailyBoard, score: run.score, name: cleanName(run.name || save?.playerName),
     gameTime: run.gameTime, realSeconds, killCount: run.kills.length, note, createdAt: new Date(),
+    replay: replay || undefined,
   });
 }
 
