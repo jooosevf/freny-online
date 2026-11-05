@@ -397,6 +397,11 @@
           "icone": "moeda",
           "titulo": "Aviso de missão no canto",
           "texto": "O aviso de missão diária cumprida saiu do meio da tela e agora aparece no canto, embaixo das moedas, como o das conquistas. Se uma conquista e uma missão vierem juntas, os avisos aparecem um depois do outro. O primeiro aviso depois de abrir o jogo também não aparece mais fora do lugar."
+        },
+        {
+          "icone": "bau_dourado",
+          "titulo": "Presentes da equipe",
+          "texto": "A equipe pode mandar presentes (moedas e visuais) para jogadores com conta; eles chegam no menu com o aviso \"Presente da equipe\"."
         }
       ],
       "versao": "Alpha 0.1.2"
