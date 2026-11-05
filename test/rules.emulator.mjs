@@ -22,17 +22,24 @@ const guest = () => signUp({});
 const val = (v) => (typeof v === 'number' ? { integerValue: String(v) }
   : Array.isArray(v) ? { arrayValue: { values: v.map(val) } } : { stringValue: v });
 
-async function write(who, path, data, opts = {}) {
+const NAME = 'projects/the-rise-of-freny/databases/(default)/documents/';
+function upd(path, data, opts = {}) {
   const fields = Object.fromEntries(Object.entries(data).map(([k, v]) => [k, val(v)]));
   const w = {
-    update: { name: 'projects/the-rise-of-freny/databases/(default)/documents/' + path, fields },
+    update: { name: NAME + path, fields },
     updateMask: { fieldPaths: Object.keys(fields) },
     updateTransforms: (opts.times || []).map((t) => ({ fieldPath: t, setToServerValue: 'REQUEST_TIME' })),
   };
   if (opts.isNew) w.currentDocument = { exists: false };
-  const r = await fetch(DOCS + ':commit', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + who.token }, body: JSON.stringify({ writes: [w] }) });
+  return w;
+}
+const delw = (path) => ({ delete: NAME + path });
+// several writes in one commit, all or nothing (a nickname goes with the profile that shows it)
+async function commit(who, writes) {
+  const r = await fetch(DOCS + ':commit', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + who.token }, body: JSON.stringify({ writes }) });
   return r.status;
 }
+const write = (who, path, data, opts = {}) => commit(who, [upd(path, data, opts)]);
 const read = async (who, path) => (await fetch(DOCS + '/' + path, { headers: who ? { Authorization: 'Bearer ' + who.token } : {} })).status;
 const del = async (who, path) => (await fetch(DOCS + '/' + path, { method: 'DELETE', headers: { Authorization: 'Bearer ' + who.token } })).status;
 
@@ -67,7 +74,14 @@ const a = await account(), b = await account(), c = await account(), g = await g
 const nickA = 'a' + rnd(), nickB = 'b' + rnd();
 
 await check('a guest cannot take a nickname', async () => assert.equal(await write(g, 'apelidos/g' + rnd(), { uid: g.uid, apelido: 'guest' }, STAMP), 403));
-await check('an account takes a free nickname', async () => assert.equal(await write(a, 'apelidos/' + nickA, { uid: a.uid, apelido: nickA }, STAMP), 200));
+// the game's ProfileService.NickKey: lowercase, accents off
+const keyOf = (nick) => nick.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const takeNick = (who, nick, code = '', extra = []) => commit(who, [
+  upd('apelidos/' + keyOf(nick), { uid: who.uid, apelido: nick }, { ...STAMP, isNew: true }),
+  upd('perfis/' + who.uid, perfil(nick, code, { chave: keyOf(nick) }), SEEN), ...extra]);
+await check('a nickname alone, without the profile showing it, is refused', async () =>
+  assert.equal(await write(c, 'apelidos/c' + rnd(), { uid: c.uid, apelido: 'cccc' }, STAMP), 403));
+await check('an account takes a free nickname, with its profile', async () => assert.equal(await takeNick(a, nickA), 200));
 await check('nobody takes it again', async () => assert.notEqual(await write(b, 'apelidos/' + nickA, { uid: b.uid, apelido: nickA }, { ...STAMP, isNew: true }), 200));
 await check('not even overwriting without the new-only flag', async () => assert.equal(await write(b, 'apelidos/' + nickA, { uid: b.uid, apelido: nickA }, STAMP), 403));
 await check('a nickname in another account\'s name is refused', async () => assert.equal(await write(b, 'apelidos/x' + rnd(), { uid: a.uid, apelido: 'xxx' }, STAMP), 403));
@@ -77,7 +91,26 @@ await check('only the owner frees it', async () => assert.equal(await del(b, 'ap
 
 const codeA = 'FRENY-' + 'ABCD'.replace(/./g, () => '23456789ABCDEFGHJKMNPQRSTUVWXYZ'[crypto.randomInt(31)]);
 await check('friend code: bad shape refused', async () => assert.equal(await write(a, 'codigos/FRENY-0OI1', { uid: a.uid }, STAMP), 403));
-await check('friend code: created', async () => assert.equal(await write(a, 'codigos/' + codeA, { uid: a.uid }, STAMP), 200));
+await check('profile: a name that is not the nickname\'s is refused', async () =>
+  assert.equal(await write(c, 'perfis/' + c.uid, perfil('Overrated', '', { chave: nickA }), SEEN), 403));
+const accented = 'Jösé' + rnd().slice(0, 4);
+await check('profile: an accented nickname folds to its key', async () => assert.equal(await takeNick(c, accented), 200));
+await check('profile: counters beyond the clock are refused', async () =>
+  assert.equal(await commit(b, [upd('perfis/' + b.uid, perfil(nickB, '', { kills: 10000000 }), SEEN)]), 403));
+await sleep(10500);
+const nickA2 = 'a' + rnd();
+await check('a second nickname while keeping the first is refused', async () => assert.equal(await takeNick(a, nickA2), 403));
+await check('renaming frees the old nickname in the same commit', async () =>
+  assert.equal(await takeNick(a, nickA2, '', [delw('apelidos/' + nickA)]), 200));
+await check('a code alone, without the profile showing it, is refused', async () =>
+  assert.equal(await write(b, 'codigos/FRENY-' + 'ZZZZ'.replace(/./g, () => '23456789ABCDEFGHJKMNPQRSTUVWXYZ'[crypto.randomInt(31)]), { uid: b.uid }, STAMP), 403));
+await sleep(10500);
+await check('friend code: created, with its profile', async () => assert.equal(await commit(a, [
+  upd('codigos/' + codeA, { uid: a.uid }, { ...STAMP, isNew: true }), upd('perfis/' + a.uid, perfil(nickA2, codeA), SEEN)]), 200));
+await sleep(10500);
+const codeA2 = 'FRENY-' + 'ABCD'.replace(/./g, () => '23456789ABCDEFGHJKMNPQRSTUVWXYZ'[crypto.randomInt(31)]);
+await check('friend code: a second one is refused', async () => assert.equal(await commit(a, [
+  upd('codigos/' + codeA2, { uid: a.uid }, { ...STAMP, isNew: true }), upd('perfis/' + a.uid, perfil(nickA2, codeA2), SEEN)]), 403));
 await check('friend code: cannot be deleted', async () => assert.equal(await del(a, 'codigos/' + codeA), 403));
 
 await check('stats: every field at once fits the rules limits', async () => assert.equal(await write(a, 'stats/' + a.uid, ALL_STATS, { times: ['lastSeen', 'createdAt'] }), 200));
@@ -89,14 +122,20 @@ await check('stats: an unknown field is refused', async () => assert.equal(await
 
 await check('perfil: a nickname not owned is refused', async () => assert.equal(await write(b, 'perfis/' + b.uid, perfil(nickA, ''), SEEN), 403));
 await check('perfil: a guest has none', async () => assert.equal(await write(g, 'perfis/' + g.uid, perfil('gggg', ''), SEEN), 403));
-await write(b, 'apelidos/' + nickB, { uid: b.uid, apelido: nickB }, STAMP);
 await check('perfil: an edited best without its signature is refused', async () =>
-  assert.equal(await write(b, 'perfis/' + b.uid, perfil(nickB, '', { bestHard: 999999, sigHard: 'forged' }), SEEN), 403));
-await check('perfil: a code of someone else is refused', async () => assert.equal(await write(b, 'perfis/' + b.uid, perfil(nickB, codeA), SEEN), 403));
+  assert.equal(await takeNick(b, nickB, '', [upd('perfis/' + b.uid, perfil(nickB, '', { bestHard: 999999, sigHard: 'forged' }), SEEN)]), 403));
+await check('perfil: a code of someone else is refused', async () => assert.equal(await takeNick(b, nickB, codeA), 403));
 const sig = sha(`${KEY}|${b.uid}|leaderboard_hard|12345`);
 await check('perfil: a best with the API signature goes', async () =>
-  assert.equal(await write(b, 'perfis/' + b.uid, perfil(nickB, '', { bestHard: 12345, sigHard: sig }), SEEN), 200));
-await check('perfil: under 10 s is refused', async () => assert.equal(await write(b, 'perfis/' + b.uid, perfil(nickB, ''), SEEN), 403));
+  assert.equal(await takeNick(b, nickB, '', [upd('perfis/' + b.uid, perfil(nickB, '', { bestHard: 12345, sigHard: sig }), SEEN)]), 200));
+await sleep(10500);
+// the heaviest commit the game sends: a rename with all three signed bests (the rules' 1000-expression budget)
+const nickB2 = 'b' + rnd();
+const bests = { bestEasy: 111, bestMedium: 222, bestHard: 12345,
+  sigEasy: sha(`${KEY}|${b.uid}|leaderboard_easy|111`), sigMedium: sha(`${KEY}|${b.uid}|leaderboard_medium|222`), sigHard: sig };
+await check('perfil: a rename with three signed bests fits the rules\' budget', async () =>
+  assert.equal(await takeNick(b, nickB2, '', [upd('perfis/' + b.uid, perfil(nickB2, '', bests), SEEN), delw('apelidos/' + nickB)]), 200));
+await check('perfil: under 10 s is refused', async () => assert.equal(await write(b, 'perfis/' + b.uid, perfil(nickB2, '', bests), SEEN), 403));
 await check('perfil: public read, no login', async () => assert.equal(await read(null, 'perfis/' + b.uid), 200));
 await check('perfil: an email field is refused', async () => assert.equal(await write(a, 'perfis/' + a.uid, perfil(nickA, codeA, { email: 'x@y.z' }), SEEN), 403));
 
