@@ -5,7 +5,7 @@ import { getDoc, listDocs } from '../_lib/admin-db.js';
 
 export const config = { runtime: 'edge' };
 
-// replay.html: one replay ({ id }) with the kills and hits kept with it, or with
+// admin.html (Replay tab): one replay ({ id }) with the kills and hits kept with it, or with
 // { list: true } the newest replays kept.
 export default async function handler(request) {
   const req = await readAdmin(request);

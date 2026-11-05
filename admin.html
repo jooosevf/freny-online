@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Ranking · admin</title>
+<title>Freny · admin</title>
 <style>
   :root { --bg: #14101c; --panel: #211a2e; --text: #eee6f7; --dim: #a597b8; --accent: #c77dff; --ok: #6fdc8c; --bad: #ff7a7a; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.4 system-ui, sans-serif; }
-  main { max-width: 900px; margin: 0 auto; padding: 16px; }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; }
   h1 { font-size: 20px; } h2 { font-size: 16px; margin-top: 28px; color: var(--accent); }
   input { background: var(--panel); color: var(--text); border: 1px solid #443a55; padding: 8px; border-radius: 6px; width: 260px; max-width: 100%; }
   button { background: #3a2d52; color: var(--text); border: 0; padding: 6px 10px; border-radius: 6px; cursor: pointer; margin: 2px; }
@@ -19,16 +19,97 @@
   .uid { color: var(--dim); font-family: monospace; font-size: 12px; }
   .msg { margin: 10px 0; color: var(--dim); }
   .wrap { overflow-x: auto; }
+  nav { display: flex; gap: 4px; margin: 14px 0 4px; border-bottom: 1px solid #2f2640; }
+  nav button { background: none; border-radius: 6px 6px 0 0; padding: 8px 14px; margin: 0; color: var(--dim); font-size: 15px; }
+  nav button.on { background: var(--panel); color: var(--text); }
+  select { background: #3a2d52; color: var(--text); border: 0; padding: 6px 10px; border-radius: 6px; margin: 2px; font: inherit; }
+  #rtitle { font-size: 17px; margin: 14px 0 4px; }
+  .looks { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 8px 0; }
+  .looks label { white-space: nowrap; }
+  .looks input { width: auto; margin-right: 4px; }
+  .pick td { cursor: pointer; } .pick tr.on td { background: #3a2d52; }
+  .form { background: var(--panel); border-radius: 8px; padding: 12px; margin-top: 12px; }
+  .form input.num { width: 140px; }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  canvas { width: 100%; background: #0b0910; border-radius: 8px; display: block; image-rendering: pixelated; }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0; }
+  .grow { flex: 1; min-width: 160px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 16px; color: var(--dim); font-variant-numeric: tabular-nums; }
+  .stats b { color: var(--text); }
+  #timeline { height: 22px; cursor: pointer; }
+  #feed { font-size: 13px; color: var(--dim); max-height: 140px; overflow-y: auto; background: var(--panel); border-radius: 8px; padding: 8px; }
+  #feed div.now { color: var(--text); }
+  .legend span { margin-right: 14px; }
+  textarea { width: 100%; box-sizing: border-box; background: var(--panel); color: var(--text); border: 1px solid #3a2d52; border-radius: 6px; padding: 8px; font: 12px/1.3 ui-monospace, monospace; resize: vertical; }
+  summary { cursor: pointer; color: var(--accent); }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
 </style>
 </head>
 <body>
 <main>
-  <h1>Ranking e feedback · admin</h1>
-  <p class="msg">Recordes em revisão, rankings e contas bloqueadas. "Assistir" abre a gravação da partida (só dos recordes do topo ou em revisão, de versões do jogo que gravam). A senha é a variável ADMIN_TOKEN da Vercel; fica salva só neste navegador.</p>
+  <h1>The Rise of Freny · admin</h1>
+  <p class="msg">A senha é a variável ADMIN_TOKEN da Vercel; fica salva só neste navegador.</p>
   <input id="token" type="password" placeholder="senha de admin"> <button id="load">Entrar / atualizar</button>
+  <nav>
+    <button data-tab="revisao" class="on">Revisão</button>
+    <button data-tab="replay">Replay</button>
+    <button data-tab="presentes">Presentes</button>
+  </nav>
   <div id="msg" class="msg"></div>
-  <div id="out"></div>
+
+  <section id="tab-revisao">
+    <p class="msg">Recordes em revisão, feedback, rankings e contas bloqueadas. "Assistir" abre a gravação da partida na aba Replay (só dos recordes do topo ou em revisão, de versões do jogo que gravam).</p>
+    <div id="out"></div>
+  </section>
+
+  <section id="tab-replay" hidden>
+    <div id="rtitle">Replay</div>
+    <div class="msg">Use "Assistir" na aba Revisão, ou abra um <code>arena-run.json</code> do editor: <input id="file" type="file" accept=".json,application/json"></div>
+  <details id="pasteBox" class="msg"><summary>Colar o JSON da partida</summary>
+    <textarea id="paste" rows="5" placeholder="Cole aqui o conteúdo do arena-run.json (ou só o texto do campo replay)"></textarea>
+    <div class="bar"><button id="openPaste">Abrir</button><button id="clearPaste">Limpar</button></div>
+  </details>
+  <canvas id="view" width="1280" height="720"></canvas>
+  <canvas id="timeline" width="1280" height="22"></canvas>
+  <div class="bar">
+    <button id="play">▶</button>
+    <button id="back" title="voltar 5 s">−5 s</button>
+    <button id="fwd" title="avançar 5 s">+5 s</button>
+    <select id="speed"><option>0.25</option><option>0.5</option><option selected>1</option><option>2</option><option>4</option><option>8</option><option>16</option></select>
+    <button id="prevHit" title="dano anterior">◀ dano</button>
+    <button id="nextHit" title="próximo dano">dano ▶</button>
+    <input id="seek" class="grow" type="range" min="0" max="1000" value="0">
+  </div>
+  <div class="stats">
+    <span>Tempo <b id="clock">0:00</b></span>
+    <span>Abates <b id="kills">0</b></span>
+    <span>Vida <b id="hp">-</b></span>
+    <span>Inimigos na tela <b id="alive">0</b></span>
+    <span id="autoNote"></span>
+  </div>
+  <p class="legend msg"><span><i class="dot" style="background:#ff7a7a"></i>dano no Freny</span><span><i class="dot" style="background:#6fdc8c"></i>abate</span><span><i class="dot" style="background:#c77dff"></i>piloto automático</span></p>
+  <div id="feed"></div>
+    <p id="rmsg" class="msg"></p>
+  </section>
+
+  <section id="tab-presentes" hidden>
+    <p class="msg">Dê moedas e visuais para um jogador (alpha testers). Ele recebe na próxima vez que abrir o jogo logado na conta, num menu, com o aviso "Presente da equipe". Só chega em versões do jogo que já recebem presentes.</p>
+    <input id="who" placeholder="apelido, código FRENY-XXXX ou id da conta"> <button id="find">Buscar</button>
+    <div id="found"></div>
+    <div id="giftForm" class="form" hidden>
+      <div>Para <b id="giftTo"></b> <span id="giftUid" class="uid"></span></div>
+      <p>Moedas <input id="coins" class="num" type="number" min="0" step="100" value="0">
+        <button data-coins="1000">+1.000</button><button data-coins="5000">+5.000</button><button data-coins="20000">+20.000</button></p>
+      <div>Visuais</div>
+      <div id="looks" class="looks"></div>
+      <p><input id="note" maxlength="140" placeholder="mensagem (opcional), ex.: valeu por testar a alpha!" style="width: 420px"></p>
+      <button id="send" class="ok">Enviar presente</button>
+    </div>
+    <h2>Presentes enviados</h2>
+    <div id="sent"></div>
+  </section>
 </main>
+<script type="module" src="/replay/visualizador.js"></script>
 <script>
   var tokenInput = document.getElementById("token");
   try { tokenInput.value = localStorage.getItem("adminToken") || ""; } catch (e) {}
@@ -61,12 +142,12 @@
     wrap.appendChild(t);
     return wrap;
   }
-  // replay.html#<id>, the id the API keeps it under (api/_lib/replay.js replayId)
+  // the id the API keeps a replay under (api/_lib/replay.js replayId)
   function replayId(uid, board, score) {
     var clean = function (s) { return String(s).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 64); };
     return clean(uid) + "__" + clean(board) + "__" + (Number(score) || 0);
   }
-  function watch(id) { return btn("Assistir", "ok", function () { window.open("/replay.html#" + encodeURIComponent(id), "_blank"); }); }
+  function watch(id) { return btn("Assistir", "ok", function () { location.hash = "replay/" + encodeURIComponent(id); }); }
   function who(name, uid) { var d = el("div"); d.appendChild(el("div", name)); d.appendChild(el("div", uid, "uid")); return d; }
 
   function render(data) {
@@ -121,7 +202,100 @@
     say("Carregando...");
     api("list").then(function (d) { say(""); render(d); }).catch(function (e) { say("Erro: " + e.message); });
   }
-  document.getElementById("load").onclick = load;
+  document.getElementById("load").onclick = function () { load(); if (giftsLoaded) loadGifts(); };
+
+  // ---- tabs: #revisao, #replay/<id>, #presentes ----
+  function showTab(name) {
+    ["revisao", "replay", "presentes"].forEach(function (t) {
+      document.getElementById("tab-" + t).hidden = t !== name;
+      document.querySelector('nav button[data-tab="' + t + '"]').className = t === name ? "on" : "";
+    });
+    if (name !== "replay" && window.FrenyReplay) window.FrenyReplay.pause();
+    if (name === "presentes" && !giftsLoaded) loadGifts();
+  }
+  function route() {
+    var h = decodeURIComponent(location.hash.slice(1));
+    if (h.indexOf("replay") === 0) {
+      showTab("replay");
+      var id = h.slice(7);
+      if (id) whenViewer(function (v) { v.openId(id, tokenInput.value); });
+    } else showTab(h === "presentes" ? "presentes" : "revisao");
+  }
+  // the viewer is a module: it may load after this script
+  function whenViewer(fn) { if (window.FrenyReplay) fn(window.FrenyReplay); else setTimeout(function () { whenViewer(fn); }, 50); }
+  document.querySelectorAll("nav button").forEach(function (b) {
+    b.onclick = function () { location.hash = b.dataset.tab; };
+  });
+  window.addEventListener("hashchange", route);
+
+  // ---- Presentes ----
+  var giftsLoaded = false, looks = {}, chosen = null;
+  function $(id) { return document.getElementById(id); }
+  function loadGifts() {
+    giftsLoaded = true;
+    api("presentes").then(function (d) {
+      looks = d.looks || {};
+      var box = $("looks"); box.innerHTML = "";
+      Object.keys(looks).forEach(function (id) {
+        var l = el("label"), c = el("input"); c.type = "checkbox"; c.value = id;
+        l.appendChild(c); l.appendChild(document.createTextNode(" " + looks[id])); box.appendChild(l);
+      });
+      $("coins").max = d.maxCoins;
+      renderSent(d.sent || []);
+    }).catch(function (e) { giftsLoaded = false; say("Erro: " + e.message); });
+  }
+  function whenText(iso) { return iso ? new Date(iso).toLocaleString("pt-BR") : ""; }
+  function lookNames(ids) { return (ids || "").split(",").filter(Boolean).map(function (i) { return looks[i] || i; }).join(", "); }
+  function renderSent(rows) {
+    var out = $("sent"); out.innerHTML = "";
+    if (!rows.length) { out.appendChild(el("p", "Nenhum ainda.", "msg")); return; }
+    out.appendChild(table(["Quando", "Jogador", "Moedas", "Visuais", "Mensagem"], rows.map(function (g) {
+      return [whenText(g.criadoEm), who(g.apelido || "?", g.uid), (g.moedas || 0).toLocaleString("pt-BR"), lookNames(g.visuais) || "-", g.mensagem || ""];
+    })));
+  }
+  function find() {
+    var q = $("who").value.trim();
+    if (q.length < 2) { say("Digite pelo menos 2 letras."); return; }
+    say("Buscando...");
+    api("presentes", { search: q }).then(function (d) {
+      say(d.players.length ? "" : "Ninguém com esse apelido, código ou id.");
+      var out = $("found"); out.innerHTML = "";
+      if (!d.players.length) return;
+      var t = table(["Apelido", "Código", "Partidas", "Visto por último", ""], d.players.map(function (p) {
+        return [who(p.apelido, p.uid), p.codigo || "-", p.runs || 0, whenText(p.lastSeen) || "-", btn("Escolher", "", function () { pick(p); })];
+      }));
+      t.className += " pick";
+      out.appendChild(t);
+      if (d.players.length === 1) pick(d.players[0]);
+    }).catch(function (e) { say("Erro: " + e.message); });
+  }
+  function pick(p) {
+    chosen = p;
+    $("giftTo").textContent = p.apelido;
+    $("giftUid").textContent = p.uid;
+    $("giftForm").hidden = false;
+  }
+  $("find").onclick = find;
+  $("who").onkeydown = function (e) { if (e.key === "Enter") find(); };
+  document.querySelectorAll("[data-coins]").forEach(function (b) {
+    b.onclick = function () { $("coins").value = (Number($("coins").value) || 0) + Number(b.dataset.coins); };
+  });
+  $("send").onclick = function () {
+    if (!chosen) return;
+    var coins = Math.max(0, Math.floor(Number($("coins").value) || 0));
+    var picked = Array.prototype.map.call(document.querySelectorAll("#looks input:checked"), function (c) { return c.value; });
+    if (!coins && !picked.length) { say("Escolha moedas ou algum visual."); return; }
+    var what = [coins ? coins.toLocaleString("pt-BR") + " moedas" : null, lookNames(picked.join(","))].filter(Boolean).join(" + ");
+    if (!confirm("Enviar " + what + " para " + chosen.apelido + "?")) return;
+    api("presentes", { send: { uid: chosen.uid, coins: coins, looks: picked, note: $("note").value } }).then(function () {
+      say("Presente enviado para " + chosen.apelido + ". Ele recebe na próxima vez que abrir o jogo logado.");
+      $("coins").value = 0; $("note").value = "";
+      document.querySelectorAll("#looks input:checked").forEach(function (c) { c.checked = false; });
+      loadGifts();
+    }).catch(function (e) { say("Erro: " + e.message); });
+  };
+
+  route();
   if (tokenInput.value) load();
 </script>
 </body>

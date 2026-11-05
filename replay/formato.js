@@ -1,5 +1,5 @@
 // Reads the game's run replay (Assets/Scripts/Online/RunRecorder.cs, format "FRR1"): the bytes
-// after base64 and gunzip. Used by replay.html and by test/replay.test.js.
+// after base64 and gunzip. Used by replay/visualizador.js and by test/replay.test.js.
 const UNIT = 16;
 
 export function parseReplay(bytes) {

@@ -13,6 +13,7 @@ const ROUTES = {
   '/api/achievements/claim': '../api/achievements/claim.js',
   '/api/feedback': '../api/feedback.js',
   '/api/admin/replay': '../api/admin/replay.js',
+  '/api/admin/presentes': '../api/admin/presentes.js',
 };
 
 if (!process.env.SCORE_KEY && fs.existsSync(new URL('../.env.local', import.meta.url))) {
