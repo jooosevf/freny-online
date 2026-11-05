@@ -15,7 +15,7 @@ export const config = { runtime: 'edge' };
 // { earned: [{ id, sig }] } with sig = sha256("<key>|uid|ach|<id>"), what firestore.rules asks
 // for in achievements/{uid}; "played" comes with every accepted run, so the site can count players.
 export default async function handler(request) {
-  const req = await readRequest(request);
+  const req = await readRequest(request, 'claim');
   if (req.error) return req.error;
   const key = scoreKey();
   if (!key) return json(503, { error: 'SCORE_KEY não configurada' });

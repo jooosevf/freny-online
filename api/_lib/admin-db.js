@@ -136,3 +136,22 @@ export async function listDocs(collection, orderBy, limit = 50) {
     ...fromFields(r.document.fields),
   }));
 }
+
+// docs where `field` starts with `prefix` (a range on that field, Firestore's single-field index),
+// lowest first: [{ id, ...fields }]
+export async function listByPrefix(collection, field, prefix, limit = 20) {
+  const query = {
+    from: [{ collectionId: collection }],
+    where: { compositeFilter: { op: 'AND', filters: [
+      { fieldFilter: { field: { fieldPath: field }, op: 'GREATER_THAN_OR_EQUAL', value: { stringValue: prefix } } },
+      { fieldFilter: { field: { fieldPath: field }, op: 'LESS_THAN', value: { stringValue: prefix + '' } } },
+    ] } },
+    orderBy: [{ field: { fieldPath: field }, direction: 'ASCENDING' }],
+    limit,
+  };
+  const rows = await call('POST', ':runQuery', { structuredQuery: query });
+  return (rows || []).filter((r) => r.document).map((r) => ({
+    id: r.document.name.slice(r.document.name.lastIndexOf('/') + 1),
+    ...fromFields(r.document.fields),
+  }));
+}

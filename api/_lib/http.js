@@ -1,4 +1,5 @@
 import { readIdToken } from './firebase-auth.js';
+import { check, clientIp } from './rate-limit.js';
 
 export const PROJECT_ID = process.env.FIREBASE_PROJECT_ID || 'the-rise-of-freny';
 
@@ -11,11 +12,16 @@ export const CORS = {
   'Access-Control-Max-Age': '86400',
 };
 
-export function json(status, body) {
+export function json(status, body, headers = {}) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...CORS },
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...CORS, ...headers },
   });
+}
+
+// 429 for a caller over its limit (rate-limit.js); the game shows the error as the reason
+export function slowDown(seconds) {
+  return json(429, { error: `muitas tentativas seguidas, espere ${seconds} s` }, { 'Retry-After': String(seconds) });
 }
 
 // The server's secret (Vercel env var SCORE_KEY). The same key is in the published Firestore
@@ -26,12 +32,18 @@ export function scoreKey() {
 }
 
 // POST with the player's Firebase ID token: returns { uid, anonymous, body } or an error Response.
-export async function readRequest(request) {
+// With a route (a key of LIMITS in rate-limit.js), the address is counted before the token is
+// checked and the account right after, and a caller over the limit gets 429.
+export async function readRequest(request, route) {
   if (request.method === 'OPTIONS') return { error: new Response(null, { status: 204, headers: CORS }) };
   if (request.method !== 'POST') return { error: json(405, { error: 'use POST' }) };
+  const ipWait = route ? check(route, 'ip', clientIp(request)) : 0;
+  if (ipWait) return { error: slowDown(ipWait) };
   const auth = request.headers.get('authorization') || '';
   const who = auth.startsWith('Bearer ') ? await readIdToken(auth.slice(7), PROJECT_ID) : null;
   if (!who) return { error: json(401, { error: 'login inválido' }) };
+  const uidWait = route ? check(route, 'uid', who.uid) : 0;
+  if (uidWait) return { error: slowDown(uidWait) };
   let body;
   try {
     body = await request.json();
