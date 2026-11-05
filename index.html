@@ -139,10 +139,37 @@
     .page p { color: var(--muted); margin: 0 0 12px; }
     /* Perfil: one player's page; signed in, the friends too */
     #page-perfil { max-width: 960px; }
-    .pf-head { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; background: var(--panel); border: 2px solid var(--line); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; }
-    .pf-head canvas { width: 144px; height: 144px; image-rendering: pixelated; flex: none; }
-    .pf-head h1 { margin: 0; color: var(--pink); overflow-wrap: anywhere; }
-    .pf-head .seen, .pf-head .look { color: var(--muted); font-size: 15px; }
+    /* the top of a profile: Freny under a blood moon, like the share card */
+    .pf-hero { position: relative; display: flex; gap: 8px 28px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; padding: 22px 28px;
+      border: 2px solid #4b2340; outline: 1px solid #2a1626; outline-offset: -10px; border-radius: 4px; overflow: hidden;
+      background: url(devlog/banner.png) center bottom / 100% auto no-repeat, linear-gradient(#08060d, #171021 70%, #0b0811); image-rendering: pixelated; }
+    .pf-hero::before, .pf-hero::after { content: ""; position: absolute; width: 12px; height: 12px; background: var(--pink); transform: rotate(45deg); top: 2px; left: 2px; z-index: 2; }
+    .pf-hero::after { left: auto; right: 2px; }
+    .pf-stage { position: relative; width: 280px; height: 280px; flex: none; margin: 0 auto; }
+    .pf-stage::before { content: ""; position: absolute; left: 30px; top: 18px; width: 220px; height: 220px; border-radius: 50%;
+      background: radial-gradient(circle at 62% 45%, #3a0b16 0 58%, transparent 59%), #5a1220; box-shadow: 0 0 90px 30px rgba(178, 30, 48, 0.35); }
+    .pf-stage::after { content: ""; position: absolute; left: 70px; bottom: 6px; width: 140px; height: 16px; border-radius: 50%; background: rgba(0, 0, 0, 0.55); }
+    .pf-stage canvas { position: relative; z-index: 1; width: 280px; height: 280px; image-rendering: pixelated; }
+    .pf-info { flex: 1 1 280px; min-width: 0; position: relative; }
+    .page .pf-info h1 { margin: 0; color: var(--pink); font-size: 46px; line-height: 1.1; overflow-wrap: anywhere; text-shadow: 0 2px 0 #000; }
+    .pf-meta { color: var(--muted); font-size: 15px; margin-top: 4px; }
+    .pf-rec { margin-top: 18px; }
+    .pf-rec span { display: block; color: var(--muted); font-size: 17px; }
+    .pf-rec b { display: block; color: #FFD84A; font-size: 64px; line-height: 1; text-shadow: 0 3px 0 #000; }
+    .pf-recs { display: flex; gap: 6px 18px; flex-wrap: wrap; color: var(--muted); font-size: 16px; margin-top: 6px; }
+    .pf-vs { font-size: 15px; }
+    .pf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+    .pf-tile { display: flex; align-items: center; gap: 14px; background: var(--panel); border: 2px solid var(--line); border-left: 5px solid #6e101e; border-radius: 4px; padding: 10px 14px; min-height: 64px; }
+    .pf-tile img { width: 48px; height: 48px; object-fit: contain; flex: none; }
+    .pf-tile div { min-width: 0; }
+    .pf-tile b { display: block; color: #FFD84A; font-size: 26px; line-height: 1.1; }
+    .pf-tile b.behind { color: var(--text); }
+    .pf-tile span { display: block; color: var(--muted); font-size: 15px; line-height: 1.25; }
+    .pf-tile small { display: block; color: var(--muted); font-size: 14px; }
+    .pf-tile small.ahead { color: #FFD84A; }
+    @media (max-width: 640px) { .pf-hero { padding: 18px 16px; text-align: center; } .pf-recs { justify-content: center; } .page .pf-info h1 { font-size: 36px; } .pf-rec b { font-size: 52px; }
+      .pf-grid { grid-template-columns: 1fr 1fr; gap: 8px; } .pf-tile { gap: 10px; padding: 8px 10px; border-left-width: 4px; }
+      .pf-tile img { width: 34px; height: 34px; } .pf-tile b { font-size: 20px; } .pf-tile span { font-size: 13px; } .pf-tile small { font-size: 12px; } }
     .pf-share { margin-top: 10px; padding: 8px 16px; border-color: #2f7a4a; color: #b8f0c8; }
     .pf-share:hover { border-color: #5fd38a; }
     .pf-share:disabled { opacity: 0.7; cursor: wait; }
@@ -154,14 +181,6 @@
     .sh-row button { flex: 1 1 auto; padding: 9px 12px; }
     .sh-box .pf-msg:empty { display: none; }
     .sh-row .sh-send { flex-basis: 100%; font-size: 18px; border-color: #2f7a4a; color: #b8f0c8; }
-    .pf-best { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
-    .pf-best div { background: var(--panel); border: 2px solid var(--line); border-radius: 6px; padding: 10px 12px; }
-    .pf-best b { display: block; font-size: 22px; color: #FFD84A; }
-    .pf-best span { color: var(--muted); font-size: 14px; }
-    table.pf-stats { width: 100%; border-collapse: collapse; font-size: 16px; }
-    .pf-stats th, .pf-stats td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: right; }
-    .pf-stats th:first-child, .pf-stats td:first-child { text-align: left; color: var(--muted); font-weight: 400; }
-    .pf-stats .ahead { color: #FFD84A; }
     .pf-form { display: grid; gap: 8px; max-width: 360px; }
     /* Feedback */
     .fb-form { display: grid; gap: 18px; max-width: 620px; margin-top: 20px; }
@@ -1229,71 +1248,72 @@
         if (layers[2]) c.drawImage(layers[2], 0, 0);
       });
     }
-    function lookText(p) {
-      var parts = [];
-      if (p.suit === "suit.berserker") parts.push("Traje Berserker");
-      else if (LOOK_HELMET[p.helmet]) parts.push(LOOK_HELMET[p.helmet][1]);
-      if (LOOK_CAPE[p.cape]) parts.push(LOOK_CAPE[p.cape][2]);
-      if (p.suit !== "suit.berserker" && LOOK_COLOR[p.color]) parts.push("Camisa " + LOOK_COLOR[p.color][1].toLowerCase().replace(/o$/, "a"));
-      return parts.length ? parts.join(" · ") : "Visual original";
-    }
 
     // what a profile shows: label, value as text, and the number that decides who is ahead
     var LEVEL_FIELD = { hard: "bestHard", medium: "bestMedium", easy: "bestEasy" };
+    // label, value as text, the number that decides who is ahead (null: nobody is "ahead" in falls), icon in devlog/
     function statRows(p) {
       var combo = Math.max(10, p.bestCombo || 0) / 10;
+      var play = (p.secManual || 0) + (p.secAuto || 0);
       return [
-        ["Inimigos derrotados", nf(p.kills), p.kills],
-        ["Ciclopes derrotados", nf(p.k_cyclops), p.k_cyclops],
-        ["Feiticeiros Supremos derrotados", nf(p.k_supreme), p.k_supreme],
-        ["Maior combo", combo.toFixed(1).replace(".", ",") + "x", p.bestCombo],
-        ["Corrida mais longa", duration(p.longestRun), p.longestRun],
-        ["Tempo de jogo", duration((p.secManual || 0) + (p.secAuto || 0)), (p.secManual || 0) + (p.secAuto || 0)],
-        ["Tempo no manual", duration(p.secManual), p.secManual],
-        ["Tempo no automático", duration(p.secAuto), p.secAuto],
-        ["Corridas manuais", nf(p.runsManual), p.runsManual],
-        ["Corridas no automático", nf(p.runsAuto), p.runsAuto],
-        ["Noites sobrevividas", nf(p.nights), p.nights],
-        ["Luas de Sangue sobrevividas", nf(p.bloodMoons), p.bloodMoons],
-        ["Baús abertos", nf(p.chests), p.chests],
-        ["Moedas ganhas", nf(p.coinsEarned), p.coinsEarned],
-        ["Quedas do Freny", nf(p.deaths), p.deaths],
+        ["Inimigos derrotados", nf(p.kills), p.kills, "espada"],
+        ["Ciclopes derrotados", nf(p.k_cyclops), p.k_cyclops, "ciclope"],
+        ["Feiticeiros Supremos derrotados", nf(p.k_supreme), p.k_supreme, "mago_supremo"],
+        ["Maior combo", combo.toFixed(1).replace(".", ",") + "x", p.bestCombo, "furia"],
+        ["Noites sobrevividas", nf(p.nights), p.nights, "lua"],
+        ["Luas de Sangue sobrevividas", nf(p.bloodMoons), p.bloodMoons, "lua_sangue"],
+        ["Corrida mais longa", duration(p.longestRun), p.longestRun, "tocha"],
+        ["Tempo de jogo", duration(play), play, "sol"],
+        ["Baús abertos", nf(p.chests), p.chests, "bau"],
+        ["Moedas ganhas", nf(p.coinsEarned), p.coinsEarned, "moeda"],
+        ["Quedas do Freny", nf(p.deaths), null, "coracao"],
+        ["Tempo no manual", duration(p.secManual), p.secManual, "tecla"],
+        ["Corridas manuais", nf(p.runsManual), p.runsManual, "arma"],
+        ["Tempo no automático", duration(p.secAuto), p.secAuto, "mina"],
+        ["Corridas no automático", nf(p.runsAuto), p.runsAuto, "municao"],
       ];
     }
     function renderProfile(box, p, mine) {
-      var head = el("div", "pf-head");
-      head.appendChild(drawLook(p));
-      var info = el("div");
-      info.append(el("h1", "", p.apelido), el("div", "look", lookText(p)), el("div", "seen", "Online " + seen(p.lastSeen)));
-      if (p.codigo) info.appendChild(el("div", "seen", "Código de amigo: " + p.codigo));
+      var hero = el("div", "pf-hero");
+      var stage = el("div", "pf-stage");
+      stage.appendChild(drawLook(p));
+      hero.appendChild(stage);
+      var info = el("div", "pf-info");
+      info.appendChild(el("h1", "", p.apelido));
+      var meta = el("div", "pf-meta", "Online " + seen(p.lastSeen));
+      if (p.codigo) meta.textContent += " · Código de amigo " + p.codigo;
+      info.appendChild(meta);
+      var rec = cardRecord(p);
+      if (rec) {
+        var main = el("div", "pf-rec");
+        main.append(el("span", "", "Recorde no " + rec.label), el("b", "", nf(rec.value)));
+        info.appendChild(main);
+        var others = LEVELS.slice(rec.i + 1).filter(function (l) { return p[LEVEL_FIELD[l.id]] > 0; });
+        if (others.length) {
+          var small = el("div", "pf-recs");
+          others.forEach(function (l) { small.appendChild(el("span", "", l.label + " " + nf(p[LEVEL_FIELD[l.id]]))); });
+          info.appendChild(small);
+        }
+      } else info.appendChild(el("div", "pf-meta", "Ainda sem recorde"));
       var share = el("button", "pf-share", "Compartilhar no WhatsApp");
       share.onclick = function () { shareProfile(p, share); };
       info.appendChild(share);
-      head.appendChild(info);
-      box.appendChild(head);
-      var best = el("div", "pf-best");
-      LEVELS.forEach(function (l) {
-        if (!(LEVEL_FIELD[l.id] in p)) return;   // a difficulty the game doesn't have any more
-        var cell = el("div");
-        cell.append(el("b", "", nf(p[LEVEL_FIELD[l.id]])), el("span", "", "Recorde no " + l.label));
-        best.appendChild(cell);
-      });
-      box.appendChild(best);
-      var table = el("table", "pf-stats");
-      if (mine) {
-        var top = el("tr");
-        top.append(el("th", "", ""), el("th", "", mine.apelido), el("th", "", p.apelido));
-        table.appendChild(top);
-      }
+      hero.appendChild(info);
+      box.appendChild(hero);
+      if (mine) box.appendChild(el("p", "pf-vs", "Comparando com você (" + mine.apelido + "): em dourado, quem está na frente."));
+      var grid = el("div", "pf-grid");
       var a = mine ? statRows(mine) : null;
       statRows(p).forEach(function (row, i) {
-        var tr = el("tr");
-        tr.appendChild(el("td", "", row[0]));
-        if (a) tr.appendChild(el("td", (a[i][2] || 0) > (row[2] || 0) ? "ahead" : "", a[i][1]));
-        tr.appendChild(el("td", a && (row[2] || 0) > (a[i][2] || 0) ? "ahead" : "", row[1]));
-        table.appendChild(tr);
+        var tile = el("div", "pf-tile");
+        var icon = el("img", "pix"); icon.src = "devlog/" + row[3] + ".png"; icon.alt = ""; icon.loading = "lazy";
+        var txt = el("div");
+        var they = row[2] != null && a && (row[2] || 0) > (a[i][2] || 0), me = row[2] != null && a && (a[i][2] || 0) > (row[2] || 0);
+        txt.append(el("b", a && !they ? "behind" : "", row[1]), el("span", "", row[0]));
+        if (a) txt.appendChild(el("small", me ? "ahead" : "", "Você: " + a[i][1]));
+        tile.append(icon, txt);
+        grid.appendChild(tile);
       });
-      box.appendChild(table);
+      box.appendChild(grid);
     }
 
     // ---- share: a 1080x1350 image of the profile, sent to WhatsApp. Phones get the system share sheet with the
@@ -1395,15 +1415,14 @@
         // name, look, records
         var x = 560, maxW = W - x - 70;
         c.textBaseline = "alphabetic"; c.textAlign = "left";
-        c.fillStyle = "#EF8BFF"; fitFont(c, p.apelido, "700", 72, maxW); c.fillText(p.apelido, x, 450);
-        c.fillStyle = "rgba(255,255,255,0.7)"; fitFont(c, lookText(p), "400", 30, maxW); c.fillText(lookText(p), x, 496);
+        c.fillStyle = "#EF8BFF"; fitFont(c, p.apelido, "700", 72, maxW); c.fillText(p.apelido, x, 470);
         var rec = cardRecord(p);
         if (rec) {
-          c.fillStyle = "rgba(255,255,255,0.7)"; c.font = "400 32px 'Roboto Condensed', sans-serif"; c.fillText("Recorde no " + rec.label, x, 580);
-          c.fillStyle = "#FFD84A"; fitFont(c, nf(rec.value), "700", 104, maxW); c.fillText(nf(rec.value), x, 680);
+          c.fillStyle = "rgba(255,255,255,0.7)"; c.font = "400 32px 'Roboto Condensed', sans-serif"; c.fillText("Recorde no " + rec.label, x, 560);
+          c.fillStyle = "#FFD84A"; fitFont(c, nf(rec.value), "700", 104, maxW); c.fillText(nf(rec.value), x, 662);
           var others = LEVELS.slice(rec.i + 1).filter(function (l) { return p[LEVEL_FIELD[l.id]] > 0; })
             .map(function (l) { return l.label + " " + nf(p[LEVEL_FIELD[l.id]]); });
-          if (others.length) { c.fillStyle = "rgba(255,255,255,0.7)"; fitFont(c, others.join("  ·  "), "400", 30, maxW); c.fillText(others.join("  ·  "), x, 730); }
+          if (others.length) { c.fillStyle = "rgba(255,255,255,0.7)"; fitFont(c, others.join("  ·  "), "400", 30, maxW); c.fillText(others.join("  ·  "), x, 714); }
         } else {
           c.fillStyle = "rgba(255,255,255,0.7)"; c.font = "400 32px 'Roboto Condensed', sans-serif"; c.fillText("Ainda sem recorde", x, 600);
         }
@@ -1717,7 +1736,7 @@
           var row = el("div", "pf-row");
           var who = el("div", "who");
           var link = el("a", "", p.apelido); link.href = "#perfil/" + encodeURIComponent(p.apelido);
-          who.append(link, el("small", "", lookText(p) + " · Recorde no Freny: " + nf(p.bestHard) + " · online " + seen(p.lastSeen)));
+          who.append(link, el("small", "", "Recorde no Freny: " + nf(p.bestHard) + " · online " + seen(p.lastSeen)));
           var remove = el("button", "", "Remover");
           remove.onclick = function () {
             if (remove.textContent !== "Certeza?") { remove.textContent = "Certeza?"; return; }
