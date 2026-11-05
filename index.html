@@ -142,7 +142,7 @@
     /* the top of a profile: Freny under a blood moon, like the share card */
     .pf-hero { position: relative; display: flex; gap: 8px 28px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; padding: 22px 28px;
       border: 2px solid #4b2340; outline: 1px solid #2a1626; outline-offset: -10px; border-radius: 4px; overflow: hidden;
-      background: url(devlog/banner.png) center bottom / 100% auto no-repeat, linear-gradient(#08060d, #171021 70%, #0b0811); image-rendering: pixelated; }
+      background: url(devlog/banner.png) center bottom / 100% auto no-repeat, #181729; image-rendering: pixelated; }
     .pf-hero::before, .pf-hero::after { content: ""; position: absolute; width: 12px; height: 12px; background: var(--pink); transform: rotate(45deg); top: 2px; left: 2px; z-index: 2; }
     .pf-hero::after { left: auto; right: 2px; }
     .pf-stage { position: relative; width: 280px; height: 280px; flex: none; margin: 0 auto; }
@@ -152,6 +152,7 @@
     .pf-stage canvas { position: relative; z-index: 1; width: 280px; height: 280px; image-rendering: pixelated; }
     .pf-info { flex: 1 1 280px; min-width: 0; position: relative; }
     .page .pf-info h1 { margin: 0; color: var(--pink); font-size: 46px; line-height: 1.1; overflow-wrap: anywhere; text-shadow: 0 2px 0 #000; }
+    .pf-titulo { color: #FFD84A; font-size: 20px; letter-spacing: 0.04em; text-transform: uppercase; margin-top: 2px; text-shadow: 0 2px 0 #000; }
     .pf-meta { color: var(--muted); font-size: 15px; margin-top: 4px; }
     .pf-rec { margin-top: 18px; }
     .pf-rec span { display: block; color: var(--muted); font-size: 17px; }
@@ -1280,6 +1281,7 @@
       hero.appendChild(stage);
       var info = el("div", "pf-info");
       info.appendChild(el("h1", "", p.apelido));
+      if (p.titulo) info.appendChild(el("div", "pf-titulo", p.titulo));
       var meta = el("div", "pf-meta", "Online " + seen(p.lastSeen));
       if (p.codigo) meta.textContent += " · Código de amigo " + p.codigo;
       info.appendChild(meta);
@@ -1416,13 +1418,19 @@
         var x = 560, maxW = W - x - 70;
         c.textBaseline = "alphabetic"; c.textAlign = "left";
         c.fillStyle = "#EF8BFF"; fitFont(c, p.apelido, "700", 72, maxW); c.fillText(p.apelido, x, 470);
+        var dy = 0;
+        if (p.titulo) {
+          var tt = p.titulo.toUpperCase();
+          c.fillStyle = "#FFD84A"; fitFont(c, tt, "700", 32, maxW); c.fillText(tt, x, 516);
+          dy = 30;
+        }
         var rec = cardRecord(p);
         if (rec) {
-          c.fillStyle = "rgba(255,255,255,0.7)"; c.font = "400 32px 'Roboto Condensed', sans-serif"; c.fillText("Recorde no " + rec.label, x, 560);
-          c.fillStyle = "#FFD84A"; fitFont(c, nf(rec.value), "700", 104, maxW); c.fillText(nf(rec.value), x, 662);
+          c.fillStyle = "rgba(255,255,255,0.7)"; c.font = "400 32px 'Roboto Condensed', sans-serif"; c.fillText("Recorde no " + rec.label, x, 560 + dy);
+          c.fillStyle = "#FFD84A"; fitFont(c, nf(rec.value), "700", 104, maxW); c.fillText(nf(rec.value), x, 662 + dy);
           var others = LEVELS.slice(rec.i + 1).filter(function (l) { return p[LEVEL_FIELD[l.id]] > 0; })
             .map(function (l) { return l.label + " " + nf(p[LEVEL_FIELD[l.id]]); });
-          if (others.length) { c.fillStyle = "rgba(255,255,255,0.7)"; fitFont(c, others.join("  ·  "), "400", 30, maxW); c.fillText(others.join("  ·  "), x, 714); }
+          if (others.length) { c.fillStyle = "rgba(255,255,255,0.7)"; fitFont(c, others.join("  ·  "), "400", 30, maxW); c.fillText(others.join("  ·  "), x, 714 + dy); }
         } else {
           c.fillStyle = "rgba(255,255,255,0.7)"; c.font = "400 32px 'Roboto Condensed', sans-serif"; c.fillText("Ainda sem recorde", x, 600);
         }
@@ -1477,7 +1485,8 @@
       var name = "freny-" + (nickKey(p.apelido) || "perfil") + ".png";
       var file = typeof File === "function" ? new File([blob], name, { type: "image/png" }) : null;
       var phone = matchMedia("(pointer: coarse)").matches;
-      var canFiles = phone && file && navigator.canShare && navigator.canShare({ files: [file] });
+      // the system share sheet with the file: phones, and Windows/Mac Chrome and Edge (WhatsApp's app is in it when installed)
+      var canFiles = !!(file && navigator.canShare && navigator.canShare({ files: [file] }));
       var shade = el("div", "sh-shade");
       var box = el("div", "sh-box");
       var img = el("img"); img.src = URL.createObjectURL(blob); img.alt = "Card do perfil de " + p.apelido;
@@ -1485,7 +1494,10 @@
       var save = el("button", "", "Baixar imagem");
       var close = el("button", "", "Fechar");
       var msg = el("div", "pf-msg");
-      var row = el("div", "sh-row"); row.append(send, save, close);
+      var web = el("button", "", "WhatsApp Web");
+      var row = el("div", "sh-row"); row.append(send);
+      if (canFiles && !phone) row.appendChild(web);   // a computer without the WhatsApp app: the web chat, image by paste
+      row.append(save, close);
       box.append(img, row, msg);
       shade.appendChild(box);
       function done() { URL.revokeObjectURL(img.src); shade.remove(); document.removeEventListener("keydown", onKey); }
@@ -1502,7 +1514,11 @@
           });
           return;
         }
-        // computer (or a phone browser without file sharing): the chat opens with the text and the link; the image goes by paste or file
+        openChat();
+      };
+      web.onclick = openChat;
+      // no share sheet with files: the chat opens with the text and the link; the image goes by paste or file
+      function openChat() {
         window.open("https://wa.me/?text=" + encodeURIComponent(shareText(p)), "_blank", "noopener");
         var copied = !phone && navigator.clipboard && window.ClipboardItem
           ? navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]).then(function () { return true; }, function () { return false; })
@@ -1511,9 +1527,22 @@
           if (ok) msg.textContent = "Abrimos o WhatsApp. A imagem já está copiada: escolha a conversa e cole com Ctrl+V.";
           else { download(blob, name); msg.textContent = "Abrimos o WhatsApp e baixamos a imagem: escolha a conversa e anexe o arquivo " + name + "."; }
         });
-      };
+      }
       document.body.appendChild(shade);
       send.focus();
+    }
+
+    // the Título the player picked in the game (titleOf, same rules as the ranking): one more read,
+    // two more only for "rei"; a profile without one, or a failed read, just shows no title
+    function withTitle(p) {
+      if (!p) return Promise.resolve(p);
+      return fsFetch(DOCS + "/achievements/" + p.id + "?key=" + FIREBASE.apiKey).then(function (r) {
+        return r.ok ? r.json() : null;
+      }).then(function (doc) {
+        var id = doc && doc.fields && doc.fields.title ? doc.fields.title.stringValue : "";
+        var kings = id === "rei" ? Promise.all([firstOf("leaderboard_hard"), firstOf("daily_hard_" + today())]) : Promise.resolve([]);
+        return kings.then(function (k) { p.titulo = titleOf(doc, p.id, k.filter(Boolean)); return p; });
+      }).catch(function () { return p; });
     }
 
     // the uids of the names shown on the ranking, so opening one takes only one read
@@ -1531,7 +1560,7 @@
       var key = nickKey(nick);
       var uid = key && uidByKey[key];
       (uid ? Promise.resolve(uid) : key ? fsGet("apelidos/" + key).then(function (d) { return d && d.uid; }) : Promise.resolve(null)).then(function (found) {
-        return found ? fsGet("perfis/" + found) : null;
+        return found ? fsGet("perfis/" + found).then(withTitle) : null;
       }).then(function (p) {
         if (perfilAsked !== nick) return;
         box.innerHTML = "";
@@ -1588,7 +1617,7 @@
     }
 
     function showMine(box) {
-      fsGet("perfis/" + session.uid).then(function (p) {
+      fsGet("perfis/" + session.uid).then(withTitle).then(function (p) {
         if (perfilAsked !== null) return;
         box.innerHTML = "";
         if (p) renderProfile(box, p);
