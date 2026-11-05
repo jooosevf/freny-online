@@ -34,6 +34,10 @@
         {
           "icone": "freny",
           "texto": "Site: o perfil ganhou cara nova, com o Freny sob a lua de sangue, o recorde em destaque e os números em blocos com ícones. E tem o botão Compartilhar no WhatsApp, que gera uma imagem do teu perfil (com o teu Freny e os teus melhores números) e manda direto pra um amigo ou grupo."
+        },
+        {
+          "icone": "freny",
+          "texto": "Site: o perfil e a imagem de compartilhar agora mostram o teu Título embaixo do nome. No PC, o botão Enviar no WhatsApp já manda a imagem junto (pelo menu de compartilhar do Windows), com a opção WhatsApp Web se preferir."
         }
       ]
     },
