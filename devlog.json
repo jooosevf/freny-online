@@ -30,6 +30,10 @@
         {
           "icone": "tecla",
           "texto": "O pulo do piloto automático agora tira o Freny do chão de verdade, então o Automático ficou um pouco mais forte."
+        },
+        {
+          "icone": "freny",
+          "texto": "Site: o perfil ganhou cara nova, com o Freny sob a lua de sangue, o recorde em destaque e os números em blocos com ícones. E tem o botão Compartilhar no WhatsApp, que gera uma imagem do teu perfil (com o teu Freny e os teus melhores números) e manda direto pra um amigo ou grupo."
         }
       ]
     },
