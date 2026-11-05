@@ -23,6 +23,8 @@
   #feed { font-size: 13px; color: var(--dim); max-height: 140px; overflow-y: auto; background: var(--panel); border-radius: 8px; padding: 8px; }
   #feed div.now { color: var(--text); }
   .legend span { margin-right: 14px; }
+  textarea { width: 100%; box-sizing: border-box; background: var(--panel); color: var(--text); border: 1px solid #3a2d52; border-radius: 6px; padding: 8px; font: 12px/1.3 ui-monospace, monospace; resize: vertical; }
+  summary { cursor: pointer; color: var(--accent); }
   .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
 </style>
 </head>
@@ -30,6 +32,10 @@
 <main>
   <h1 id="title">Replay</h1>
   <div id="sub" class="msg"><a href="/admin.html">← admin</a> · ou abra um <code>arena-run.json</code> do editor: <input id="file" type="file" accept=".json,application/json"></div>
+  <details id="pasteBox" class="msg"><summary>Colar o JSON da partida</summary>
+    <textarea id="paste" rows="5" placeholder="Cole aqui o conteúdo do arena-run.json (ou só o texto do campo replay)"></textarea>
+    <div class="bar"><button id="openPaste">Abrir</button><button id="clearPaste">Limpar</button></div>
+  </details>
   <canvas id="view" width="1280" height="720"></canvas>
   <canvas id="timeline" width="1280" height="22"></canvas>
   <div class="bar">
@@ -240,22 +246,37 @@
   $("nextHit").onclick = () => { const h = hits.find((s) => s > t + 0.6); if (h != null) { t = Math.max(0, h - 1.5); draw(); } };
   $("prevHit").onclick = () => { const h = hits.filter((s) => s < t - 1.6).pop(); if (h != null) { t = Math.max(0, h - 1.5); draw(); } };
   document.addEventListener("keydown", (e) => {
-    if (e.target.tagName === "INPUT" && e.target.type !== "range") return;
+    if ((e.target.tagName === "INPUT" && e.target.type !== "range") || e.target.tagName === "TEXTAREA") return;
     if (e.code === "Space") { e.preventDefault(); $("play").onclick(); }
     if (e.code === "ArrowLeft") $("back").onclick();
     if (e.code === "ArrowRight") $("fwd").onclick();
   });
 
   // an editor run (Logs/arena-run.json, the same JSON the game sends)
+  // a pasted or opened run: the whole JSON the game sends, or just its "replay" text
+  async function openRun(text, name) {
+    try {
+      text = text.trim();
+      if (!text) throw new Error("nada colado");
+      let run;
+      if (text[0] === "{") run = JSON.parse(text);
+      else if (/^"?[A-Za-z0-9+/=\s]+"?$/.test(text)) run = { replay: text.replace(/["\s]/g, "") };
+      else throw new Error("isso não parece o JSON de uma partida");
+      if (run.run && !run.replay) run = run.run;
+      if (!run.replay) throw new Error("esse JSON não tem replay (é de uma versão antiga do jogo?)");
+      await show({ replay: run.replay, kills: run.kills, vitals: run.vitals, score: run.score, board: run.board, name });
+    } catch (err) {
+      say("Erro: " + (err instanceof RangeError ? "a gravação está cortada ou é de uma versão de teste antiga do jogo" : err.message));
+    }
+  }
   $("file").onchange = async (e) => {
     const file = e.target.files[0];
-    if (!file) return;
-    try {
-      const run = JSON.parse(await file.text());
-      if (!run.replay) throw new Error("esse arquivo não tem replay (é de uma versão antiga do jogo?)");
-      await show({ replay: run.replay, kills: run.kills, vitals: run.vitals, score: run.score, board: run.board, name: file.name });
-    } catch (err) { say("Erro: " + err.message); }
+    if (file) openRun(await file.text(), file.name);
   };
+  $("openPaste").onclick = () => openRun($("paste").value, "JSON colado");
+  $("clearPaste").onclick = () => { $("paste").value = ""; $("paste").focus(); };
+  // pasting into the box opens it at once
+  $("paste").addEventListener("paste", () => setTimeout(() => openRun($("paste").value, "JSON colado"), 0));
 
   // replay.html#<id>: one kept by the API (admin.html's "Assistir"), with the admin password
   const id = decodeURIComponent(location.hash.slice(1));
