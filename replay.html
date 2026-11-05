@@ -78,7 +78,7 @@
   const pictures = {}, frameCounts = {};
 
   function picture(src) {
-    if (!pictures[src]) { const img = new Image(); img.src = src; pictures[src] = img; }
+    if (!pictures[src]) { const img = new Image(); img.onload = () => { if (!playing) draw(); }; img.src = src; pictures[src] = img; }
     return pictures[src];
   }
   fetch("/bestiario.json").then((r) => r.json()).then((d) => {
@@ -135,10 +135,12 @@
     const sky = ctx.createLinearGradient(0, 0, 0, view.height);
     sky.addColorStop(0, "#1b1226"); sky.addColorStop(1, "#07060a");
     ctx.fillStyle = sky; ctx.fillRect(0, 0, view.width, view.height);
-    rep.boxes.forEach((b) => {
-      const [x0, y1] = toCanvas(b.x0, b.y1), [x1, y0] = toCanvas(b.x1, b.y0);
-      ctx.fillStyle = "#3b3346"; ctx.fillRect(x0, y1, x1 - x0, y0 - y1);
-      ctx.fillStyle = "#5a4e6a"; ctx.fillRect(x0, y1, x1 - x0, Math.min(3, y0 - y1));
+    ctx.fillStyle = "#3b3346"; ctx.strokeStyle = "#6a5c7c"; ctx.lineWidth = 2; ctx.lineJoin = "round";
+    rep.ground.forEach((g) => {
+      ctx.beginPath();
+      g.points.forEach(([x, y], j) => { const [cx, cy] = toCanvas(x, y); if (j) ctx.lineTo(cx, cy); else ctx.moveTo(cx, cy); });
+      if (g.closed) { ctx.closePath(); ctx.fill(); }
+      ctx.stroke();
     });
     if (i < 0) return;
     const a = f[i], b = f[Math.min(i + 1, f.length - 1)];

@@ -16,7 +16,9 @@ export function fakeReplay({ seconds = 3, enemies = 2 } = {}) {
   'FRR1'.split('').forEach((c) => u8(c.charCodeAt(0)));
   f32(0.1); f32(-16); f32(16); f32(-9); f32(9);
   pos(1); pos(1.5);
-  u16(1); pos(-16); pos(-9); pos(16); pos(-7);   // the floor
+  u16(2);
+  u8(0); u16(4); [[-16, -9], [16, -9], [16, -7], [-16, -7]].forEach(([x, y]) => { pos(x); pos(y); });   // the floor
+  u8(1); u16(2); pos(-3); pos(2); pos(3); pos(2);   // a one-way platform's edge
   const seen = new Set();
   for (let step = 0; step <= seconds * 10; step++) {
     u32(step);
@@ -42,7 +44,9 @@ test('a replay written like the game reads back', () => {
   assert.equal(r.step, 0.10000000149011612);
   assert.deepEqual(r.cam, { left: -16, right: 16, bottom: -9, top: 9 });
   assert.deepEqual(r.freny, { w: 1, h: 1.5 });
-  assert.equal(r.boxes.length, 1);
+  assert.equal(r.ground.length, 2);
+  assert.deepEqual(r.ground[0], { closed: true, points: [[-16, -9], [16, -9], [16, -7], [-16, -7]] });
+  assert.equal(r.ground[1].closed, false);
   assert.deepEqual(r.types.map((t) => t.name), ['Bug_Enemy', 'Cyclops_Boss']);
   assert.equal(r.types[1].w, 4);
   assert.equal(r.frames.length, 31);

@@ -17,8 +17,13 @@ export function parseReplay(bytes) {
   const step = f32();
   const cam = { left: f32(), right: f32(), bottom: f32(), top: f32() };
   const freny = { w: pos(), h: pos() };
-  const boxes = [];
-  for (let n = u16(), i = 0; i < n; i++) boxes.push({ x0: pos(), y0: pos(), x1: pos(), y1: pos() });
+  // the floor, walls and platforms: closed polygons (kind 0) and open lines (kind 1)
+  const ground = [];
+  for (let n = u16(), i = 0; i < n; i++) {
+    const kind = u8(), points = [];
+    for (let m = u16(), j = 0; j < m; j++) points.push([pos(), pos()]);
+    ground.push({ closed: kind === 0, points });
+  }
 
   const types = [];
   const frames = [];
@@ -49,7 +54,7 @@ export function parseReplay(bytes) {
   } catch (e) {
     if (!(e instanceof RangeError)) throw e;
   }
-  return { step, cam, freny, boxes, types, frames, duration: frames.length ? frames[frames.length - 1].t : 0 };
+  return { step, cam, freny, ground, types, frames, duration: frames.length ? frames[frames.length - 1].t : 0 };
 }
 
 // base64 (what the API keeps) -> the gunzipped bytes
