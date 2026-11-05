@@ -61,8 +61,9 @@ test('a present needs a player and coins or a known look, within the limits', ()
   assert.match(cleanGift({ uid: 'abcdefghij0123456789', coins: 2_000_000 }).error, /moedas/);
   assert.match(cleanGift({ uid: 'abcdefghij0123456789', coins: 1.5 }).error, /moedas/);
   assert.match(cleanGift({ uid: 'abcdefghij0123456789', looks: ['helmet.crown'] }).error, /visual/);
-  const { gift } = cleanGift({ uid: 'abcdefghij0123456789', looks: ['cape.red', 'cape.red'], note: 'x'.repeat(300) });
-  assert.deepEqual(gift.looks, ['cape.red']);
+  assert.match(cleanGift({ uid: 'abcdefghij0123456789', looks: ['helmet.viking'] }).error, /visual/);   // hidden while ExtraLooks is off
+  const { gift } = cleanGift({ uid: 'abcdefghij0123456789', looks: ['color.red', 'color.red'], note: 'x'.repeat(300) });
+  assert.deepEqual(gift.looks, ['color.red']);
   assert.equal(gift.note.length, 140);
 });
 
@@ -82,13 +83,13 @@ test('search by friend code or account id', async () => {
 });
 
 test('sending writes the present for the player and a copy for the history', async () => {
-  const res = await call({ send: { uid: 'abcdefghij0123456789', coins: 5000, looks: ['helmet.viking', 'suit.berserker'], note: 'valeu!' } });
+  const res = await call({ send: { uid: 'abcdefghij0123456789', coins: 5000, looks: ['helmet.berserker', 'suit.berserker'], note: 'valeu!' } });
   assert.equal(res.status, 200);
   assert.equal((await res.json()).apelido, 'Zé_Teste');
   const gift = writes.find((w) => w.path.startsWith('/presentes/abcdefghij0123456789/itens/'));
   assert.ok(gift, 'present written');
   assert.equal(gift.fields.moedas.integerValue, '5000');
-  assert.equal(gift.fields.visuais.stringValue, 'helmet.viking,suit.berserker');
+  assert.equal(gift.fields.visuais.stringValue, 'helmet.berserker,suit.berserker');
   assert.equal(gift.fields.mensagem.stringValue, 'valeu!');
   assert.ok(gift.fields.criadoEm.timestampValue);
   const copy = writes.find((w) => w.path === '/presentesEnviados');

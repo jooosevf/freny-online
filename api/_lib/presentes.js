@@ -10,14 +10,18 @@ export const MAX_COINS = 1_000_000;
 export const MAX_NOTE = 140;
 
 // the looks a present can give: the ones FrenyLook keeps in its "bought" list (Coins,
-// CoinsAfterAchievement and GoldenChest; Assets/Scripts/Variety/FrenyLook.cs). The achievement and
-// Renascer ones follow what the player did, so a present can't give them.
+// CoinsAfterAchievement and GoldenChest; Assets/Scripts/Variety/FrenyLook.cs) and that the live game
+// shows in its Visual menu. The achievement and Renascer ones follow what the player did, so a
+// present can't give them. Features.ExtraLooks is off (José, 2026-11-03), and then the game hides
+// every look but these (FrenyLook.BasicLooks): a present of a hidden one would not show up.
 export const LOOKS = {
-  'helmet.berserker': 'Capacete Berserker', 'helmet.gold': 'Elmo dourado', 'helmet.ice': 'Elmo de gelo',
-  'helmet.viking': 'Elmo viking', 'helmet.cyclops': 'Elmo do Ciclope',
-  'cape.red': 'Capa vermelha', 'cape.night': 'Capa noturna', 'cape.gold': 'Capa dourada',
+  'helmet.berserker': 'Capacete Berserker', 'suit.berserker': 'Traje Berserker',
   'color.red': 'Vermelho', 'color.blue': 'Azul', 'color.green': 'Verde', 'color.purple': 'Roxo', 'color.black': 'Preto',
-  'suit.berserker': 'Traje Berserker',
+};
+// add these to LOOKS in the release that turns Features.ExtraLooks on
+export const EXTRA_LOOKS = {
+  'helmet.gold': 'Elmo dourado', 'helmet.ice': 'Elmo de gelo', 'helmet.viking': 'Elmo viking', 'helmet.cyclops': 'Elmo do Ciclope',
+  'cape.red': 'Capa vermelha', 'cape.night': 'Capa noturna', 'cape.gold': 'Capa dourada',
 };
 
 // the nickname's key, as the game and the rules make it (lower case, no accents)
