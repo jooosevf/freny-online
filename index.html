@@ -143,6 +143,17 @@
     .pf-head canvas { width: 144px; height: 144px; image-rendering: pixelated; flex: none; }
     .pf-head h1 { margin: 0; color: var(--pink); overflow-wrap: anywhere; }
     .pf-head .seen, .pf-head .look { color: var(--muted); font-size: 15px; }
+    .pf-share { margin-top: 10px; padding: 8px 16px; border-color: #2f7a4a; color: #b8f0c8; }
+    .pf-share:hover { border-color: #5fd38a; }
+    .pf-share:disabled { opacity: 0.7; cursor: wait; }
+    /* the share window: the card's preview and what to do with it */
+    .sh-shade { position: fixed; inset: 0; z-index: 50; background: rgba(5, 3, 9, 0.82); display: flex; align-items: center; justify-content: center; padding: 16px; }
+    .sh-box { background: var(--panel); border: 2px solid var(--line); border-radius: 6px; padding: 14px; max-width: 460px; width: 100%; max-height: 100%; overflow: auto; box-sizing: border-box; }
+    .sh-box img { display: block; width: 100%; max-height: 62vh; object-fit: contain; border-radius: 4px; }
+    .sh-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .sh-row button { flex: 1 1 auto; padding: 9px 12px; }
+    .sh-box .pf-msg:empty { display: none; }
+    .sh-row .sh-send { flex-basis: 100%; font-size: 18px; border-color: #2f7a4a; color: #b8f0c8; }
     .pf-best { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
     .pf-best div { background: var(--panel); border: 2px solid var(--line); border-radius: 6px; padding: 10px 12px; }
     .pf-best b { display: block; font-size: 22px; color: #FFD84A; }
@@ -1189,11 +1200,15 @@
       canvas.width = canvas.height = 140;
       canvas.setAttribute("role", "img");
       canvas.setAttribute("aria-label", "O Freny de " + p.apelido);
+      paintLook(canvas.getContext("2d"), p);
+      return canvas;
+    }
+    // paints the 140x140 look at the context's origin (the share card scales it up)
+    function paintLook(c, p) {
       // the Traje Berserker is a whole body with the broken helmet: no shirt or other helmet over it
       var suit = p.suit === "suit.berserker";
       var helmet = suit ? ["berserker"] : LOOK_HELMET[p.helmet], cape = LOOK_CAPE[p.cape], color = suit ? null : LOOK_COLOR[p.color];
-      Promise.all([lookImage(suit ? "traje" : "freny"), color ? lookImage("shirt") : null, helmet ? lookImage("helmet_" + helmet[0]) : null]).then(function (layers) {
-        var c = canvas.getContext("2d");
+      return Promise.all([lookImage(suit ? "traje" : "freny"), color ? lookImage("shirt") : null, helmet ? lookImage("helmet_" + helmet[0]) : null]).then(function (layers) {
         if (cape) {
           c.fillStyle = cape[0];
           c.fillRect(54, 50, 32, 74);
@@ -1213,14 +1228,13 @@
         }
         if (layers[2]) c.drawImage(layers[2], 0, 0);
       });
-      return canvas;
     }
     function lookText(p) {
       var parts = [];
       if (p.suit === "suit.berserker") parts.push("Traje Berserker");
       else if (LOOK_HELMET[p.helmet]) parts.push(LOOK_HELMET[p.helmet][1]);
       if (LOOK_CAPE[p.cape]) parts.push(LOOK_CAPE[p.cape][2]);
-      if (p.suit !== "suit.berserker" && LOOK_COLOR[p.color]) parts.push("Camisa " + LOOK_COLOR[p.color][1].toLowerCase());
+      if (p.suit !== "suit.berserker" && LOOK_COLOR[p.color]) parts.push("Camisa " + LOOK_COLOR[p.color][1].toLowerCase().replace(/o$/, "a"));
       return parts.length ? parts.join(" · ") : "Visual original";
     }
 
@@ -1252,6 +1266,9 @@
       var info = el("div");
       info.append(el("h1", "", p.apelido), el("div", "look", lookText(p)), el("div", "seen", "Online " + seen(p.lastSeen)));
       if (p.codigo) info.appendChild(el("div", "seen", "Código de amigo: " + p.codigo));
+      var share = el("button", "pf-share", "Compartilhar no WhatsApp");
+      share.onclick = function () { shareProfile(p, share); };
+      info.appendChild(share);
       head.appendChild(info);
       box.appendChild(head);
       var best = el("div", "pf-best");
@@ -1277,6 +1294,207 @@
         table.appendChild(tr);
       });
       box.appendChild(table);
+    }
+
+    // ---- share: a 1080x1350 image of the profile, sent to WhatsApp. Phones get the system share sheet with the
+    // image (pick WhatsApp there); computers download it, copy it (Ctrl+V in the chat) and open WhatsApp with the link
+    var CARD_ICON = { kills: "espada", k_cyclops: "ciclope", k_supreme: "mago_supremo", bloodMoons: "lua_sangue", bestCombo: "furia",
+      nights: "lua", longestRun: "tocha", playTime: "sol", chests: "bau" };
+    function cardImage(src) {
+      return new Promise(function (ok) {
+        var img = new Image();
+        img.onload = function () { ok(img); };
+        img.onerror = function () { ok(null); };
+        img.src = src;
+      });
+    }
+    // the six numbers on the card: the rare ones only when there is something to show
+    function cardStats(p) {
+      var play = (p.secManual || 0) + (p.secAuto || 0);
+      var combo = Math.max(10, p.bestCombo || 0) / 10;
+      var all = [
+        ["kills", nf(p.kills), "Inimigos derrotados", true],
+        ["k_cyclops", nf(p.k_cyclops), "Ciclopes derrotados", true],
+        ["k_supreme", nf(p.k_supreme), "Feiticeiros Supremos", (p.k_supreme || 0) > 0],
+        ["bloodMoons", nf(p.bloodMoons), "Luas de Sangue sobrevividas", (p.bloodMoons || 0) > 0],
+        ["bestCombo", combo.toFixed(1).replace(".", ",") + "x", "Maior combo", true],
+        ["nights", nf(p.nights), "Noites sobrevividas", true],
+        ["longestRun", duration(p.longestRun).replace(/ 0 s$/, ""), "Corrida mais longa", true],
+        ["playTime", duration(play), "Tempo de jogo", true],
+        ["chests", nf(p.chests), "Baús abertos", true],
+      ];
+      return all.filter(function (s) { return s[3]; }).slice(0, 6);
+    }
+    // the record that leads the card: Freny's if there is one, else the hardest one played
+    function cardRecord(p) {
+      for (var i = 0; i < LEVELS.length; i++) {
+        var v = p[LEVEL_FIELD[LEVELS[i].id]];
+        if (v > 0) return { value: v, label: LEVELS[i].label, i: i };
+      }
+      return null;
+    }
+    function fitFont(c, text, weight, size, maxWidth) {
+      do { c.font = weight + " " + size + "px 'Roboto Condensed', sans-serif"; size -= 2; } while (c.measureText(text).width > maxWidth && size > 12);
+    }
+    function makeCard(p) {
+      var W = 1080, H = 1350;
+      var canvas = el("canvas");
+      canvas.width = W; canvas.height = H;
+      var c = canvas.getContext("2d");
+      var look = el("canvas");
+      look.width = look.height = 140;
+      var stats = cardStats(p);
+      var fonts = document.fonts ? Promise.all([document.fonts.load("700 40px 'Roboto Condensed'"), document.fonts.load("400 40px 'Roboto Condensed'")]).catch(function () {}) : null;
+      return Promise.all([
+        cardImage("devlog/banner.png"), cardImage("TemplateData/title.png"), paintLook(look.getContext("2d"), p), fonts,
+        Promise.all(stats.map(function (s) { return cardImage("devlog/" + CARD_ICON[s[0]] + ".png"); })),
+      ]).then(function (got) {
+        var banner = got[0], title = got[1], icons = got[4];
+        c.imageSmoothingEnabled = false;
+        // night sky, a blood moon behind him, the mountains of the devlog banner
+        var sky = c.createLinearGradient(0, 0, 0, H);
+        sky.addColorStop(0, "#08060d"); sky.addColorStop(0.55, "#171021"); sky.addColorStop(1, "#0b0811");
+        c.fillStyle = sky; c.fillRect(0, 0, W, H);
+        var seed = 7;
+        function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+        for (var i = 0; i < 70; i++) {
+          c.fillStyle = rnd() < 0.12 ? "rgba(239,80,90,0.8)" : "rgba(255,255,255," + (0.25 + rnd() * 0.5) + ")";
+          var sz = rnd() < 0.2 ? 4 : 2;
+          c.fillRect(Math.floor(rnd() * W), Math.floor(rnd() * 760), sz, sz);
+        }
+        var glow = c.createRadialGradient(290, 590, 20, 290, 590, 330);
+        glow.addColorStop(0, "rgba(178,30,48,0.55)"); glow.addColorStop(0.5, "rgba(110,16,30,0.25)"); glow.addColorStop(1, "rgba(110,16,30,0)");
+        c.fillStyle = glow; c.fillRect(0, 240, 620, 700);
+        c.fillStyle = "#5a1220"; c.beginPath(); c.arc(290, 560, 170, 0, Math.PI * 2); c.fill();
+        c.fillStyle = "#3a0b16"; c.beginPath(); c.arc(330, 540, 150, 0, Math.PI * 2); c.fill();
+        if (banner) {
+          // the banner has its own sky: fade its top out so only the mountains show
+          var hills = el("canvas"); hills.width = W; hills.height = 378;
+          var h = hills.getContext("2d");
+          h.imageSmoothingEnabled = false;
+          h.drawImage(banner, 0, 0, 600, 210, 0, 0, W, 378);
+          var fade = h.createLinearGradient(0, 0, 0, 230);
+          fade.addColorStop(0, "rgba(0,0,0,0)"); fade.addColorStop(0.55, "rgba(0,0,0,0.6)"); fade.addColorStop(1, "#000");
+          h.globalCompositeOperation = "destination-in"; h.fillStyle = fade; h.fillRect(0, 0, W, 378);
+          c.drawImage(hills, 0, 600);
+        }
+        var floor = c.createLinearGradient(0, 760, 0, H);
+        floor.addColorStop(0, "rgba(11,8,17,0)"); floor.addColorStop(0.3, "rgba(11,8,17,0.85)"); floor.addColorStop(1, "#0b0811");
+        c.fillStyle = floor; c.fillRect(0, 760, W, H - 760);
+        // the frame
+        c.strokeStyle = "#4b2340"; c.lineWidth = 4; c.strokeRect(22, 22, W - 44, H - 44);
+        c.strokeStyle = "#2a1626"; c.lineWidth = 2; c.strokeRect(36, 36, W - 72, H - 72);
+        c.fillStyle = "#EF8BFF";
+        [[22, 22], [W - 22, 22], [22, H - 22], [W - 22, H - 22]].forEach(function (pt) {
+          c.save(); c.translate(pt[0], pt[1]); c.rotate(Math.PI / 4); c.fillRect(-9, -9, 18, 18); c.restore();
+        });
+        if (title) c.drawImage(title, 0, 0, 684, 376, (W - 500) / 2, 54, 500, 275);
+        // Freny, 3x, standing on the mountain
+        c.fillStyle = "rgba(0,0,0,0.55)"; c.beginPath(); c.ellipse(290, 788, 110, 16, 0, 0, Math.PI * 2); c.fill();
+        c.drawImage(look, 80, 380, 420, 420);
+        // name, look, records
+        var x = 560, maxW = W - x - 70;
+        c.textBaseline = "alphabetic"; c.textAlign = "left";
+        c.fillStyle = "#EF8BFF"; fitFont(c, p.apelido, "700", 72, maxW); c.fillText(p.apelido, x, 450);
+        c.fillStyle = "rgba(255,255,255,0.7)"; fitFont(c, lookText(p), "400", 30, maxW); c.fillText(lookText(p), x, 496);
+        var rec = cardRecord(p);
+        if (rec) {
+          c.fillStyle = "rgba(255,255,255,0.7)"; c.font = "400 32px 'Roboto Condensed', sans-serif"; c.fillText("Recorde no " + rec.label, x, 580);
+          c.fillStyle = "#FFD84A"; fitFont(c, nf(rec.value), "700", 104, maxW); c.fillText(nf(rec.value), x, 680);
+          var others = LEVELS.slice(rec.i + 1).filter(function (l) { return p[LEVEL_FIELD[l.id]] > 0; })
+            .map(function (l) { return l.label + " " + nf(p[LEVEL_FIELD[l.id]]); });
+          if (others.length) { c.fillStyle = "rgba(255,255,255,0.7)"; fitFont(c, others.join("  ·  "), "400", 30, maxW); c.fillText(others.join("  ·  "), x, 730); }
+        } else {
+          c.fillStyle = "rgba(255,255,255,0.7)"; c.font = "400 32px 'Roboto Condensed', sans-serif"; c.fillText("Ainda sem recorde", x, 600);
+        }
+        // the numbers, two columns
+        var gx = 70, gy = 850, cw = 455, ch = 118, gap = 30;
+        stats.forEach(function (s, i) {
+          var cx = gx + (i % 2) * (cw + gap), cy = gy + Math.floor(i / 2) * (ch + 18);
+          c.fillStyle = "rgba(31,22,48,0.92)"; c.fillRect(cx, cy, cw, ch);
+          c.strokeStyle = "#301B2A"; c.lineWidth = 3; c.strokeRect(cx + 1.5, cy + 1.5, cw - 3, ch - 3);
+          c.fillStyle = "#6e101e"; c.fillRect(cx, cy, 6, ch);
+          var icon = icons[i];
+          if (icon) {
+            var k = Math.min(78 / icon.width, 78 / icon.height), iw = icon.width * k, ih = icon.height * k;
+            c.drawImage(icon, cx + 24 + (78 - iw) / 2, cy + (ch - ih) / 2, iw, ih);
+          }
+          c.fillStyle = "#FFD84A"; fitFont(c, s[1], "700", 52, cw - 140); c.fillText(s[1], cx + 124, cy + 62);
+          c.fillStyle = "rgba(255,255,255,0.7)"; fitFont(c, s[2], "400", 27, cw - 140); c.fillText(s[2], cx + 124, cy + 98);
+        });
+        // where to play
+        c.font = "400 28px 'Roboto Condensed', sans-serif";
+        if (p.codigo) { c.fillStyle = "rgba(255,255,255,0.7)"; c.fillText("Código de amigo: " + p.codigo, 70, 1288); }
+        c.textAlign = "right"; c.fillStyle = "#EF8BFF"; c.font = "700 30px 'Roboto Condensed', sans-serif";
+        c.fillText("freny-online.vercel.app", W - 70, 1288);
+        return new Promise(function (ok, fail) { canvas.toBlob(function (b) { b ? ok(b) : fail(new Error("png")); }, "image/png"); });
+      });
+    }
+    function profileUrl(p) { return location.origin + location.pathname + "#perfil/" + encodeURIComponent(p.apelido); }
+    function shareText(p) {
+      var rec = cardRecord(p), mine = session && session.uid === p.id;
+      var line = mine ? (rec ? "Fiz " + nf(rec.value) + " pontos no nível " + rec.label + " do The Rise of Freny. Duvido você passar!" : "Olha o meu Freny no The Rise of Freny!")
+        : (rec ? p.apelido + " fez " + nf(rec.value) + " pontos no nível " + rec.label + " do The Rise of Freny. Duvido você passar!" : "Olha o Freny de " + p.apelido + " no The Rise of Freny!");
+      return line + " " + profileUrl(p);
+    }
+    function download(blob, name) {
+      var a = el("a"); a.href = URL.createObjectURL(blob); a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+    }
+    function shareProfile(p, btn) {
+      btn.disabled = true;
+      var was = btn.textContent;
+      btn.textContent = "Gerando a imagem...";
+      makeCard(p).then(function (blob) {
+        btn.disabled = false; btn.textContent = was;
+        showShare(p, blob);
+      }).catch(function () {
+        btn.disabled = false; btn.textContent = "Não deu para gerar a imagem";
+        setTimeout(function () { btn.textContent = was; }, 3000);
+      });
+    }
+    function showShare(p, blob) {
+      var name = "freny-" + (nickKey(p.apelido) || "perfil") + ".png";
+      var file = typeof File === "function" ? new File([blob], name, { type: "image/png" }) : null;
+      var phone = matchMedia("(pointer: coarse)").matches;
+      var canFiles = phone && file && navigator.canShare && navigator.canShare({ files: [file] });
+      var shade = el("div", "sh-shade");
+      var box = el("div", "sh-box");
+      var img = el("img"); img.src = URL.createObjectURL(blob); img.alt = "Card do perfil de " + p.apelido;
+      var send = el("button", "sh-send", "Enviar no WhatsApp");
+      var save = el("button", "", "Baixar imagem");
+      var close = el("button", "", "Fechar");
+      var msg = el("div", "pf-msg");
+      var row = el("div", "sh-row"); row.append(send, save, close);
+      box.append(img, row, msg);
+      shade.appendChild(box);
+      function done() { URL.revokeObjectURL(img.src); shade.remove(); document.removeEventListener("keydown", onKey); }
+      function onKey(e) { if (e.key === "Escape") done(); }
+      document.addEventListener("keydown", onKey);
+      shade.onclick = function (e) { if (e.target === shade) done(); };
+      close.onclick = done;
+      save.onclick = function () { download(blob, name); };
+      send.onclick = function () {
+        if (canFiles) {
+          // the system sheet: WhatsApp is one of the apps there, with the image and the text
+          navigator.share({ files: [file], text: shareText(p) }).catch(function (e) {
+            if (e && e.name !== "AbortError") msg.textContent = "Não deu para abrir o compartilhamento. Use o botão Baixar imagem.";
+          });
+          return;
+        }
+        // computer (or a phone browser without file sharing): the chat opens with the text and the link; the image goes by paste or file
+        window.open("https://wa.me/?text=" + encodeURIComponent(shareText(p)), "_blank", "noopener");
+        var copied = !phone && navigator.clipboard && window.ClipboardItem
+          ? navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]).then(function () { return true; }, function () { return false; })
+          : Promise.resolve(false);
+        copied.then(function (ok) {
+          if (ok) msg.textContent = "Abrimos o WhatsApp. A imagem já está copiada: escolha a conversa e cole com Ctrl+V.";
+          else { download(blob, name); msg.textContent = "Abrimos o WhatsApp e baixamos a imagem: escolha a conversa e anexe o arquivo " + name + "."; }
+        });
+      };
+      document.body.appendChild(shade);
+      send.focus();
     }
 
     // the uids of the names shown on the ranking, so opening one takes only one read
