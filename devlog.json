@@ -61,7 +61,7 @@
         },
         {
           "icone": "freny",
-          "texto": "Site: o perfil e a imagem de compartilhar agora mostram o teu Título embaixo do nome. No PC, o botão Enviar no WhatsApp já manda a imagem junto (pelo menu de compartilhar do Windows), com a opção WhatsApp Web se preferir."
+          "texto": "Site: o perfil e a imagem de compartilhar agora mostram o teu Título embaixo do nome. No PC, o botão Enviar no WhatsApp abre direto o WhatsApp Web com o texto e a imagem já copiada: é só escolher a conversa e colar com Ctrl+V."
         }
       ]
     },
