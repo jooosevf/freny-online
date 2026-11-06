@@ -26,6 +26,10 @@
         {
           "icone": "bau_dourado",
           "texto": "A equipe pode mandar presentes (moedas e visuais) para jogadores com conta; eles chegam no menu com o aviso \"Presente da equipe\"."
+        },
+        {
+          "icone": "tecla",
+          "texto": "Site: na página do jogo, os atalhos do navegador (Ctrl+S, Ctrl+P, F5, Alt+seta, botão direito) não atrapalham mais enquanto você joga, e o site pergunta antes de fechar a aba. Em tela cheia, nem o Ctrl+W fecha o jogo."
         }
       ]
     },
