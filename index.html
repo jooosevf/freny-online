@@ -560,6 +560,7 @@
       createUnityInstance(canvas, config, function (p) {
         fill.style.width = Math.round(p * 100) + "%";
       }).then(function (instance) {
+        window.frenyUnity = instance;
         loading.style.display = "none";
         canvas.focus();
         document.getElementById("fullscreen").onclick = function () { instance.SetFullscreen(1); };
@@ -620,21 +621,27 @@
 
     // While the game has focus, the browser's own shortcuts must not fire (José closed the tab with Ctrl+W by accident).
     // Chrome never lets a page cancel Ctrl+W / Ctrl+T / Ctrl+N / Ctrl+Tab, so those get two other guards:
-    // a "leave the game?" prompt before the tab closes, and the Keyboard Lock API in fullscreen (Chrome/Edge).
+    // the game pauses and the browser asks "Sair do site?" before the tab closes,
+    // and in fullscreen the Keyboard Lock API (Chrome/Edge) keeps Ctrl+W from reaching the browser at all.
+    // Needs window.frenyUnity = the Unity instance (set where createUnityInstance resolves).
     (function () {
       var gameCanvas = document.getElementById("unity-canvas");
+      // Unity reads the keyboard from the whole window, so the game "has focus" unless the player is typing in a page field.
       function gameHasFocus() {
-        return document.activeElement === gameCanvas || !!document.fullscreenElement;
+        if (!window.frenyUnity) return false;
+        var el = document.activeElement;
+        if (!el || el === document.body || el === gameCanvas) return true;
+        var tag = el.tagName;
+        return !(tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el.isContentEditable);
       }
-      // Keys the player still needs: copy/paste/select-all/undo for text fields, F11 fullscreen, F12 dev tools.
-      var allowWithCtrl = { KeyC: 1, KeyV: 1, KeyX: 1, KeyA: 1, KeyZ: 1 };
+      // Keys the player still needs: F11 fullscreen, F12 dev tools.
       var allowAlone = { F11: 1, F12: 1 };
       function isBrowserShortcut(e) {
         if (allowAlone[e.code]) return false;
         if (/^F\d+$/.test(e.code)) return true;              // F1 help, F3 find, F5 reload, F6 address bar, F7 caret...
         if (e.altKey && !e.ctrlKey) return true;              // Alt+Left/Right history, Alt+D/F/E menus, Alt alone
         if (e.code === "AltLeft" || e.code === "AltRight") return true;
-        if (e.ctrlKey || e.metaKey) return !(allowWithCtrl[e.code] && !e.shiftKey && !e.altKey);
+        if (e.ctrlKey || e.metaKey) return true;              // Ctrl+S/P/F/R/D/H/J/L/U/O, Ctrl+1..9, Ctrl+Shift+...
         return false;
       }
       // Capture phase + preventDefault only: the event still reaches Unity, so game controls keep working.
@@ -646,13 +653,14 @@
       // Right-click menu over the game.
       gameCanvas.addEventListener("contextmenu", function (e) { e.preventDefault(); });
 
-      // Ctrl+W and closing the tab: ask before leaving once the game has been played.
+      // Ctrl+W / closing the tab: once the game was played, pause it and let the browser ask before leaving.
       var played = false;
-      ["pointerdown", "keydown", "touchstart"].forEach(function (type) {
-        gameCanvas.addEventListener(type, function () { played = true; }, { passive: true });
+      ["pointerdown", "mousedown", "keydown", "touchstart"].forEach(function (type) {
+        window.addEventListener(type, function () { if (window.frenyUnity) played = true; }, { capture: true, passive: true });
       });
       window.addEventListener("beforeunload", function (e) {
         if (!played) return;
+        try { window.frenyUnity.SendMessage("GameMenus", "PauseFromBrowser"); } catch (err) {}
         e.preventDefault();
         e.returnValue = "";   // the browser shows its own "Sair do site?" text
         return "";
