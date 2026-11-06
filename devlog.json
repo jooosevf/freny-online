@@ -29,7 +29,7 @@
         },
         {
           "icone": "tecla",
-          "texto": "Site: na página do jogo, os atalhos do navegador (Ctrl+S, Ctrl+P, F5, Alt+seta, botão direito) não atrapalham mais enquanto você joga, e o site pergunta antes de fechar a aba. Em tela cheia, nem o Ctrl+W fecha o jogo."
+          "texto": "Com o jogo aberto, os atalhos do navegador não atrapalham mais. Se apertar Ctrl+W ou fechar a aba, o jogo pausa e o navegador pergunta antes de sair. Em tela cheia, o Ctrl+W nem chega a fechar."
         }
       ]
     },
