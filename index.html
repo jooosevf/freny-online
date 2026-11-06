@@ -618,6 +618,57 @@
       refresh();
     })();
 
+    // While the game has focus, the browser's own shortcuts must not fire (José closed the tab with Ctrl+W by accident).
+    // Chrome never lets a page cancel Ctrl+W / Ctrl+T / Ctrl+N / Ctrl+Tab, so those get two other guards:
+    // a "leave the game?" prompt before the tab closes, and the Keyboard Lock API in fullscreen (Chrome/Edge).
+    (function () {
+      var gameCanvas = document.getElementById("unity-canvas");
+      function gameHasFocus() {
+        return document.activeElement === gameCanvas || !!document.fullscreenElement;
+      }
+      // Keys the player still needs: copy/paste/select-all/undo for text fields, F11 fullscreen, F12 dev tools.
+      var allowWithCtrl = { KeyC: 1, KeyV: 1, KeyX: 1, KeyA: 1, KeyZ: 1 };
+      var allowAlone = { F11: 1, F12: 1 };
+      function isBrowserShortcut(e) {
+        if (allowAlone[e.code]) return false;
+        if (/^F\d+$/.test(e.code)) return true;              // F1 help, F3 find, F5 reload, F6 address bar, F7 caret...
+        if (e.altKey && !e.ctrlKey) return true;              // Alt+Left/Right history, Alt+D/F/E menus, Alt alone
+        if (e.code === "AltLeft" || e.code === "AltRight") return true;
+        if (e.ctrlKey || e.metaKey) return !(allowWithCtrl[e.code] && !e.shiftKey && !e.altKey);
+        return false;
+      }
+      // Capture phase + preventDefault only: the event still reaches Unity, so game controls keep working.
+      ["keydown", "keyup"].forEach(function (type) {
+        window.addEventListener(type, function (e) {
+          if (gameHasFocus() && isBrowserShortcut(e)) e.preventDefault();
+        }, true);
+      });
+      // Right-click menu over the game.
+      gameCanvas.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+
+      // Ctrl+W and closing the tab: ask before leaving once the game has been played.
+      var played = false;
+      ["pointerdown", "keydown", "touchstart"].forEach(function (type) {
+        gameCanvas.addEventListener(type, function () { played = true; }, { passive: true });
+      });
+      window.addEventListener("beforeunload", function (e) {
+        if (!played) return;
+        e.preventDefault();
+        e.returnValue = "";   // the browser shows its own "Sair do site?" text
+        return "";
+      });
+
+      // In fullscreen, Chrome/Edge let the page take Ctrl+W/T/N/Q too. Esc stays free, so it still leaves fullscreen.
+      document.addEventListener("fullscreenchange", function () {
+        if (!navigator.keyboard || !navigator.keyboard.lock) return;
+        if (document.fullscreenElement) {
+          navigator.keyboard.lock(["KeyW", "KeyT", "KeyN", "KeyQ"]).catch(function () {});
+        } else {
+          navigator.keyboard.unlock();
+        }
+      });
+    })();
+
     // Top 10 from the board the game writes for each ranked difficulty (public read in firestore.rules).
     var FIREBASE = { apiKey: "AIzaSyDf7YvP-lQiMeVfN1bG8dWoahZQtmB0daM", projectId: "the-rise-of-freny" };
     // local tests against the Firebase emulators: http://localhost:<port>/?emu=1
