@@ -21,7 +21,8 @@ const NAMES = {
 const view = document.getElementById("view"), ctx = view.getContext("2d");
 const line = document.getElementById("timeline"), lctx = line.getContext("2d");
 const $ = (id) => document.getElementById(id);
-const say = (t) => { $("rmsg").textContent = t; };
+// errors in red: the admin has to see why a run doesn't open
+const say = (t) => { $("rmsg").textContent = t; $("rmsg").style.color = /^Erro/.test(t) ? "#ff7a7a" : ""; };
 
 let rep = null, kills = [], hits = [], t = 0, playing = false, last = 0;
 const pictures = {}, frameCounts = {};

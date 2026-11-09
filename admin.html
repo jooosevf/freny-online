@@ -69,6 +69,8 @@
     <textarea id="paste" rows="5" placeholder="Cole aqui o conteúdo do arena-run.json (ou só o texto do campo replay)"></textarea>
     <div class="bar"><button id="openPaste">Abrir</button><button id="clearPaste">Limpar</button></div>
   </details>
+  <!-- right under the paste box: an error at the bottom, past the canvas and the kill feed, went unseen (2026-11-09) -->
+  <p id="rmsg" class="msg"></p>
   <canvas id="view" width="1280" height="720"></canvas>
   <canvas id="timeline" width="1280" height="22"></canvas>
   <div class="bar">
@@ -89,7 +91,6 @@
   </div>
   <p class="legend msg"><span><i class="dot" style="background:#ff7a7a"></i>dano no Freny</span><span><i class="dot" style="background:#6fdc8c"></i>abate</span><span><i class="dot" style="background:#c77dff"></i>piloto automático</span></p>
   <div id="feed"></div>
-    <p id="rmsg" class="msg"></p>
   </section>
 
   <section id="tab-presentes" hidden>
