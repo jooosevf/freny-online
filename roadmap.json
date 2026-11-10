@@ -424,7 +424,7 @@
         {
           "icone": "moeda",
           "titulo": "Armeira nova",
-          "texto": "A Armeira deixou de vender dano, crítico, granada e coração, que agora vêm das skills. O que você já tinha comprado virou XP do nível que dá a mesma coisa, e metade das moedas gastas voltou para você. O resto da Armeira ganhou níveis a mais. Nova prateleira Para a partida: poção, 3 granadas, armadura cheia e tônico de +50% de XP para a próxima corrida."
+          "texto": "A Armeira deixou de vender dano, crítico, granada e coração, que agora vêm das skills. O que você já tinha comprado virou XP do nível que dá a mesma coisa, e metade das moedas gastas voltou para você. O resto da Armeira ganhou níveis a mais. Nova prateleira Para a partida: poção, 3 granadas, armadura cheia e tônico de +50% de XP, com limite por partida (até 3 poções, 2 pacotes de granadas, 1 armadura e 1 tônico). A próxima corrida usa tudo o que estiver guardado. Preços: 480, 480, 720 e 1.200 moedas."
         },
         {
           "icone": "anel",
