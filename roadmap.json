@@ -407,6 +407,89 @@
       "versao": "Alpha 0.1.2"
     },
     {
+      "fase": "Alpha 0.1.3 · 10/11",
+      "titulo": "Skills, joias e passe de batalha",
+      "status": "feito",
+      "itens": [
+        {
+          "icone": "tecla",
+          "titulo": "Jogar em um clique",
+          "texto": "Jogar no menu começa a Arena na hora, com a última dificuldade e o último modo escritos embaixo do botão. Para trocar, use Dificuldade e modo. Inventário, Armeira e Visual agora ficam no botão Freny, e os menus estão maiores. Com o Automático ligado, o Jogar fica âmbar com um aviso de que a corrida não vale para o ranking."
+        },
+        {
+          "icone": "combate",
+          "titulo": "Skills: Combate, Pontaria e Vigor",
+          "texto": "Três skills que sobem do nível 1 ao 99 enquanto você joga. Combate (abates de espada) aumenta o dano da espada. Pontaria (pistola, escopeta e granada) aumenta o dano das armas, o crítico e a força da granada. Vigor (todo abate) dá corações a mais no começo da corrida. Cada coração de vida de inimigo derrotado vale XP; no Automático vale bem menos. O Inventário ganhou a página Skills e a grade de status."
+        },
+        {
+          "icone": "moeda",
+          "titulo": "Armeira nova",
+          "texto": "A Armeira deixou de vender dano, crítico, granada e coração, que agora vêm das skills. O que você já tinha comprado virou XP do nível que dá a mesma coisa, e metade das moedas gastas voltou para você. O resto da Armeira ganhou níveis a mais. Nova prateleira Para a partida: poção, 3 granadas, armadura cheia e tônico de +50% de XP para a próxima corrida."
+        },
+        {
+          "icone": "anel",
+          "titulo": "Joias: anel e colar",
+          "texto": "Dois espaços novos no Freny: anel e colar, com rubi (+dano), safira (+crítico) ou esmeralda (+velocidade). O anel dá 5% e custa 5.000 moedas; o colar dá 10% e custa 10.000. A mesma pedra nos dois soma 15%. Compre em Armeira > Joias e troque no Inventário."
+        },
+        {
+          "icone": "passe",
+          "titulo": "Passe de batalha: Temporada 0",
+          "texto": "De 17/11 a 14/12: 30 níveis com moedas, itens para a partida, tônicos, giros extras da roleta, o título Pioneiro da Temporada 0 no nível 10 e o Elmo sombrio no nível 30. O XP do passe vem das corridas manuais da Arena: missão do dia cumprida, cada 10 minutos vivo e o primeiro Ciclope do dia. A barra fica nas Missões do dia e a página Passe mostra tudo."
+        },
+        {
+          "icone": "roleta",
+          "titulo": "Roleta do dia",
+          "texto": "Nas Missões do dia, um giro grátis por dia numa roleta que gira de verdade: moedas, poção, granadas, armadura, tônico de XP, lâmpada mágica (XP numa skill à sua escolha) e, com muita sorte, o Traje Berserker."
+        },
+        {
+          "icone": "pocao",
+          "titulo": "Até 3 poções",
+          "texto": "O Freny carrega até 3 poções e bebe uma por vez com Q. O HUD mostra a poção, a tecla e quantas sobram."
+        },
+        {
+          "icone": "congelador",
+          "titulo": "Congelador",
+          "texto": "Drop raro novo na Arena: uma ampulheta de gelo que deixa todos os inimigos, menos o Ciclope, parados por 5 segundos. Seus golpes continuam valendo."
+        },
+        {
+          "icone": "chave",
+          "titulo": "Chave abençoada",
+          "texto": "A chave do Ciclope agora se chama chave abençoada. O primeiro Ciclope da corrida sempre deixa uma, os seguintes metade das vezes, e a cada 10 Feiticeiros derrotados um deixa outra. As chaves acumulam e cada uma abre um baú dourado com uma bênção."
+        },
+        {
+          "icone": "ciclope",
+          "titulo": "Ciclope e fim de jogo",
+          "texto": "A vida do Ciclope depende da dificuldade e cresce a cada Ciclope já derrotado na corrida. No fim do jogo vêm menos inimigos de uma vez, mas mais fortes. Os inimigos chegam em ondas, com 5 segundos de respiro quando a onda acaba; um morcego e um inseto continuam vindo para o combo não morrer."
+        },
+        {
+          "icone": "moeda",
+          "titulo": "Moedas por dificuldade",
+          "texto": "Na Arena, as moedas e diamantes que você pega valem inteiros no Freny, metade no Médio e um terço no Fácil."
+        },
+        {
+          "icone": "mina",
+          "titulo": "Mina-aranha",
+          "texto": "Qualquer dano mata a mina-aranha e ela explode na hora. Encostada no Freny, ela demora 1 segundo para explodir, e a explosão ficou menor."
+        },
+        {
+          "icone": "arma",
+          "titulo": "Escopeta nas mãos",
+          "texto": "Ao atirar com a escopeta, o Freny agora segura a escopeta com as duas mãos na altura da barriga, em pé, no ar e agachado, em vez de aparecer com a pistola."
+        },
+        {
+          "icone": "sol",
+          "titulo": "Dia cinza e letras novas",
+          "texto": "O dia na Arena ficou com o céu cinza, mais sombrio. Os menus ganharam letras novas; durante a corrida, placar, combo e avisos continuam com a letra de sempre."
+        },
+        {
+          "icone": "freny",
+          "titulo": "Um apelido por conta",
+          "texto": "Cada conta tem um apelido e um código de amigo só seu. Os recordes do topo agora são gravados para a equipe assistir e conferir."
+        }
+      ],
+      "versao": "Alpha 0.1.3"
+    },
+    {
       "fase": "Fase 7",
       "titulo": "O Poço de Ácido",
       "status": "proxima",
