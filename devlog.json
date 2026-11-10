@@ -9,7 +9,7 @@
       "mudancas": [
         {
           "icone": "tecla",
-          "texto": "Jogar no menu começa a Arena na hora, com a última dificuldade e o último modo escritos embaixo do botão. Para trocar, use Dificuldade e modo. Inventário, Armeira e Visual agora ficam no botão Freny, e os menus estão maiores. Com o Automático ligado, o Jogar fica âmbar com um aviso de que a corrida não vale para o ranking."
+          "texto": "Jogar abre a escolha de dificuldade e modo, e no segundo clique a corrida começa. O botão Freny (Inventário, Armeira e Visual) fica no menu principal e dentro do Jogar, e os menus estão maiores. Na pausa: Recomeçar corrida, Nova corrida com dificuldade e modo, e Inventário, Armeira e Visual. Com o Automático ligado, o Jogar fica âmbar com um aviso de que a corrida não vale para o ranking."
         },
         {
           "icone": "combate",
