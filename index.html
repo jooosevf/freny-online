@@ -356,6 +356,20 @@
       #rotate strong { color: var(--pink); font-size: 19px; }
     }
   </style>
+  <script>
+    // The game (Unity) listens to the keyboard on the whole window and cancels every keypress, so
+    // nothing could be typed in the page's own fields (Perfil login, Feedback). Registered before the
+    // game loads, this runs first and keeps a keypress aimed at a text field away from the game;
+    // the letter still lands in the field. Only keypress: keydown and keyup still reach the game.
+    (function () {
+      function field(t) {
+        return t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT" || t.isContentEditable);
+      }
+      window.addEventListener("keypress", function (e) {
+        if (field(e.target)) e.stopImmediatePropagation();
+      }, true);
+    })();
+  </script>
 </head>
 <body class="on-jogar">
   <header class="top">
