@@ -689,6 +689,17 @@
           navigator.keyboard.unlock();
         }
       });
+
+      // Leaving fullscreen pauses the game (José, 2026-11-10): in Firefox and Safari Esc always leaves
+      // fullscreen (no Keyboard Lock there), and in Chrome/Edge holding Esc does; either way the run
+      // waits on the pause menu instead of going on behind the page.
+      function leftFullscreen() {
+        if (document.fullscreenElement || document.webkitFullscreenElement) return;
+        if (!played || !window.frenyUnity) return;
+        try { window.frenyUnity.SendMessage("GameMenus", "PauseFromBrowser"); } catch (err) {}
+      }
+      document.addEventListener("fullscreenchange", leftFullscreen);
+      document.addEventListener("webkitfullscreenchange", leftFullscreen);
     })();
 
     // Top 10 from the board the game writes for each ranked difficulty (public read in firestore.rules).
