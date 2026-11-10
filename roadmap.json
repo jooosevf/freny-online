@@ -414,7 +414,7 @@
         {
           "icone": "tecla",
           "titulo": "Menu novo com abas",
-          "texto": "Menu novo: uma barra de abas no topo com Jogar, Freny, Missões, Conquistas, Ranking e Guia. A aba Jogar já abre na dificuldade e no modo. As moedas aparecem ao lado do título do Inventário e a Ajuda fica dentro do Guia. Q/E (ou LB/RB no controle) trocam de aba. Na pausa, o botão novo Recomeçar corrida começa a mesma corrida de novo."
+          "texto": "Menu novo: uma barra de abas no topo com Jogar, Freny, Missões, Passe, Ranking, Perfil e Guia. O Passe tem a própria aba, com a Roleta do dia dentro. As Conquistas e os Títulos ficam no Perfil. As moedas aparecem no Inventário e a Ajuda fica dentro do Guia. Q/E (ou LB/RB no controle) trocam de aba. Na pausa, o botão novo Recomeçar corrida começa a mesma corrida de novo."
         },
         {
           "icone": "combate",
