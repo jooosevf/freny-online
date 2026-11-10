@@ -414,7 +414,7 @@
         {
           "icone": "tecla",
           "titulo": "Menu novo com abas",
-          "texto": "Menu novo: uma barra de abas no topo com Jogar, Freny, Missões, Passe, Ranking, Perfil e Guia. O Passe tem a própria aba, com a Roleta do dia dentro. As Conquistas e os Títulos ficam no Perfil. As moedas aparecem no Inventário e a Ajuda fica dentro do Guia. Q/E (ou LB/RB no controle) trocam de aba. Na pausa, o botão novo Recomeçar corrida começa a mesma corrida de novo."
+          "texto": "Menu novo: uma barra de abas no topo com Jogar, Freny, Missões, Passe, Ranking, Perfil e Guia. O Passe tem a própria aba, com a Roleta do dia dentro. As Conquistas e os Títulos ficam no Perfil. As moedas aparecem no Inventário e a Ajuda fica dentro do Guia. Q/E (ou LB/RB no controle) trocam de aba. Na pausa, o botão novo Recomeçar corrida começa a mesma corrida de novo. No Visual, Elmo, Torso e Traje mostram o Freny e o item à esquerda e as opções em quadrados, 3 por linha. O Passe virou uma trilha de cartões que corre de lado, o Ranking tem letras e linhas maiores, e a Roleta do dia mostra o que você ganhou hoje, parada no prêmio."
         },
         {
           "icone": "combate",
