@@ -413,8 +413,8 @@
       "itens": [
         {
           "icone": "tecla",
-          "titulo": "Jogar em dois cliques",
-          "texto": "Jogar abre a escolha de dificuldade e modo, e no segundo clique a corrida começa. O botão Freny (Inventário, Armeira e Visual) fica no menu principal e dentro do Jogar, e os menus estão maiores. Na pausa: Recomeçar corrida, Nova corrida com dificuldade e modo, e Inventário, Armeira e Visual. Com o Automático ligado, o Jogar fica âmbar com um aviso de que a corrida não vale para o ranking."
+          "titulo": "Menu novo com abas",
+          "texto": "Menu novo: uma barra de abas no topo com Jogar, Freny, Missões, Conquistas, Ranking e Guia. A aba Jogar já abre na dificuldade e no modo, então a corrida começa em um clique. Q/E (ou LB/RB no controle) trocam de aba. Na pausa, o botão novo Recomeçar corrida começa a mesma corrida de novo."
         },
         {
           "icone": "combate",
