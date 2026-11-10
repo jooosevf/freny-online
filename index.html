@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <script>
+    // Unity listens to the keyboard on the whole window and cancels the keys, so the site's text fields
+    // (Perfil login, Feedback) took no typing. Keys pressed inside a text field stop here, before
+    // Unity's listeners; the browser still types them. Registered first, so it runs first.
+    ["keydown", "keypress", "keyup"].forEach(function (type) {
+      window.addEventListener(type, function (e) {
+        var t = e.target;
+        if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT" || t.isContentEditable)) {
+          e.stopImmediatePropagation();
+        }
+      }, true);
+    });
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#171021">
@@ -666,11 +679,12 @@
         return "";
       });
 
-      // In fullscreen, Chrome/Edge let the page take Ctrl+W/T/N/Q too. Esc stays free, so it still leaves fullscreen.
+      // In fullscreen, Chrome/Edge let the page take Ctrl+W/T/N/Q and Esc too: Esc then pauses the game
+      // (José, 2026-11-10), and holding Esc for about 2 s still leaves fullscreen (the browser says so).
       document.addEventListener("fullscreenchange", function () {
         if (!navigator.keyboard || !navigator.keyboard.lock) return;
         if (document.fullscreenElement) {
-          navigator.keyboard.lock(["KeyW", "KeyT", "KeyN", "KeyQ"]).catch(function () {});
+          navigator.keyboard.lock(["KeyW", "KeyT", "KeyN", "KeyQ", "Escape"]).catch(function () {});
         } else {
           navigator.keyboard.unlock();
         }
