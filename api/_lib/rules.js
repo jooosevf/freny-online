@@ -61,7 +61,9 @@ export const KILL_WINDOW_SECONDS = 10;
 export const KILL_POOL = 40;
 export const PEAK_SPAWN_SECONDS = 0.8;
 export const SPARSE_SPAWN_FACTOR = 0.35;
-export const MAX_RUN_SECONDS = 6 * 3600;
+// Manual runs have no time limit (José, 2026-11-10); an autopilot run can last up to 24 h, so a
+// player can leave it running overnight.
+export const MAX_AUTO_RUN_SECONDS = 24 * 3600;
 export const MAX_SCORE = 1000000000;
 
 // The game's Mutador da semana (WeeklyMutators.cs): one extra rule for every Arena run of the week,

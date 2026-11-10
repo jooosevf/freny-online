@@ -1,6 +1,6 @@
 import {
   BOARDS, isAutoBoard, ENEMIES, LEVELS, MIN_RAMP_SECONDS, COMBO_SECONDS, MAX_GAME_SPEED,
-  KILL_WINDOW_SECONDS, KILL_POOL, PEAK_SPAWN_SECONDS, SPARSE_SPAWN_FACTOR, MAX_RUN_SECONDS, MAX_SCORE,
+  KILL_WINDOW_SECONDS, KILL_POOL, PEAK_SPAWN_SECONDS, SPARSE_SPAWN_FACTOR, MAX_AUTO_RUN_SECONDS, MAX_SCORE,
 } from './rules.js';
 
 // A kill a frame or two either side of the combo timeout can go either way.
@@ -60,7 +60,7 @@ export function validateRun(run, realSeconds) {
   if (!Number.isInteger(score) || score < 0 || score > MAX_SCORE) return 'pontuação inválida';
   if (typeof gameTime !== 'number' || !(gameTime >= 0)) return 'tempo de jogo inválido';
   if (!Array.isArray(kills) || kills.length > 200000) return 'registro inválido';
-  if (realSeconds > MAX_RUN_SECONDS) return 'partida longa demais';
+  if (isAutoBoard(board) && realSeconds > MAX_AUTO_RUN_SECONDS) return 'partida longa demais';
   if (gameTime > (realSeconds + REAL_TIME_SLACK) * MAX_GAME_SPEED) return 'mais tempo de jogo do que tempo real';
 
   const level = LEVELS[board];

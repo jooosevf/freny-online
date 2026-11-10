@@ -191,3 +191,11 @@ test('the autopilot boards follow the manual rules, with no daily board', async 
   assert.match(dailyBoardOf('leaderboard_hard', Date.now()), /^daily_hard_20\d{6}$/);
   assert.match(validateRun({ ...run, board: 'auto_nightmare' }, run.gameTime), /desconhecido/);
 });
+
+test('manual runs have no time limit; autopilot runs stop at 24 h', () => {
+  const manual = steadyRun('leaderboard_hard', 100, 2);
+  assert.equal(validateRun(manual, 48 * 3600), null);
+  const auto = steadyRun('auto_hard', 100, 2);
+  assert.equal(validateRun(auto, 23 * 3600), null);
+  assert.match(validateRun(auto, 25 * 3600), /longa demais/);
+});
