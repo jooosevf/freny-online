@@ -170,6 +170,11 @@
     .pf-rec { margin-top: 18px; }
     .pf-rec span { display: block; color: var(--muted); font-size: 17px; }
     .pf-rec b { display: block; color: #FFD84A; font-size: 64px; line-height: 1; text-shadow: 0 3px 0 #000; }
+    .pf-levels { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .pf-level { display: flex; align-items: center; gap: 8px; background: rgba(31,22,48,0.92); border: 2px solid #301B2A; border-left: 4px solid #6e101e; padding: 5px 12px 5px 8px; }
+    .pf-level img { width: 28px; height: 28px; }
+    .pf-level b { color: #FFD84A; font-size: 22px; line-height: 1; }
+    .pf-level span { color: var(--muted); font-size: 14px; }
     .pf-recs { display: flex; gap: 6px 18px; flex-wrap: wrap; color: var(--muted); font-size: 16px; margin-top: 6px; }
     .pf-vs { font-size: 15px; }
     .pf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
@@ -181,7 +186,7 @@
     .pf-tile span { display: block; color: var(--muted); font-size: 15px; line-height: 1.25; }
     .pf-tile small { display: block; color: var(--muted); font-size: 14px; }
     .pf-tile small.ahead { color: #FFD84A; }
-    @media (max-width: 640px) { .pf-hero { padding: 18px 16px; text-align: center; } .pf-recs { justify-content: center; } .page .pf-info h1 { font-size: 36px; } .pf-rec b { font-size: 52px; }
+    @media (max-width: 640px) { .pf-hero { padding: 18px 16px; text-align: center; } .pf-recs, .pf-levels { justify-content: center; } .page .pf-info h1 { font-size: 36px; } .pf-rec b { font-size: 52px; }
       .pf-grid { grid-template-columns: 1fr 1fr; gap: 8px; } .pf-tile { gap: 10px; padding: 8px 10px; border-left-width: 4px; }
       .pf-tile img { width: 34px; height: 34px; } .pf-tile b { font-size: 20px; } .pf-tile span { font-size: 13px; } .pf-tile small { font-size: 12px; } }
     .pf-share { margin-top: 10px; padding: 8px 16px; border-color: #2f7a4a; color: #b8f0c8; }
@@ -1334,6 +1339,15 @@
       });
     }
 
+    // the levels the game publishes on the profile (2026-11-11): Freny's and the three skills; an older game
+    // doesn't send them, so a profile without them shows none
+    function levelRows(p) {
+      if (!(p.nivel > 0)) return [];
+      return [["Nível", p.nivel, "devlog/freny.png"], ["Combate", p.combate, "perfil/skill_combate.png"],
+        ["Pontaria", p.pontaria, "perfil/skill_pontaria.png"], ["Vigor", p.vigor, "perfil/skill_vigor.png"]]
+        .filter(function (r) { return r[1] > 0; });
+    }
+
     // what a profile shows: label, value as text, and the number that decides who is ahead
     var LEVEL_FIELD = { hard: "bestHard", medium: "bestMedium", easy: "bestEasy" };
     // label, value as text, the number that decides who is ahead (null: nobody is "ahead" in falls), icon in devlog/
@@ -1381,6 +1395,18 @@
           info.appendChild(small);
         }
       } else info.appendChild(el("div", "pf-meta", "Ainda sem recorde"));
+      var levels = levelRows(p);
+      if (levels.length) {
+        var lv = el("div", "pf-levels");
+        levels.forEach(function (r) {
+          var chip = el("div", "pf-level");
+          var img = el("img", "pix"); img.src = r[2]; img.alt = "";
+          var t = el("div"); t.append(el("b", "", r[1]), el("span", "", " " + r[0]));
+          chip.append(img, t);
+          lv.appendChild(chip);
+        });
+        info.appendChild(lv);
+      }
       var share = el("button", "pf-share", "Compartilhar no WhatsApp");
       share.onclick = function () { shareProfile(p, share); };
       info.appendChild(share);
@@ -1450,12 +1476,14 @@
       var look = el("canvas");
       look.width = look.height = 140;
       var stats = cardStats(p);
+      var levels = levelRows(p);
       var fonts = document.fonts ? Promise.all([document.fonts.load("700 40px 'Roboto Condensed'"), document.fonts.load("400 40px 'Roboto Condensed'")]).catch(function () {}) : null;
       return Promise.all([
         cardImage("devlog/banner.png"), cardImage("TemplateData/title.png"), paintLook(look.getContext("2d"), p), fonts,
         Promise.all(stats.map(function (s) { return cardImage("devlog/" + CARD_ICON[s[0]] + ".png"); })),
+        Promise.all(levels.map(function (r) { return cardImage(r[2]); })),
       ]).then(function (got) {
-        var banner = got[0], title = got[1], icons = got[4];
+        var banner = got[0], title = got[1], icons = got[4], levelIcons = got[5];
         c.imageSmoothingEnabled = false;
         // night sky, a blood moon behind him, the mountains of the devlog banner
         var sky = c.createLinearGradient(0, 0, 0, H);
@@ -1518,10 +1546,27 @@
         } else {
           c.fillStyle = "rgba(255,255,255,0.7)"; c.font = "400 32px 'Roboto Condensed', sans-serif"; c.fillText("Ainda sem recorde", x, 600);
         }
+        // the levels: a strip across the card, over the numbers
+        var gy = 850, ch = 118;
+        if (levels.length) {
+          var lw = (W - 140 - (levels.length - 1) * 14) / levels.length;
+          levels.forEach(function (r, i) {
+            var lx = 70 + i * (lw + 14), ly = 832;
+            c.fillStyle = "rgba(31,22,48,0.92)"; c.fillRect(lx, ly, lw, 64);
+            c.strokeStyle = "#301B2A"; c.lineWidth = 3; c.strokeRect(lx + 1.5, ly + 1.5, lw - 3, 61);
+            c.fillStyle = "#6e101e"; c.fillRect(lx, ly, 6, 64);
+            var ic = levelIcons[i];
+            if (ic) c.drawImage(ic, lx + 18, ly + 12, 40, 40);
+            c.fillStyle = "#FFD84A"; c.font = "700 40px 'Roboto Condensed', sans-serif"; c.fillText(String(r[1]), lx + 68, ly + 47);
+            var vw = c.measureText(String(r[1])).width;
+            c.fillStyle = "rgba(255,255,255,0.7)"; fitFont(c, r[0], "400", 24, lw - 80 - vw); c.fillText(r[0], lx + 76 + vw, ly + 45);
+          });
+          gy = 914; ch = 104;
+        }
         // the numbers, two columns
-        var gx = 70, gy = 850, cw = 455, ch = 118, gap = 30;
+        var gx = 70, cw = 455, gap = 30;
         stats.forEach(function (s, i) {
-          var cx = gx + (i % 2) * (cw + gap), cy = gy + Math.floor(i / 2) * (ch + 18);
+          var cx = gx + (i % 2) * (cw + gap), cy = gy + Math.floor(i / 2) * (ch + (levels.length ? 14 : 18));
           c.fillStyle = "rgba(31,22,48,0.92)"; c.fillRect(cx, cy, cw, ch);
           c.strokeStyle = "#301B2A"; c.lineWidth = 3; c.strokeRect(cx + 1.5, cy + 1.5, cw - 3, ch - 3);
           c.fillStyle = "#6e101e"; c.fillRect(cx, cy, 6, ch);
@@ -1530,8 +1575,8 @@
             var k = Math.min(78 / icon.width, 78 / icon.height), iw = icon.width * k, ih = icon.height * k;
             c.drawImage(icon, cx + 24 + (78 - iw) / 2, cy + (ch - ih) / 2, iw, ih);
           }
-          c.fillStyle = "#FFD84A"; fitFont(c, s[1], "700", 52, cw - 140); c.fillText(s[1], cx + 124, cy + 62);
-          c.fillStyle = "rgba(255,255,255,0.7)"; fitFont(c, s[2], "400", 27, cw - 140); c.fillText(s[2], cx + 124, cy + 98);
+          c.fillStyle = "#FFD84A"; fitFont(c, s[1], "700", 52, cw - 140); c.fillText(s[1], cx + 124, cy + ch / 2 + 3);
+          c.fillStyle = "rgba(255,255,255,0.7)"; fitFont(c, s[2], "400", 27, cw - 140); c.fillText(s[2], cx + 124, cy + ch / 2 + 39);
         });
         // where to play
         c.font = "400 28px 'Roboto Condensed', sans-serif";
