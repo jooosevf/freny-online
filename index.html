@@ -1339,11 +1339,11 @@
       });
     }
 
-    // the levels the game publishes on the profile (2026-11-11): Freny's and the three skills; an older game
-    // doesn't send them, so a profile without them shows none
+    // the skill levels the game publishes on the profile (2026-11-11); an older game doesn't send them, so a
+    // profile without them shows none. Freny's XP level (nivel) is left out: José, 2026-11-11, it confused
     function levelRows(p) {
-      if (!(p.nivel > 0)) return [];
-      return [["Nível", p.nivel, "devlog/freny.png"], ["Combate", p.combate, "perfil/skill_combate.png"],
+      if (!(p.combate > 0)) return [];
+      return [["Combate", p.combate, "perfil/skill_combate.png"],
         ["Pontaria", p.pontaria, "devlog/arma.png"], ["Vigor", p.vigor, "perfil/skill_vigor.png"]]
         .filter(function (r) { return r[1] > 0; });
     }
