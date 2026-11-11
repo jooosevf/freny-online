@@ -454,7 +454,7 @@
         {
           "icone": "chave",
           "titulo": "Chave abençoada",
-          "texto": "A chave do Ciclope agora se chama chave abençoada. O primeiro Ciclope da corrida sempre deixa uma, os seguintes metade das vezes, e a cada 10 Feiticeiros derrotados um deixa outra. As chaves acumulam e cada uma abre um baú dourado com uma bênção. Quando vêm dois Ciclopes juntos, só um deles deixa a chave, e o Feiticeiro Supremo conta um pouco menos que o Feiticeiro na conta das 10."
+          "texto": "A chave do Ciclope agora se chama chave abençoada. O primeiro Ciclope da corrida sempre deixa uma, os seguintes metade das vezes, e quando vêm dois Ciclopes juntos só um deles deixa. Só o Ciclope deixa a chave. As chaves acumulam e cada uma abre um baú dourado com uma bênção."
         },
         {
           "icone": "ciclope",
@@ -495,6 +495,11 @@
           "icone": "combate",
           "titulo": "Níveis no Perfil",
           "texto": "O Perfil no site mostra o nível do Freny e os níveis de Combate, Pontaria e Vigor, e a imagem para mandar no WhatsApp também."
+        },
+        {
+          "icone": "passe",
+          "titulo": "Ícones do Passe",
+          "texto": "No Passe, poção, granadas, armadura, tônico e o Elmo sombrio aparecem com os mesmos ícones do jogo."
         }
       ],
       "versao": "Alpha 0.1.3"
