@@ -66,6 +66,14 @@
         {
           "icone": "freny",
           "texto": "Cada conta tem um apelido e um código de amigo só seu. Os recordes do topo agora são gravados para a equipe assistir e conferir."
+        },
+        {
+          "icone": "roleta",
+          "texto": "A Roleta do dia gira só uma vez por dia, mesmo fechando e abrindo o jogo."
+        },
+        {
+          "icone": "combate",
+          "texto": "O Perfil no site mostra o nível do Freny e os níveis de Combate, Pontaria e Vigor, e a imagem para mandar no WhatsApp também."
         }
       ]
     },
